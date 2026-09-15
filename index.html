@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>ตรวจสอบวิทยุสื่อสาร</title>
-<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&family=Manrope:wght@700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800;900&family=Manrope:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#0d1117;--border-dim:rgba(255,255,255,.07);
@@ -123,12 +123,10 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .qr-bot{position:absolute;bottom:0;left:0;right:0;z-index:10;padding:20px 20px 48px;background:linear-gradient(to top,rgba(0,0,0,.9),transparent);text-align:center}
 .qr-stat{font-size:15px;font-weight:700;margin-bottom:6px}
 .qr-hint{font-size:11px;color:rgba(255,255,255,.45);margin-bottom:10px}
-/* RAW data display */
 .qr-raw-box{background:rgba(0,0,0,.75);border:1px solid rgba(255,255,100,.4);border-radius:10px;padding:10px 14px;margin-bottom:8px;display:none;text-align:left}
 .qr-raw-box.show{display:block}
 .qr-raw-label{font-size:9px;font-weight:700;letter-spacing:1px;color:rgba(255,220,80,.7);text-transform:uppercase;margin-bottom:4px}
 .qr-raw-val{font-size:12px;font-family:monospace;color:#fff;word-break:break-all;line-height:1.4}
-/* Not-found box — show parsed radio not found */
 .qr-notfound{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:10px;padding:10px 14px;margin-bottom:8px;display:none;text-align:center}
 .qr-notfound.show{display:block}
 .qr-notfound-msg{font-size:12px;color:#f87171;font-weight:700;margin-bottom:4px}
@@ -195,6 +193,9 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .cfg-loading{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--text3);padding:6px 12px;background:rgba(255,255,255,.03);border-radius:8px;margin-bottom:8px}
 .spin{width:12px;height:12px;border:2px solid rgba(0,200,160,.2);border-top-color:#22d3c8;border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
+/* URL auto-detect banner */
+.url-param-banner{background:rgba(0,200,160,.08);border:1px solid rgba(0,200,160,.25);border-radius:10px;padding:8px 12px;margin-bottom:8px;font-size:11px;color:#22d3c8;font-weight:600;display:none;align-items:center;gap:7px}
+.url-param-banner.show{display:flex}
 </style>
 </head>
 <body>
@@ -250,7 +251,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
       <div class="qr-notfound-hint">กรุณาจ่อที่ QR Code บนการ์ดวิทยุเท่านั้น</div>
     </div>
     <div class="qr-raw-box" id="qrRawBox">
-      <div class="qr-raw-label">ข้อมูลที่อ่านได้ (Debug)</div>
+      <div class="qr-raw-label">ข้อมูลที่อ่านได้</div>
       <div class="qr-raw-val" id="qrRawVal"></div>
     </div>
   </div>
@@ -329,6 +330,11 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
     </div>
     <div class="qr-section">
       <div class="qr-label">สแกน QR Code เครื่องวิทยุ</div>
+      <!-- URL param auto-detected banner -->
+      <div class="url-param-banner" id="urlParamBanner">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22d3c8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        <span id="urlParamText">QR Code ถูกอ่านจาก URL แล้ว</span>
+      </div>
       <div class="qr-card" id="qrCard">
         <div id="qrBeforeScan">
           <div class="qr-prompt">
@@ -339,7 +345,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
             <div style="flex:1">
               <div class="qr-or-text">หรือกรอก ID ด้วยตนเอง</div>
               <div class="qr-manual-row">
-                <input id="manualId" class="qr-manual-inp" placeholder="เช่น WD1 หรือ 1" maxlength="5">
+                <input id="manualId" class="qr-manual-inp" placeholder="เช่น WD1 หรือ 1" maxlength="6">
                 <button class="btn-manual-ok" onclick="manualEntry()">ยืนยัน</button>
               </div>
             </div>
@@ -406,26 +412,31 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, collection, addDoc, doc, setDoc, getDoc, getDocs, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const RADIOS=[
-  {id:1,area:"จุดตรวจโลหะที่ 1",sn:"WD1 S/N 278TBPG297"},{id:2,area:"Support 5 Ph1",sn:"WD2 S/N 278TBPG307"},
-  {id:3,area:"Main Entrance Ph1",sn:"WD3 S/N 278TBPG308"},{id:4,area:"จุดตรวจโลหะที่ 4",sn:"WD4 S/N 278TBPG324"},
-  {id:5,area:"Support P6",sn:"WD5 S/N 278TBPG327"},{id:6,area:"Support P7",sn:"WD6 S/N 278TBPG330"},
-  {id:7,area:"Main Entrance Ph2",sn:"WD7 S/N 278TBPG344"},{id:8,area:"Receiving B.1",sn:"WD8 S/N 278TBPG345"},
-  {id:9,area:"Support P1",sn:"WD9 S/N 278TBPG419"},{id:11,area:"Lobby",sn:"WD11 S/N 278TBPG468"},
-  {id:12,area:"New Building (Customs)",sn:"WD12 S/N 278TBPG470"},{id:13,area:"Loading Canteen",sn:"WD13 S/N 278TBPG472"},
-  {id:14,area:"Control Center Ph.1",sn:"WD14 S/N 278TBPG474"},{id:16,area:"จุดตรวจโลหะที่ 11",sn:"WD16 S/N 278TBPG484"},
-  {id:18,area:"Receiving Dock B.5",sn:"WD18 S/N 278TBPG523"},{id:19,area:"Staging Area B.4",sn:"WD19 S/N 278TBPG527"},
-  {id:20,area:"Staging Area B.5",sn:"WD20 S/N 278TBPG528"},{id:21,area:"จุดตรวจโลหะที่ 12",sn:"WD21 S/N 278TBPG533"},
-  {id:22,area:"Canteen Gate",sn:"WD22 S/N 278TBPG537"},{id:23,area:"Control Center Ph.2",sn:"WD23 S/N 278TBPG539"},
-  {id:24,area:"Support P2",sn:"WD24 S/N 278TBPG541"},{id:25,area:"Support P3",sn:"WD25 S/N 278TBPG543"},
-  {id:26,area:"Support P4",sn:"WD26 S/N 278TBPG544"},{id:27,area:"Support P5",sn:"WD27 S/N 278TBPG545"},
-  {id:28,area:"Receiving B.2",sn:"WD28 S/N 278TBPG549"},{id:29,area:"Receiving B.3",sn:"WD29 S/N 278TBPG551"},
-  {id:30,area:"Loading B.1",sn:"WD30 S/N 278TBPG554"},{id:31,area:"Loading B.2",sn:"WD31 S/N 278TBPG556"},
-  {id:32,area:"Loading B.3",sn:"WD32 S/N 278TBPG558"},{id:33,area:"Gate 1",sn:"WD33 S/N 278TBPG561"},
-  {id:34,area:"Gate 2",sn:"WD34 S/N 278TBPG563"},{id:35,area:"Gate 3",sn:"WD35 S/N 278TBPG565"},
-  {id:36,area:"Gate 4",sn:"WD36 S/N 278TBPG567"},{id:37,area:"Patrol North",sn:"WD37 S/N 278TBPG570"},
-  {id:38,area:"Patrol South",sn:"WD38 S/N 278TBPG572"},
+/* ══════════════════════════════════════════════════════
+   RADIOS — fallback list (used if Firestore radioItems empty)
+══════════════════════════════════════════════════════ */
+const RADIOS_DEFAULT=[
+  {id:1,area:"จุดตรวจโลหะที่ 1",sn:"S/N 278TBPG297"},{id:2,area:"Support 5 Ph1",sn:"S/N 278TBPG307"},
+  {id:3,area:"Main Entrance Ph1",sn:"S/N 278TBPG308"},{id:4,area:"จุดตรวจโลหะที่ 4",sn:"S/N 278TBPG324"},
+  {id:5,area:"Support P6",sn:"S/N 278TBPG327"},{id:6,area:"Support P7",sn:"S/N 278TBPG330"},
+  {id:7,area:"Main Entrance Ph2",sn:"S/N 278TBPG344"},{id:8,area:"Receiving B.1",sn:"S/N 278TBPG345"},
+  {id:9,area:"Support P1",sn:"S/N 278TBPG419"},{id:11,area:"Lobby",sn:"S/N 278TBPG468"},
+  {id:12,area:"New Building (Customs)",sn:"S/N 278TBPG470"},{id:13,area:"Loading Canteen",sn:"S/N 278TBPG472"},
+  {id:14,area:"Control Center Ph.1",sn:"S/N 278TBPG474"},{id:16,area:"จุดตรวจโลหะที่ 11",sn:"S/N 278TBPG484"},
+  {id:18,area:"Receiving Dock B.5",sn:"S/N 278TBPG523"},{id:19,area:"Staging Area B.4",sn:"S/N 278TBPG527"},
+  {id:20,area:"Staging Area B.5",sn:"S/N 278TBPG528"},{id:21,area:"จุดตรวจโลหะที่ 12",sn:"S/N 278TBPG533"},
+  {id:22,area:"Canteen Gate",sn:"S/N 278TBPG537"},{id:23,area:"Control Center Ph.2",sn:"S/N 278TBPG539"},
+  {id:24,area:"Support P2",sn:"S/N 278TBPG541"},{id:25,area:"Support P3",sn:"S/N 278TBPG543"},
+  {id:26,area:"Support P4",sn:"S/N 278TBPG544"},{id:27,area:"Support P5",sn:"S/N 278TBPG545"},
+  {id:28,area:"Receiving B.2",sn:"S/N 278TBPG549"},{id:29,area:"Receiving B.3",sn:"S/N 278TBPG551"},
+  {id:30,area:"Loading B.1",sn:"S/N 278TBPG554"},{id:31,area:"Loading B.2",sn:"S/N 278TBPG556"},
+  {id:32,area:"Loading B.3",sn:"S/N 278TBPG558"},{id:33,area:"Gate 1",sn:"S/N 278TBPG561"},
+  {id:34,area:"Gate 2",sn:"S/N 278TBPG563"},{id:35,area:"Gate 3",sn:"S/N 278TBPG565"},
+  {id:36,area:"Gate 4",sn:"S/N 278TBPG567"},{id:37,area:"Patrol North",sn:"S/N 278TBPG570"},
+  {id:38,area:"Patrol South",sn:"S/N 278TBPG572"},
 ];
+let RADIOS=[...RADIOS_DEFAULT];
+
 const DEFAULT_ITEMS=[
   {id:1,th:"เสาอากาศ",en:"Antenna"},{id:2,th:"แบตเตอรี่",en:"Battery"},{id:3,th:"ปุ่มกดพูด",en:"PTT Button"},
   {id:4,th:"ลำโพง",en:"Speaker"},{id:5,th:"ไมโครโฟน",en:"Microphone"},{id:6,th:"ปุ่มเลือกช่องสัญญาณ",en:"Channel Selector"},
@@ -448,8 +459,85 @@ let shiftCfg={
 };
 const G=id=>document.getElementById(id);
 
+/* ══════════════════════════════════════════════════════
+   RADIO LOOKUP — by label (WD1) or numeric id
+   Supports: "WD1", "WD 1", "WD-1", "1", "01"
+══════════════════════════════════════════════════════ */
+function findRadioByLabel(label){
+  if(!label)return null;
+  const s=String(label).trim();
+  // exact label match "WD1"
+  let r=RADIOS.find(x=>(x.label||('WD'+x.id))===s);if(r)return r;
+  // WD+number pattern
+  const m=s.match(/^WD[\s\-_]?(\d+)$/i);
+  if(m){const id=parseInt(m[1]);return RADIOS.find(x=>x.id===id)||null;}
+  // pure number
+  if(/^\d+$/.test(s)){const id=parseInt(s);return RADIOS.find(x=>x.id===id)||null;}
+  return null;
+}
+
+/* ══════════════════════════════════════════════════════
+   QR PARSER — handles ALL formats:
+   1. URL:  https://.../?radio=WD1  (NEW — from Admin V5)
+            https://.../?id=WD1
+            https://.../?code=WD1
+            https://.../?door=WD1
+   2. JSON: {"id":1,"area":"...","label":"WD1","sn":"..."}  (legacy)
+   3. Plain: WD1 / WD-1 / 1
+   Returns radio object or null
+══════════════════════════════════════════════════════ */
+function parseQRtoRadio(raw){
+  const s=(raw||'').trim();if(!s)return null;
+
+  /* ── 1. URL format (Admin V5 format) ── */
+  if(s.startsWith('http')||s.includes('?')){
+    try{
+      const u=new URL(s.includes('://')?s:'https://x.com/'+s);
+      // try all known param names
+      const label=u.searchParams.get('radio')||u.searchParams.get('id')||u.searchParams.get('code')||u.searchParams.get('wdcode')||u.searchParams.get('door');
+      if(label){
+        const r=findRadioByLabel(label);
+        if(r)return r;
+        // label might be "WD1" — try again
+        const m2=String(label).match(/WD[\s\-_]?(\d+)/i);
+        if(m2)return RADIOS.find(x=>x.id===parseInt(m2[1]))||null;
+        if(/^\d+$/.test(label))return RADIOS.find(x=>x.id===parseInt(label))||null;
+      }
+    }catch(e){}
+  }
+
+  /* ── 2. JSON format (legacy Admin V4 / radio-user-form-v05) ── */
+  if(s.startsWith('{')){
+    try{
+      const p=JSON.parse(s);
+      const id=parseInt(p.id||p.radioId||0);
+      if(id>0)return RADIOS.find(x=>x.id===id)||null;
+      const lbl=p.label||p.wdcode||'';
+      if(lbl)return findRadioByLabel(lbl);
+    }catch(e){}
+  }
+
+  /* ── 3. Plain WD label or number ── */
+  return findRadioByLabel(s);
+}
+
+/* ══════════════════════════════════════════════════════
+   READ URL PARAMETER ON PAGE LOAD
+   Admin QR encodes: base/?radio=WD1
+   When user taps QR card → browser opens this URL
+   → auto-fill radio without needing camera
+══════════════════════════════════════════════════════ */
+function checkUrlParam(){
+  try{
+    const params=new URLSearchParams(window.location.search);
+    const label=params.get('radio')||params.get('id')||params.get('code')||params.get('wdcode')||params.get('door');
+    if(!label)return null;
+    return findRadioByLabel(label)||findRadioByLabel('WD'+label);
+  }catch(e){return null;}
+}
+
 function resolveMs(v){if(!v)return null;if(typeof v==='object'&&v.toDate)return v.toDate().getTime();const m=new Date(v).getTime();return isNaN(m)?null:m;}
-function applyFSD(d){['day','night'].forEach(sh=>{const s=d[sh];if(s&&typeof s==='object'){if(s.inspStart)shiftCfg[sh].inspStart=s.inspStart;if(s.inspEnd)shiftCfg[sh].inspEnd=s.inspEnd;if(s.shiftStart)shiftCfg[sh].shiftStart=s.shiftStart;if(s.shiftEnd)shiftCfg[sh].shiftEnd=s.shiftEnd;shiftCfg[sh].emergencyUnlock=!!s.emergencyUnlock;shiftCfg[sh].emergencyUntil=s.emergencyUntil||null;}});if(d.dayInspStart)shiftCfg.day.inspStart=d.dayInspStart;if(d.dayInspEnd)shiftCfg.day.inspEnd=d.dayInspEnd;if(d.nightInspStart)shiftCfg.night.inspStart=d.nightInspStart;if(d.nightInspEnd)shiftCfg.night.inspEnd=d.nightInspEnd;resolveEmg();}
+function applyFSD(d){['day','night'].forEach(sh=>{const s=d[sh];if(s&&typeof s==='object'){if(s.inspStart)shiftCfg[sh].inspStart=s.inspStart;if(s.inspEnd)shiftCfg[sh].inspEnd=s.inspEnd;if(s.shiftStart)shiftCfg[sh].shiftStart=s.shiftStart;if(s.shiftEnd)shiftCfg[sh].shiftEnd=s.shiftEnd;shiftCfg[sh].emergencyUnlock=!!s.emergencyUnlock;shiftCfg[sh].emergencyUntil=s.emergencyUntil||null;}});resolveEmg();}
 function resolveEmg(){const now=Date.now();let any=false,lat=null;['day','night'].forEach(sh=>{const ms=resolveMs(shiftCfg[sh].emergencyUntil);if(shiftCfg[sh].emergencyUnlock&&ms&&now<ms){any=true;if(!lat||ms>lat)lat=ms;}});const was=emergencyActive;emergencyActive=any;emergencyUntilMs=lat;if(!was&&any&&lockActive){updLockUI();toast("🔓 Admin ปลดล็อคแล้ว!","info");}if(lockActive&&selectedShift&&isAllowed(selectedShift)&&!any){hideLock();toast("เข้าสู่ช่วงเวลาตรวจสอบแล้ว");}}
 function toMin(s){if(!s)return 0;const p=s.split(":");return parseInt(p[0])*60+parseInt(p[1]||0);}
 function nowMin(){const n=new Date();return n.getHours()*60+n.getMinutes();}
@@ -460,7 +548,12 @@ function shTLbl(sh){const c=shiftCfg[sh];return c?c.shiftStart+"–"+c.shiftEnd+
 
 async function fetchCfg(){if(!db){updShiftUI();return;}try{const s=await getDoc(doc(db,"shiftConfig","main"));if(s.exists()){applyFSD(s.data());if(G("cfgSyncSt"))G("cfgSyncSt").textContent="ซิงค์ — "+new Date().toLocaleTimeString("th-TH");}}catch(e){}updShiftUI();}
 function startCfgL(){if(!db)return;try{onSnapshot(doc(db,"shiftConfig","main"),s=>{if(!s.exists())return;applyFSD(s.data());updShiftUI();if(G("cfgSyncSt"))G("cfgSyncSt").textContent="ซิงค์ — "+new Date().toLocaleTimeString("th-TH");if(lockActive)updLockUI();});}catch(e){}}
+
+/* Load radios from Firestore radioItems collection */
+async function fetchRadios(){if(!db)return;try{const snap=await getDocs(collection(db,"radioItems"));if(!snap.empty){const loaded=[];snap.forEach(d=>{const x=d.data();if(x.id)loaded.push({id:parseInt(x.id),area:x.area||'',sn:x.sn||'',label:x.label||('WD'+x.id),type:x.type||'active'});});if(loaded.length>0){RADIOS=loaded;console.log('Loaded '+RADIOS.length+' radios from Firestore');}}}catch(e){console.warn('fetchRadios:',e);}}
+
 async function fetchCL(){if(!db){buildList();return;}try{const s=await getDocs(collection(db,"checklistItems"));if(!s.empty){const it=[];s.forEach(d=>{const x=d.data();it.push({id:x.id||x.order||it.length+1,th:x.th||x.nameTH||d.id,en:x.en||x.nameEN||""});});it.sort((a,b)=>a.id-b.id);if(it.length>0)ITEMS=it;}}catch(e){}chk={};ITEMS.forEach(i=>chk[i.id]=null);buildList();updUI();}
+
 async function initDef(){if(!db)return;try{const s=await getDocs(collection(db,"radioUsers"));if(s.empty){const d=[{userId:"admin",name:"Administrator",password:"admin1234",role:"admin",enabled:true},{userId:"U001",name:"นายสมชาย ใจดี",password:"1234",role:"user",enabled:true,empId:"IND-5501",dept:"Security",position:"Security Inspector"},{userId:"U002",name:"นางสาวสมหญิง ดีใจ",password:"5678",role:"user",enabled:true,empId:"IND-5502",dept:"Security",position:"Security Inspector"}];for(const u of d)await setDoc(doc(db,"radioUsers",u.userId),u);}}catch(e){}}
 initDef();
 
@@ -475,47 +568,61 @@ function hideLock(){lockActive=false;G("lockOverlay").classList.remove("show");}
 window.proceedEmergency=function(){if(isAllowed(selectedShift)){hideLock();toast("ดำเนินการตรวจสอบในโหมดฉุกเฉิน","info");}};
 function showSc(id){document.querySelectorAll(".screen").forEach(s=>{s.classList.remove("active");s.style.display="none";});const s=G(id);if(s){s.classList.add("active");s.style.display="flex";}}
 
-window.doLogin=async function(){const id=G("lId").value.trim(),pw=G("lPw").value.trim();G("loginErr").style.display="none";if(!id||!pw){setLE("กรุณากรอกข้อมูลให้ครบ");return;}try{const s=await getDocs(collection(db,"radioUsers"));let f=null;s.forEach(d=>{if(d.data().userId===id)f=d.data();});if(!f){setLE("ไม่พบรหัสพนักงานนี้");return;}if(f.password!==pw){setLE("รหัสผ่านไม่ถูกต้อง");return;}if(!f.enabled){setLE("บัญชีถูกระงับ");return;}if(f.role==="admin"){setLE("กรุณาใช้บัญชี User เท่านั้น");return;}user=f;await fetchCfg();await fetchCL();startCfgL();initMain();}catch(e){setLE("เกิดข้อผิดพลาด: "+e.message);}};
+window.doLogin=async function(){const id=G("lId").value.trim(),pw=G("lPw").value.trim();G("loginErr").style.display="none";if(!id||!pw){setLE("กรุณากรอกข้อมูลให้ครบ");return;}try{const s=await getDocs(collection(db,"radioUsers"));let f=null;s.forEach(d=>{if(d.data().userId===id)f=d.data();});if(!f){setLE("ไม่พบรหัสพนักงานนี้");return;}if(f.password!==pw){setLE("รหัสผ่านไม่ถูกต้อง");return;}if(!f.enabled){setLE("บัญชีถูกระงับ");return;}if(f.role==="admin"){setLE("กรุณาใช้บัญชี User เท่านั้น");return;}user=f;
+  await Promise.all([fetchCfg(),fetchCL(),fetchRadios()]);
+  startCfgL();initMain();
+  /* Auto-fill from URL param after login */
+  const urlRadio=checkUrlParam();
+  if(urlRadio){setTimeout(()=>autoFillFromUrl(urlRadio),400);}
+}catch(e){setLE("เกิดข้อผิดพลาด: "+e.message);}};
+
+function autoFillFromUrl(radio){
+  setScannedRadio(radio,'url');
+  const banner=G('urlParamBanner');
+  if(banner){banner.classList.add('show');G('urlParamText').textContent='QR Code อ่านได้: '+radio.label||('WD'+radio.id)+' — '+radio.area;}
+  toast('โหลดวิทยุจาก QR: WD'+radio.id+' — '+radio.area);
+}
+
 function setLE(m){const e=G("loginErr");e.textContent=m;e.style.display="block";}
-window.doLogout=function(){user=null;selectedShift=null;scannedRadioId=null;chk={};ITEMS.forEach(i=>chk[i.id]=null);stopQR();G("lockOverlay").classList.remove("show");lockActive=false;showSc("s-login");G("lId").value="";G("lPw").value="";};
+window.doLogout=function(){user=null;selectedShift=null;scannedRadioId=null;chk={};ITEMS.forEach(i=>chk[i.id]=null);stopQR();G("lockOverlay").classList.remove("show");lockActive=false;showSc("s-login");G("lId").value="";G("lPw").value="";G("urlParamBanner")?.classList.remove("show");};
 function initMain(){const n=user.name||user.userId;G("profAv").textContent=n.charAt(0).toUpperCase();G("profName").textContent=n;G("profId").textContent="ID: "+(user.empId||user.userId);G("profDept").textContent=(user.dept||"Security")+" — "+(user.position||"Inspector");updShiftUI();showSc("s-main");}
 window.selShift=function(s){selectedShift=s;G("shiftDay").classList.toggle("active-day",s==="day");G("shiftNight").classList.toggle("active-night",s==="night");const tag=G("profShiftTag");const names={day:"ผลัดกลางวัน",night:"ผลัดกลางคืน"};tag.textContent=names[s];tag.className="prof-tag tag-shift"+(s==="night"?" night":"");tag.style.display="inline";if(!isAllowed(s)){showLock(s,false);}else{hideLock();toast(names[s]+" — "+winLbl(s)+" เปิดแล้ว");}};
 window.reqUnlock=function(){toast("กรุณาติดต่อผู้ดูแลระบบ","info");alert("กรุณาติดต่อผู้ดูแลระบบ\nเพื่อปลดล็อคจาก Dashboard → ตั้งค่าเวลาผลัด");};
 
-/* ════════════════════════════════════════════════
-   QR SCANNER — BarcodeDetector + debug display
-   แสดง RAW data เสมอ ไม่ว่า QR นั้นจะใช่หรือไม่
-   ให้ผู้ใช้รู้ว่า Admin encode อะไรใน QR วิทยุ
-════════════════════════════════════════════════ */
-
+/* ══════════════════════════════════════════════════════
+   QR SCANNER — BarcodeDetector
+   onQRData() now uses parseQRtoRadio() which handles
+   both URL format (new) and JSON format (legacy)
+══════════════════════════════════════════════════════ */
 let _qrSt=null,_qrTmr=null,_qrRun=false,_qrLk=false,_qrRaf=null;
-let _lastRaw=""; // เก็บ raw ล่าสุด ป้องกันแสดงซ้ำ
+let _lastRaw="";
 
 function qrSetStat(msg,col){const e=G("qrStat");if(e){e.textContent=msg;e.style.color=col||"#22d3c8";}}
-function qrShowRaw(raw){
-  const box=G("qrRawBox"),val=G("qrRawVal");
-  if(box&&val){box.classList.add("show");val.textContent=raw.slice(0,200)+(raw.length>200?"…":"");}
-}
-function qrShowNotFound(raw){
-  const box=G("qrNotFound"),msg=G("qrNotFoundMsg");
-  if(box){box.classList.add("show");}
-  if(msg){msg.textContent='QR นี้ไม่ใช่ของวิทยุ: "'+raw.slice(0,40)+'"';}
-}
+function qrShowRaw(raw){const box=G("qrRawBox"),val=G("qrRawVal");if(box&&val){box.classList.add("show");val.textContent=raw.slice(0,200)+(raw.length>200?"…":"");}}
+function qrShowNotFound(raw){const box=G("qrNotFound"),msg=G("qrNotFoundMsg");if(box)box.classList.add("show");if(msg)msg.textContent='ไม่พบวิทยุ: "'+raw.slice(0,40)+'"';}
 function qrHideNotFound(){const box=G("qrNotFound");if(box)box.classList.remove("show");}
 
-/* ── Parse QR: รองรับทุก format ── */
-function parseQR(raw){
-  const s=(raw||"").trim();if(!s)return null;
-  /* JSON */
-  try{const p=JSON.parse(s);const n=parseInt(p.id||p.radioId||p.radio_id||0);if(n>0)return n;}catch(e){}
-  /* WD1 / WD-1 / WD_1 */
-  const m1=s.match(/WD[\s\-_]?(\d+)/i);if(m1)return parseInt(m1[1]);
-  /* pure number */
-  if(/^\d+$/.test(s))return parseInt(s);
-  /* URL params */
-  try{const u=new URL(s);const p=u.searchParams.get("id")||u.searchParams.get("radioId")||u.searchParams.get("radio");if(p&&/^\d+$/.test(p))return parseInt(p);}catch(e){}
-  return null;
-  /* NOTE: ไม่ใช้ fallback "first number in string" เพราะทำให้สแกน QR อื่นผิดพลาด */
+function onQRData(raw){
+  if(_qrLk)return;
+  const s=String(raw).trim();
+  if(s===_lastRaw)return;
+  _lastRaw=s;
+  qrShowRaw(s);
+
+  const radio=parseQRtoRadio(s);
+
+  if(!radio){
+    qrSetStat("⚠ ไม่พบวิทยุ — จ่อที่การ์ดวิทยุ","#fbbf24");
+    qrShowNotFound(s);
+    return;
+  }
+
+  _qrLk=true;
+  qrHideNotFound();
+  qrSetStat("✅ พบ WD"+radio.id+" — "+radio.area,"#4ade80");
+  if(navigator.vibrate)navigator.vibrate([60,40,100]);
+  const fl=G("qrFlash");fl.classList.add("on");setTimeout(()=>fl.classList.remove("on"),200);
+  setTimeout(()=>{stopQR();G("qrModal").classList.remove("show");setScannedRadio(radio,'qr');},700);
 }
 
 function drawVF(){
@@ -537,33 +644,6 @@ function drawVF(){
 }
 function rafLoop(){if(!_qrRun){_qrRaf=null;return;}drawVF();_qrRaf=requestAnimationFrame(rafLoop);}
 
-function onQRData(raw){
-  if(_qrLk)return;
-  const s=String(raw).trim();
-  if(s===_lastRaw)return; // skip duplicate
-  _lastRaw=s;
-
-  /* Show raw data every time */
-  qrShowRaw(s);
-
-  const rid=parseQR(s);
-  const radio=rid?RADIOS.find(r=>r.id===rid):null;
-
-  if(!radio){
-    qrSetStat("⚠ QR นี้ไม่ใช่ของวิทยุ — จ่อที่การ์ดวิทยุ","#fbbf24");
-    qrShowNotFound(s);
-    return;
-  }
-
-  /* ✅ FOUND */
-  _qrLk=true;
-  qrHideNotFound();
-  qrSetStat("✅ พบ WD"+radio.id+" — "+radio.area,"#4ade80");
-  if(navigator.vibrate)navigator.vibrate([60,40,100]);
-  const fl=G("qrFlash");fl.classList.add("on");setTimeout(()=>fl.classList.remove("on"),200);
-  setTimeout(()=>{stopQR();G("qrModal").classList.remove("show");setScannedRadio(radio);},700);
-}
-
 window.openQR=async function(){
   if(_qrRun)return;
   G("qrModal").classList.add("show");
@@ -571,7 +651,6 @@ window.openQR=async function(){
   G("qrNotFound").classList.remove("show");
   qrSetStat("● กำลังเปิดกล้อง...","#22d3c8");
   _lastRaw="";
-
   try{
     _qrSt=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"},width:{ideal:1280},height:{ideal:720}}});
     const vid=G("qrVideo");vid.srcObject=_qrSt;vid.setAttribute("playsinline","");vid.muted=true;
@@ -581,26 +660,14 @@ window.openQR=async function(){
     _qrRun=true;_qrLk=false;
     qrSetStat("● กำลังสแกน...","#22d3c8");
     _qrRaf=requestAnimationFrame(rafLoop);
-
     if(typeof BarcodeDetector!=="undefined"){
       const bd=new BarcodeDetector({formats:["qr_code"]});
       _qrTmr=setInterval(async()=>{
         if(!_qrRun||_qrLk)return;
         try{const cs=await bd.detect(G("qrVideo"));if(cs&&cs.length>0)onQRData(cs[0].rawValue);}catch(e){}
       },250);
-    } else {
-      qrSetStat("● กำลังสแกน (ไม่มี BarcodeDetector)...","#fbbf24");
-      /* Minimal canvas fallback — only works if jsQR is somehow available */
-      _qrTmr=setInterval(()=>{
-        if(!_qrRun||_qrLk)return;
-        if(typeof window.jsQR!=="function")return;
-        const v=G("qrVideo");if(!v||v.readyState<2||!v.videoWidth)return;
-        const dc=document.createElement("canvas");const dctx=dc.getContext("2d");
-        dc.width=v.videoWidth;dc.height=v.videoHeight;dctx.drawImage(v,0,0);
-        const d=dctx.getImageData(0,0,dc.width,dc.height);
-        const r=window.jsQR(d.data,dc.width,dc.height,{inversionAttempts:"attemptBoth"});
-        if(r)onQRData(r.data);
-      },250);
+    }else{
+      qrSetStat("● กำลังสแกน...","#22d3c8");
     }
   }catch(e){G("qrModal").classList.remove("show");toast("ไม่สามารถเข้าถึงกล้อง: "+e.message,"err");}
 };
@@ -609,9 +676,27 @@ window.closeQR=function(){stopQR();G("qrModal").classList.remove("show");};
 function stopQR(){_qrRun=false;_qrLk=false;if(_qrTmr){clearInterval(_qrTmr);_qrTmr=null;}if(_qrRaf){cancelAnimationFrame(_qrRaf);_qrRaf=null;}if(_qrSt){_qrSt.getTracks().forEach(t=>t.stop());_qrSt=null;}const v=G("qrVideo");if(v){v.pause();v.srcObject=null;}}
 window.addEventListener("resize",()=>{if(_qrRun)drawVF();});
 
-window.manualEntry=function(){const val=G("manualId").value.trim();const m=val.match(/WD[\s\-_]?(\d+)/i)||val.match(/^(\d+)$/);if(!m){toast("รูปแบบไม่ถูกต้อง เช่น WD1 หรือ 1","err");return;}const radio=RADIOS.find(r=>r.id===parseInt(m[1]));if(!radio){toast("ไม่พบ WD"+m[1],"err");return;}setScannedRadio(radio);G("manualId").value="";};
-function setScannedRadio(radio){scannedRadioId=radio.id;G("qrResultId").textContent="WD"+radio.id;G("qrResultArea").textContent=radio.area;G("qrResultSn").textContent=radio.sn;G("qrBeforeScan").style.display="none";G("qrAfterScan").style.display="block";G("qrCard").classList.add("scanned");toast("WD"+radio.id+" — "+radio.area);}
-window.rescan=function(){scannedRadioId=null;G("qrBeforeScan").style.display="block";G("qrAfterScan").style.display="none";G("qrCard").classList.remove("scanned");};
+/* Manual entry — same flexible parse */
+window.manualEntry=function(){
+  const val=G("manualId").value.trim();
+  if(!val){toast("กรุณากรอก ID","err");return;}
+  const radio=parseQRtoRadio(val);
+  if(!radio){toast("ไม่พบวิทยุ: "+val,"err");return;}
+  setScannedRadio(radio,'manual');
+  G("manualId").value="";
+};
+
+function setScannedRadio(radio,method){
+  scannedRadioId=radio.id;
+  G("qrResultId").textContent="WD"+radio.id;
+  G("qrResultArea").textContent=radio.area||'—';
+  G("qrResultSn").textContent=radio.sn||'—';
+  G("qrBeforeScan").style.display="none";
+  G("qrAfterScan").style.display="block";
+  G("qrCard").classList.add("scanned");
+  if(method!=='url')toast("WD"+radio.id+" — "+(radio.area||''));
+}
+window.rescan=function(){scannedRadioId=null;G("qrBeforeScan").style.display="block";G("qrAfterScan").style.display="none";G("qrCard").classList.remove("scanned");G("urlParamBanner")?.classList.remove("show");};
 
 function buildList(){chk={};ITEMS.forEach(i=>chk[i.id]=null);G("checkList").innerHTML=ITEMS.map(it=>`<div class="check-row" id="row-${it.id}" onclick="tog(${it.id})"><div class="row-num">${it.id}.</div><div style="flex:1"><div class="row-text">${it.th}${it.en?' <span style="font-weight:400;color:var(--text3);font-size:11px">('+it.en+')</span>':''}</div></div><div class="toggle-pill" id="pill-${it.id}"><div class="pill-dot"></div><div class="pill-label" id="plbl-${it.id}">—</div></div></div>`).join("");G("sTotal").textContent=ITEMS.length;G("clProg").textContent="0/"+ITEMS.length;}
 window.tog=function(id){const c=chk[id];chk[id]=c===null?"pass":c==="pass"?"fail":null;updRow(id);updUI();if(navigator.vibrate)navigator.vibrate(chk[id]==="fail"?[8,4,8]:8);};
@@ -622,7 +707,8 @@ window.resetAll=function(){ITEMS.forEach(i=>{chk[i.id]=null;updRow(i.id);});updU
 
 window.doSubmit=async function(){if(!selectedShift){toast("กรุณาเลือกผลัดก่อน","err");return;}await fetchCfg();if(!isAllowed(selectedShift)){showLock(selectedShift,false);return;}if(!scannedRadioId){toast("กรุณาสแกน QR Code ก่อน","err");return;}const pend=Object.values(chk).filter(v=>v===null).length;if(pend>0&&!confirm("ยังมี "+pend+" รายการที่ยังไม่ได้ตรวจ\nบันทึกต่อไหม?"))return;const btn=G("saveBtn");btn.disabled=true;const radio=RADIOS.find(r=>r.id===scannedRadioId);const now=new Date();const pass=Object.values(chk).filter(v=>v==="pass").length,fail=Object.values(chk).filter(v=>v==="fail").length;const failItems=ITEMS.filter(i=>chk[i.id]==="fail").map(i=>i.th);const checkResults={};ITEMS.forEach(i=>checkResults["item_"+i.id]=chk[i.id]||"pending");const names={day:"ผลัดกลางวัน",night:"ผลัดกลางคืน"};const data={userId:user.userId,userName:user.name,empId:user.empId||user.userId,dept:user.dept||"Security",position:user.position||"Inspector",shift:selectedShift,shiftName:names[selectedShift],radioId:scannedRadioId,radioLabel:"WD"+scannedRadioId,area:radio?.area||"",sn:radio?.sn||"",passCount:pass,failCount:fail,totalItems:ITEMS.length,passRate:Math.round(pass/ITEMS.length*100),failItems,checkResults,overallStatus:fail===0?"PASS":"FAIL",scanMethod:"qr",emergencyUnlock:emergencyActive,date:now.toISOString().slice(0,10),time:now.toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"}),timestamp:serverTimestamp(),formType:"21items_v7"};
 try{if(db)await addDoc(collection(db,"submissions"),data);const hf=fail>0;G("resIcon").innerHTML=hf?`<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`:`<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;G("resIcon").style.cssText=`width:88px;height:88px;border-radius:28px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;background:${hf?"rgba(239,68,68,.12)":"rgba(34,197,94,.1)"};border:2px solid ${hf?"rgba(239,68,68,.3)":"rgba(34,197,94,.3)"};animation:pop .4s cubic-bezier(.175,.885,.32,1.275)`;G("resTitle").textContent=hf?"มีรายการ Fail":"ผ่านทุกรายการ!";G("resTitle").style.color=hf?"#ef4444":"#22c55e";G("resSub").textContent=hf?"พบ "+fail+" รายการ Fail\nข้อมูลบันทึกแล้ว":"ผ่านครบ "+pass+" รายการ\nข้อมูลบันทึกแล้ว";G("resInfo").innerHTML=`<div class="res-row"><span class="res-key">ผู้ตรวจ</span><span class="res-val">${user.name}</span></div><div class="res-row"><span class="res-key">ผลัด</span><span class="res-val">${names[selectedShift]}</span></div><div class="res-row"><span class="res-key">ช่วงตรวจ</span><span class="res-val">${winLbl(selectedShift)}</span></div><div class="res-row"><span class="res-key">วิทยุ</span><span class="res-val">WD${scannedRadioId}</span></div><div class="res-row"><span class="res-key">พื้นที่</span><span class="res-val">${radio?.area||"—"}</span></div><div class="res-row"><span class="res-key">Pass</span><span class="res-val" style="color:#22c55e">${pass}</span></div><div class="res-row"><span class="res-key">Fail</span><span class="res-val" style="color:${fail>0?"#ef4444":"#22c55e"}">${fail}</span></div><div class="res-row"><span class="res-key">เวลา</span><span class="res-val">${data.time} น.</span></div>${emergencyActive?'<div class="res-row"><span class="res-key">โหมด</span><span class="res-val" style="color:#fbbf24">ปลดล็อคฉุกเฉิน</span></div>':""}${failItems.length?`<div class="res-row" style="flex-direction:column;align-items:flex-start;gap:6px"><span class="res-key">รายการ Fail</span><div style="margin-top:6px">${failItems.map(f=>`<span style="display:inline-block;font-size:11px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#fca5a5;padding:2px 9px;border-radius:12px;margin:2px">${f}</span>`).join("")}</div></div>`:""}`;showSc("s-result");}catch(e){toast("บันทึกไม่สำเร็จ: "+e.message,"err");}btn.disabled=false;};
-window.startNew=function(){ITEMS.forEach(i=>{chk[i.id]=null;updRow(i.id);});selectedShift=null;scannedRadioId=null;G("shiftDay").classList.remove("active-day");G("shiftNight").classList.remove("active-night");G("profShiftTag").style.display="none";rescan();updUI();showSc("s-main");window.scrollTo(0,0);};
+
+window.startNew=function(){ITEMS.forEach(i=>{chk[i.id]=null;updRow(i.id);});selectedShift=null;scannedRadioId=null;G("shiftDay").classList.remove("active-day");G("shiftNight").classList.remove("active-night");G("profShiftTag").style.display="none";G("urlParamBanner")?.classList.remove("show");rescan();updUI();showSc("s-main");window.scrollTo(0,0);};
 function toast(m,t="ok"){const e=G("toast");e.textContent=m;e.className="toast"+(t==="err"?" terr":t==="info"?" tinfo":"");e.classList.add("show");setTimeout(()=>e.classList.remove("show"),3200);}
 G("lPw").addEventListener("keydown",e=>{if(e.key==="Enter")doLogin();});
 G("lId").addEventListener("keydown",e=>{if(e.key==="Enter")G("lPw").focus();});
