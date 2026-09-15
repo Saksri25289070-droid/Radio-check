@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>ตรวจสอบวิทยุสื่อสาร</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800;900&family=Manrope:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -112,10 +113,10 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .qr-result-area{font-size:11px;color:var(--text2);margin-top:1px}
 .qr-result-sn{font-size:9px;color:var(--text3);margin-top:1px}
 .btn-rescan{background:transparent;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:6px 12px;font-size:11px;font-weight:700;color:var(--text2);cursor:pointer;font-family:'Sarabun',sans-serif;flex-shrink:0}
-/* QR MODAL */
 .qr-modal{position:fixed;inset:0;z-index:5000;background:#000;display:none;flex-direction:column}
 .qr-modal.show{display:flex}
 #qrVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#qrCapCanvas{display:none}
 #qrOvCv{position:absolute;inset:0;width:100%;height:100%;z-index:6;pointer-events:none}
 .qr-top{position:absolute;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:linear-gradient(to bottom,rgba(0,0,0,.85),transparent)}
 .qr-top-ttl{font-family:'Manrope',sans-serif;font-size:15px;font-weight:800;color:#fff}
@@ -123,6 +124,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .qr-bot{position:absolute;bottom:0;left:0;right:0;z-index:10;padding:20px 20px 48px;background:linear-gradient(to top,rgba(0,0,0,.9),transparent);text-align:center}
 .qr-stat{font-size:15px;font-weight:700;margin-bottom:6px}
 .qr-hint{font-size:11px;color:rgba(255,255,255,.45);margin-bottom:10px}
+.qr-engine-badge{display:inline-flex;align-items:center;gap:5px;font-size:9px;font-weight:700;padding:2px 9px;border-radius:20px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.5);margin-bottom:8px;letter-spacing:.8px;text-transform:uppercase}
 .qr-raw-box{background:rgba(0,0,0,.75);border:1px solid rgba(255,255,100,.4);border-radius:10px;padding:10px 14px;margin-bottom:8px;display:none;text-align:left}
 .qr-raw-box.show{display:block}
 .qr-raw-label{font-size:9px;font-weight:700;letter-spacing:1px;color:rgba(255,220,80,.7);text-transform:uppercase;margin-bottom:4px}
@@ -193,7 +195,6 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .cfg-loading{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--text3);padding:6px 12px;background:rgba(255,255,255,.03);border-radius:8px;margin-bottom:8px}
 .spin{width:12px;height:12px;border:2px solid rgba(0,200,160,.2);border-top-color:#22d3c8;border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-/* URL auto-detect banner */
 .url-param-banner{background:rgba(0,200,160,.08);border:1px solid rgba(0,200,160,.25);border-radius:10px;padding:8px 12px;margin-bottom:8px;font-size:11px;color:#22d3c8;font-weight:600;display:none;align-items:center;gap:7px}
 .url-param-banner.show{display:flex}
 </style>
@@ -236,7 +237,9 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 
 <!-- QR MODAL -->
 <div id="qrModal" class="qr-modal">
-  <video id="qrVideo" playsinline muted></video>
+  <video id="qrVideo" playsinline muted autoplay></video>
+  <!-- Hidden canvas for jsQR frame capture -->
+  <canvas id="qrCapCanvas"></canvas>
   <canvas id="qrOvCv"></canvas>
   <div id="qrFlash"></div>
   <div class="qr-top">
@@ -245,13 +248,14 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   </div>
   <div class="qr-bot">
     <div class="qr-stat" id="qrStat" style="color:#22d3c8">● กำลังเปิดกล้อง...</div>
+    <div class="qr-engine-badge" id="qrEngineBadge">กำลังโหลด...</div>
     <div class="qr-hint">จ่อกล้องไปที่ QR Code บนการ์ดวิทยุ · ระยะ 10–20 ซม.</div>
     <div class="qr-notfound" id="qrNotFound">
       <div class="qr-notfound-msg" id="qrNotFoundMsg">QR นี้ไม่ใช่ของวิทยุ</div>
       <div class="qr-notfound-hint">กรุณาจ่อที่ QR Code บนการ์ดวิทยุเท่านั้น</div>
     </div>
     <div class="qr-raw-box" id="qrRawBox">
-      <div class="qr-raw-label">ข้อมูลที่อ่านได้</div>
+      <div class="qr-raw-label">ข้อมูลที่อ่านได้ (Debug)</div>
       <div class="qr-raw-val" id="qrRawVal"></div>
     </div>
   </div>
@@ -330,7 +334,6 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
     </div>
     <div class="qr-section">
       <div class="qr-label">สแกน QR Code เครื่องวิทยุ</div>
-      <!-- URL param auto-detected banner -->
       <div class="url-param-banner" id="urlParamBanner">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22d3c8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
         <span id="urlParamText">QR Code ถูกอ่านจาก URL แล้ว</span>
@@ -412,9 +415,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, collection, addDoc, doc, setDoc, getDoc, getDocs, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-/* ══════════════════════════════════════════════════════
-   RADIOS — fallback list (used if Firestore radioItems empty)
-══════════════════════════════════════════════════════ */
+/* ── Fallback Radio List ── */
 const RADIOS_DEFAULT=[
   {id:1,area:"จุดตรวจโลหะที่ 1",sn:"S/N 278TBPG297"},{id:2,area:"Support 5 Ph1",sn:"S/N 278TBPG307"},
   {id:3,area:"Main Entrance Ph1",sn:"S/N 278TBPG308"},{id:4,area:"จุดตรวจโลหะที่ 4",sn:"S/N 278TBPG324"},
@@ -459,54 +460,32 @@ let shiftCfg={
 };
 const G=id=>document.getElementById(id);
 
-/* ══════════════════════════════════════════════════════
-   RADIO LOOKUP — by label (WD1) or numeric id
-   Supports: "WD1", "WD 1", "WD-1", "1", "01"
-══════════════════════════════════════════════════════ */
+/* ══ RADIO LOOKUP ══ */
 function findRadioByLabel(label){
   if(!label)return null;
   const s=String(label).trim();
-  // exact label match "WD1"
   let r=RADIOS.find(x=>(x.label||('WD'+x.id))===s);if(r)return r;
-  // WD+number pattern
   const m=s.match(/^WD[\s\-_]?(\d+)$/i);
   if(m){const id=parseInt(m[1]);return RADIOS.find(x=>x.id===id)||null;}
-  // pure number
   if(/^\d+$/.test(s)){const id=parseInt(s);return RADIOS.find(x=>x.id===id)||null;}
   return null;
 }
 
-/* ══════════════════════════════════════════════════════
-   QR PARSER — handles ALL formats:
-   1. URL:  https://.../?radio=WD1  (NEW — from Admin V5)
-            https://.../?id=WD1
-            https://.../?code=WD1
-            https://.../?door=WD1
-   2. JSON: {"id":1,"area":"...","label":"WD1","sn":"..."}  (legacy)
-   3. Plain: WD1 / WD-1 / 1
-   Returns radio object or null
-══════════════════════════════════════════════════════ */
+/* ══ QR PARSER — URL / JSON / Plain ══ */
 function parseQRtoRadio(raw){
   const s=(raw||'').trim();if(!s)return null;
-
-  /* ── 1. URL format (Admin V5 format) ── */
   if(s.startsWith('http')||s.includes('?')){
     try{
       const u=new URL(s.includes('://')?s:'https://x.com/'+s);
-      // try all known param names
       const label=u.searchParams.get('radio')||u.searchParams.get('id')||u.searchParams.get('code')||u.searchParams.get('wdcode')||u.searchParams.get('door');
       if(label){
-        const r=findRadioByLabel(label);
-        if(r)return r;
-        // label might be "WD1" — try again
+        const r=findRadioByLabel(label);if(r)return r;
         const m2=String(label).match(/WD[\s\-_]?(\d+)/i);
         if(m2)return RADIOS.find(x=>x.id===parseInt(m2[1]))||null;
         if(/^\d+$/.test(label))return RADIOS.find(x=>x.id===parseInt(label))||null;
       }
     }catch(e){}
   }
-
-  /* ── 2. JSON format (legacy Admin V4 / radio-user-form-v05) ── */
   if(s.startsWith('{')){
     try{
       const p=JSON.parse(s);
@@ -516,17 +495,10 @@ function parseQRtoRadio(raw){
       if(lbl)return findRadioByLabel(lbl);
     }catch(e){}
   }
-
-  /* ── 3. Plain WD label or number ── */
   return findRadioByLabel(s);
 }
 
-/* ══════════════════════════════════════════════════════
-   READ URL PARAMETER ON PAGE LOAD
-   Admin QR encodes: base/?radio=WD1
-   When user taps QR card → browser opens this URL
-   → auto-fill radio without needing camera
-══════════════════════════════════════════════════════ */
+/* ══ URL PARAM AUTO-FILL ══ */
 function checkUrlParam(){
   try{
     const params=new URLSearchParams(window.location.search);
@@ -549,7 +521,6 @@ function shTLbl(sh){const c=shiftCfg[sh];return c?c.shiftStart+"–"+c.shiftEnd+
 async function fetchCfg(){if(!db){updShiftUI();return;}try{const s=await getDoc(doc(db,"shiftConfig","main"));if(s.exists()){applyFSD(s.data());if(G("cfgSyncSt"))G("cfgSyncSt").textContent="ซิงค์ — "+new Date().toLocaleTimeString("th-TH");}}catch(e){}updShiftUI();}
 function startCfgL(){if(!db)return;try{onSnapshot(doc(db,"shiftConfig","main"),s=>{if(!s.exists())return;applyFSD(s.data());updShiftUI();if(G("cfgSyncSt"))G("cfgSyncSt").textContent="ซิงค์ — "+new Date().toLocaleTimeString("th-TH");if(lockActive)updLockUI();});}catch(e){}}
 
-/* Load radios from Firestore radioItems collection */
 async function fetchRadios(){if(!db)return;try{const snap=await getDocs(collection(db,"radioItems"));if(!snap.empty){const loaded=[];snap.forEach(d=>{const x=d.data();if(x.id)loaded.push({id:parseInt(x.id),area:x.area||'',sn:x.sn||'',label:x.label||('WD'+x.id),type:x.type||'active'});});if(loaded.length>0){RADIOS=loaded;console.log('Loaded '+RADIOS.length+' radios from Firestore');}}}catch(e){console.warn('fetchRadios:',e);}}
 
 async function fetchCL(){if(!db){buildList();return;}try{const s=await getDocs(collection(db,"checklistItems"));if(!s.empty){const it=[];s.forEach(d=>{const x=d.data();it.push({id:x.id||x.order||it.length+1,th:x.th||x.nameTH||d.id,en:x.en||x.nameEN||""});});it.sort((a,b)=>a.id-b.id);if(it.length>0)ITEMS=it;}}catch(e){}chk={};ITEMS.forEach(i=>chk[i.id]=null);buildList();updUI();}
@@ -557,7 +528,16 @@ async function fetchCL(){if(!db){buildList();return;}try{const s=await getDocs(c
 async function initDef(){if(!db)return;try{const s=await getDocs(collection(db,"radioUsers"));if(s.empty){const d=[{userId:"admin",name:"Administrator",password:"admin1234",role:"admin",enabled:true},{userId:"U001",name:"นายสมชาย ใจดี",password:"1234",role:"user",enabled:true,empId:"IND-5501",dept:"Security",position:"Security Inspector"},{userId:"U002",name:"นางสาวสมหญิง ดีใจ",password:"5678",role:"user",enabled:true,empId:"IND-5502",dept:"Security",position:"Security Inspector"}];for(const u of d)await setDoc(doc(db,"radioUsers",u.userId),u);}}catch(e){}}
 initDef();
 
-function tick(){const n=new Date(),t=n.toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"});if(G("sbTime"))G("sbTime").textContent=t;if(G("lockClock"))G("lockClock").textContent=t;if(G("lockNowTime"))G("lockNowTime").textContent=t+" น.";if(G("lockDate"))G("lockDate").textContent=n.toLocaleDateString("th-TH",{weekday:"long",year:"numeric",month:"long",day:"numeric"});if(lockActive&&emergencyActive&&emergencyUntilMs){const r=emergencyUntilMs-Date.now();if(r>0){if(G("emergencyCountdownText"))G("emergencyCountdownText").textContent=fmtCd(r);}else{emergencyActive=false;emergencyUntilMs=null;updLockUI();}}if(G("emgBadge"))G("emgBadge").style.display=(emergencyActive&&emergencyUntilMs&&Date.now()<emergencyUntilMs)?"inline-flex":"none";if(G("s-main")&&G("s-main").classList.contains("active")){updShiftBadges();if(!lockActive&&selectedShift&&!isAllowed(selectedShift))showLock(selectedShift,true);}}
+function tick(){
+  const n=new Date(),t=n.toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"});
+  if(G("sbTime"))G("sbTime").textContent=t;
+  if(G("lockClock"))G("lockClock").textContent=t;
+  if(G("lockNowTime"))G("lockNowTime").textContent=t+" น.";
+  if(G("lockDate"))G("lockDate").textContent=n.toLocaleDateString("th-TH",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
+  if(lockActive&&emergencyActive&&emergencyUntilMs){const r=emergencyUntilMs-Date.now();if(r>0){if(G("emergencyCountdownText"))G("emergencyCountdownText").textContent=fmtCd(r);}else{emergencyActive=false;emergencyUntilMs=null;updLockUI();}}
+  if(G("emgBadge"))G("emgBadge").style.display=(emergencyActive&&emergencyUntilMs&&Date.now()<emergencyUntilMs)?"inline-flex":"none";
+  if(G("s-main")&&G("s-main").classList.contains("active")){updShiftBadges();if(!lockActive&&selectedShift&&!isAllowed(selectedShift))showLock(selectedShift,true);}
+}
 tick();setInterval(tick,1000);setInterval(fetchCfg,30000);
 
 function updShiftUI(){if(G("cfgLoadRow"))G("cfgLoadRow").style.display="none";if(G("shiftDayWin"))G("shiftDayWin").textContent="⏱ ตรวจได้ "+winLbl("day");if(G("shiftNightWin"))G("shiftNightWin").textContent="⏱ ตรวจได้ "+winLbl("night");if(G("shiftDayTime"))G("shiftDayTime").textContent=shTLbl("day");if(G("shiftNightTime"))G("shiftNightTime").textContent=shTLbl("night");updShiftBadges();if(lockActive)updLockUI();}
@@ -571,7 +551,6 @@ function showSc(id){document.querySelectorAll(".screen").forEach(s=>{s.classList
 window.doLogin=async function(){const id=G("lId").value.trim(),pw=G("lPw").value.trim();G("loginErr").style.display="none";if(!id||!pw){setLE("กรุณากรอกข้อมูลให้ครบ");return;}try{const s=await getDocs(collection(db,"radioUsers"));let f=null;s.forEach(d=>{if(d.data().userId===id)f=d.data();});if(!f){setLE("ไม่พบรหัสพนักงานนี้");return;}if(f.password!==pw){setLE("รหัสผ่านไม่ถูกต้อง");return;}if(!f.enabled){setLE("บัญชีถูกระงับ");return;}if(f.role==="admin"){setLE("กรุณาใช้บัญชี User เท่านั้น");return;}user=f;
   await Promise.all([fetchCfg(),fetchCL(),fetchRadios()]);
   startCfgL();initMain();
-  /* Auto-fill from URL param after login */
   const urlRadio=checkUrlParam();
   if(urlRadio){setTimeout(()=>autoFillFromUrl(urlRadio),400);}
 }catch(e){setLE("เกิดข้อผิดพลาด: "+e.message);}};
@@ -579,7 +558,7 @@ window.doLogin=async function(){const id=G("lId").value.trim(),pw=G("lPw").value
 function autoFillFromUrl(radio){
   setScannedRadio(radio,'url');
   const banner=G('urlParamBanner');
-  if(banner){banner.classList.add('show');G('urlParamText').textContent='QR Code อ่านได้: '+radio.label||('WD'+radio.id)+' — '+radio.area;}
+  if(banner){banner.classList.add('show');G('urlParamText').textContent='QR Code อ่านได้: '+(radio.label||('WD'+radio.id))+' — '+radio.area;}
   toast('โหลดวิทยุจาก QR: WD'+radio.id+' — '+radio.area);
 }
 
@@ -590,39 +569,90 @@ window.selShift=function(s){selectedShift=s;G("shiftDay").classList.toggle("acti
 window.reqUnlock=function(){toast("กรุณาติดต่อผู้ดูแลระบบ","info");alert("กรุณาติดต่อผู้ดูแลระบบ\nเพื่อปลดล็อคจาก Dashboard → ตั้งค่าเวลาผลัด");};
 
 /* ══════════════════════════════════════════════════════
-   QR SCANNER — BarcodeDetector
-   onQRData() now uses parseQRtoRadio() which handles
-   both URL format (new) and JSON format (legacy)
+   QR SCANNER — Dual Engine
+   Engine 1: BarcodeDetector (Chrome Android, new Chrome iOS)
+   Engine 2: jsQR + canvas frame capture (Safari iOS/macOS, all browsers)
+
+   Detection interval: 200ms
+   Canvas frame capture every 200ms → jsQR.decode()
+   Both engines call onQRData() on successful read
 ══════════════════════════════════════════════════════ */
-let _qrSt=null,_qrTmr=null,_qrRun=false,_qrLk=false,_qrRaf=null;
+let _qrStream=null,_qrTmr=null,_qrRun=false,_qrLk=false,_qrRaf=null;
 let _lastRaw="";
+let _useJsQR=false; // true = jsQR engine active
 
 function qrSetStat(msg,col){const e=G("qrStat");if(e){e.textContent=msg;e.style.color=col||"#22d3c8";}}
-function qrShowRaw(raw){const box=G("qrRawBox"),val=G("qrRawVal");if(box&&val){box.classList.add("show");val.textContent=raw.slice(0,200)+(raw.length>200?"…":"");}}
-function qrShowNotFound(raw){const box=G("qrNotFound"),msg=G("qrNotFoundMsg");if(box)box.classList.add("show");if(msg)msg.textContent='ไม่พบวิทยุ: "'+raw.slice(0,40)+'"';}
+function qrShowRaw(raw){const box=G("qrRawBox"),val=G("qrRawVal");if(box&&val){box.classList.add("show");val.textContent=raw.slice(0,300)+(raw.length>300?"…":"");}}
+function qrShowNotFound(raw){const box=G("qrNotFound"),msg=G("qrNotFoundMsg");if(box)box.classList.add("show");if(msg)msg.textContent='ไม่พบวิทยุ: "'+raw.slice(0,50)+'"';}
 function qrHideNotFound(){const box=G("qrNotFound");if(box)box.classList.remove("show");}
 
 function onQRData(raw){
   if(_qrLk)return;
   const s=String(raw).trim();
+  if(!s)return;
   if(s===_lastRaw)return;
   _lastRaw=s;
   qrShowRaw(s);
-
   const radio=parseQRtoRadio(s);
-
   if(!radio){
     qrSetStat("⚠ ไม่พบวิทยุ — จ่อที่การ์ดวิทยุ","#fbbf24");
     qrShowNotFound(s);
     return;
   }
-
   _qrLk=true;
   qrHideNotFound();
   qrSetStat("✅ พบ WD"+radio.id+" — "+radio.area,"#4ade80");
   if(navigator.vibrate)navigator.vibrate([60,40,100]);
   const fl=G("qrFlash");fl.classList.add("on");setTimeout(()=>fl.classList.remove("on"),200);
   setTimeout(()=>{stopQR();G("qrModal").classList.remove("show");setScannedRadio(radio,'qr');},700);
+}
+
+/* ── jsQR frame capture loop ── */
+function startJsQRLoop(){
+  if(!window.jsQR){
+    qrSetStat("⚠ jsQR ไม่โหลด — กรุณา Reload","#f87171");
+    return;
+  }
+  _useJsQR=true;
+  const badge=G("qrEngineBadge");
+  if(badge)badge.textContent="ENGINE: jsQR (Safari)";
+  qrSetStat("● กำลังสแกน (jsQR)...","#22d3c8");
+  const vid=G("qrVideo");
+  const cap=G("qrCapCanvas");
+  const ctx=cap.getContext("2d",{willReadFrequently:true});
+  _qrTmr=setInterval(()=>{
+    if(!_qrRun||_qrLk)return;
+    if(vid.readyState<2||vid.videoWidth===0)return;
+    const W=vid.videoWidth,H=vid.videoHeight;
+    cap.width=W;cap.height=H;
+    ctx.drawImage(vid,0,0,W,H);
+    try{
+      const imgData=ctx.getImageData(0,0,W,H);
+      const result=window.jsQR(imgData.data,imgData.width,imgData.height,{inversionAttempts:"dontInvert"});
+      if(result&&result.data){onQRData(result.data);}
+    }catch(e){}
+  },200);
+}
+
+/* ── BarcodeDetector loop ── */
+function startBarcodeDetectorLoop(){
+  _useJsQR=false;
+  const badge=G("qrEngineBadge");
+  if(badge)badge.textContent="ENGINE: BarcodeDetector";
+  qrSetStat("● กำลังสแกน...","#22d3c8");
+  try{
+    const bd=new BarcodeDetector({formats:["qr_code"]});
+    _qrTmr=setInterval(async()=>{
+      if(!_qrRun||_qrLk)return;
+      try{
+        const cs=await bd.detect(G("qrVideo"));
+        if(cs&&cs.length>0)onQRData(cs[0].rawValue);
+      }catch(e){}
+    },200);
+  }catch(e){
+    console.warn("BarcodeDetector failed, switching to jsQR:",e);
+    startJsQRLoop();
+  }
 }
 
 function drawVF(){
@@ -649,34 +679,82 @@ window.openQR=async function(){
   G("qrModal").classList.add("show");
   G("qrRawBox").classList.remove("show");
   G("qrNotFound").classList.remove("show");
+  const badge=G("qrEngineBadge");if(badge)badge.textContent="กำลังโหลด...";
   qrSetStat("● กำลังเปิดกล้อง...","#22d3c8");
   _lastRaw="";
   try{
-    _qrSt=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"},width:{ideal:1280},height:{ideal:720}}});
-    const vid=G("qrVideo");vid.srcObject=_qrSt;vid.setAttribute("playsinline","");vid.muted=true;
-    await vid.play();
-    try{const tk=_qrSt.getVideoTracks()[0];if(tk&&tk.getCapabilities){const cp=tk.getCapabilities();if(cp.focusMode&&cp.focusMode.includes("continuous"))await tk.applyConstraints({advanced:[{focusMode:"continuous"}]});}}catch(e){}
-    if(vid.readyState<2)await new Promise(r=>vid.addEventListener("canplay",r,{once:true}));
-    _qrRun=true;_qrLk=false;
-    qrSetStat("● กำลังสแกน...","#22d3c8");
-    _qrRaf=requestAnimationFrame(rafLoop);
-    if(typeof BarcodeDetector!=="undefined"){
-      const bd=new BarcodeDetector({formats:["qr_code"]});
-      _qrTmr=setInterval(async()=>{
-        if(!_qrRun||_qrLk)return;
-        try{const cs=await bd.detect(G("qrVideo"));if(cs&&cs.length>0)onQRData(cs[0].rawValue);}catch(e){}
-      },250);
-    }else{
-      qrSetStat("● กำลังสแกน...","#22d3c8");
+    /* Request camera — rear camera preferred */
+    _qrStream=await navigator.mediaDevices.getUserMedia({
+      video:{
+        facingMode:{ideal:"environment"},
+        width:{ideal:1280},
+        height:{ideal:720}
+      }
+    });
+    const vid=G("qrVideo");
+    vid.srcObject=_qrStream;
+    vid.setAttribute("playsinline","");
+    vid.setAttribute("autoplay","");
+    vid.muted=true;
+    await vid.play().catch(()=>{});
+    /* Wait until video has data */
+    if(vid.readyState<2){
+      await new Promise(resolve=>{
+        const onReady=()=>{vid.removeEventListener("canplay",onReady);resolve();};
+        vid.addEventListener("canplay",onReady,{once:true});
+        setTimeout(resolve,3000); // fallback timeout
+      });
     }
-  }catch(e){G("qrModal").classList.remove("show");toast("ไม่สามารถเข้าถึงกล้อง: "+e.message,"err");}
+    /* Try autofocus if available */
+    try{
+      const tk=_qrStream.getVideoTracks()[0];
+      if(tk&&tk.getCapabilities){
+        const cp=tk.getCapabilities();
+        if(cp.focusMode&&cp.focusMode.includes("continuous")){
+          await tk.applyConstraints({advanced:[{focusMode:"continuous"}]});
+        }
+      }
+    }catch(e){}
+
+    _qrRun=true;_qrLk=false;
+    _qrRaf=requestAnimationFrame(rafLoop);
+
+    /* Choose engine based on browser support */
+    if(typeof BarcodeDetector!=="undefined"&&BarcodeDetector.getSupportedFormats){
+      try{
+        const fmts=await BarcodeDetector.getSupportedFormats();
+        if(fmts.includes("qr_code")){
+          startBarcodeDetectorLoop();
+        }else{
+          startJsQRLoop();
+        }
+      }catch(e){
+        startJsQRLoop();
+      }
+    }else{
+      /* Safari, older browsers → jsQR */
+      startJsQRLoop();
+    }
+  }catch(e){
+    G("qrModal").classList.remove("show");
+    _qrRun=false;
+    toast("ไม่สามารถเข้าถึงกล้อง: "+e.message,"err");
+  }
 };
 
 window.closeQR=function(){stopQR();G("qrModal").classList.remove("show");};
-function stopQR(){_qrRun=false;_qrLk=false;if(_qrTmr){clearInterval(_qrTmr);_qrTmr=null;}if(_qrRaf){cancelAnimationFrame(_qrRaf);_qrRaf=null;}if(_qrSt){_qrSt.getTracks().forEach(t=>t.stop());_qrSt=null;}const v=G("qrVideo");if(v){v.pause();v.srcObject=null;}}
+function stopQR(){
+  _qrRun=false;_qrLk=false;
+  if(_qrTmr){clearInterval(_qrTmr);_qrTmr=null;}
+  if(_qrRaf){cancelAnimationFrame(_qrRaf);_qrRaf=null;}
+  if(_qrStream){_qrStream.getTracks().forEach(t=>t.stop());_qrStream=null;}
+  const v=G("qrVideo");if(v){v.pause();v.srcObject=null;}
+  const cap=G("qrCapCanvas");if(cap){cap.width=1;cap.height=1;}
+  _useJsQR=false;
+}
 window.addEventListener("resize",()=>{if(_qrRun)drawVF();});
 
-/* Manual entry — same flexible parse */
+/* ── Manual entry ── */
 window.manualEntry=function(){
   const val=G("manualId").value.trim();
   if(!val){toast("กรุณากรอก ID","err");return;}
