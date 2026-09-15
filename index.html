@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>ตรวจสอบวิทยุสื่อสาร</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&family=Manrope:wght@700;800;900&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
 <style>
 :root{
   --bg:#0d1117;--card:#161b22;--border-glow:rgba(0,200,160,.35);--border-dim:rgba(255,255,255,.07);
@@ -51,15 +50,14 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .lock-body{font-size:13px;color:var(--text2);text-align:center;line-height:1.7;margin-bottom:14px;max-width:300px}
 .lock-time-info{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:16px 20px;margin-bottom:12px;text-align:center;width:100%;max-width:300px}
 .lock-time-row{display:flex;justify-content:space-between;font-size:13px;padding:4px 0}
-.lock-time-key{color:var(--text3);font-weight:600}
-.lock-time-val{color:var(--text);font-weight:700}
+.lock-time-key{color:var(--text3);font-weight:600}.lock-time-val{color:var(--text);font-weight:700}
 .lock-current{font-family:'Manrope',sans-serif;font-size:36px;font-weight:900;color:#22d3c8;letter-spacing:-1px;margin-bottom:4px}
 .lock-date{font-size:12px;color:var(--text3);margin-bottom:0}
 .lock-window-badge{display:inline-flex;align-items:center;gap:6px;border-radius:10px;padding:8px 16px;font-size:12px;font-weight:700;margin-bottom:12px}
 .badge-red{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);color:#f87171}
 .badge-yellow{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);color:#fbbf24}
 .unlock-allow-btn{background:linear-gradient(135deg,#1a6b5a,#0ea5a0);border:none;border-radius:12px;padding:13px 28px;font-family:'Sarabun',sans-serif;font-size:15px;font-weight:700;color:#fff;cursor:pointer;margin-bottom:10px;width:100%;max-width:300px;box-shadow:0 4px 16px rgba(0,160,130,.4)}
-.btn-contact{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);border-radius:12px;padding:12px 28px;font-family:'Sarabun',sans-serif;font-size:14px;font-weight:700;color:#f87171;cursor:pointer;transition:all .2s;width:100%;max-width:300px}
+.btn-contact{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);border-radius:12px;padding:12px 28px;font-family:'Sarabun',sans-serif;font-size:14px;font-weight:700;color:#f87171;cursor:pointer;width:100%;max-width:300px}
 .emergency-countdown{font-family:'Manrope',sans-serif;font-size:28px;font-weight:900;color:#fbbf24;letter-spacing:-1px;margin:4px 0}
 .status-bar{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0}
 .sb-time{font-family:'Manrope',sans-serif;font-size:15px;font-weight:800;color:var(--text)}
@@ -102,42 +100,37 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .qr-card{background:rgba(255,255,255,.03);border:1px solid var(--border-dim);border-radius:14px;padding:12px;position:relative}
 .qr-card.scanned{background:rgba(0,200,160,.06);border-color:rgba(0,200,160,.35);box-shadow:0 0 12px rgba(0,200,160,.1)}
 .qr-prompt{display:flex;align-items:center;gap:12px}
-.qr-scan-btn{display:flex;align-items:center;gap:8px;background:var(--grad-btn);border:none;border-radius:10px;padding:11px 18px;font-family:'Sarabun',sans-serif;font-size:13px;font-weight:700;color:#fff;cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0;box-shadow:0 3px 12px rgba(0,160,130,.35)}
+.qr-scan-btn{display:flex;align-items:center;gap:8px;background:var(--grad-btn);border:none;border-radius:10px;padding:11px 18px;font-family:'Sarabun',sans-serif;font-size:13px;font-weight:700;color:#fff;cursor:pointer;white-space:nowrap;flex-shrink:0;box-shadow:0 3px 12px rgba(0,160,130,.35)}
 .qr-scan-btn:active{transform:scale(.97)}
 .qr-or-text{font-size:11px;color:var(--text3);font-weight:600}
 .qr-manual-row{display:flex;gap:8px;align-items:center}
-.qr-manual-inp{flex:1;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:9px 12px;font-size:12px;font-family:'Sarabun',sans-serif;color:var(--text);outline:none;transition:all .2s}
+.qr-manual-inp{flex:1;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:9px 12px;font-size:12px;font-family:'Sarabun',sans-serif;color:var(--text);outline:none}
 .qr-manual-inp:focus{border-color:rgba(0,200,160,.4)}
 .qr-manual-inp::placeholder{color:var(--text3)}
-.btn-manual-ok{background:rgba(0,200,160,.1);border:1px solid rgba(0,200,160,.25);border-radius:8px;padding:9px 14px;font-family:'Sarabun',sans-serif;font-size:12px;font-weight:700;color:#22d3c8;cursor:pointer;white-space:nowrap;transition:all .2s}
+.btn-manual-ok{background:rgba(0,200,160,.1);border:1px solid rgba(0,200,160,.25);border-radius:8px;padding:9px 14px;font-family:'Sarabun',sans-serif;font-size:12px;font-weight:700;color:#22d3c8;cursor:pointer;white-space:nowrap}
 .qr-result{display:flex;align-items:center;gap:10px}
 .qr-result-icon{width:40px;height:40px;border-radius:10px;background:rgba(0,200,160,.12);border:1px solid rgba(0,200,160,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .qr-result-info{flex:1}
 .qr-result-id{font-family:'Manrope',sans-serif;font-size:15px;font-weight:900;color:var(--text)}
 .qr-result-area{font-size:11px;color:var(--text2);margin-top:1px}
 .qr-result-sn{font-size:9px;color:var(--text3);margin-top:1px;letter-spacing:.5px}
-.btn-rescan{background:transparent;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:6px 12px;font-size:11px;font-weight:700;color:var(--text2);cursor:pointer;font-family:'Sarabun',sans-serif;transition:all .2s;flex-shrink:0}
+.btn-rescan{background:transparent;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:6px 12px;font-size:11px;font-weight:700;color:var(--text2);cursor:pointer;font-family:'Sarabun',sans-serif;flex-shrink:0}
 /* QR MODAL */
 .qr-modal{position:fixed;inset:0;z-index:5000;background:#000;display:none;flex-direction:column}
 .qr-modal.show{display:flex}
-#qrVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-#qrOverlayCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:6;pointer-events:none}
-.qr-header{position:absolute;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:linear-gradient(to bottom,rgba(0,0,0,.8),transparent)}
-.qr-header-title{font-family:'Manrope',sans-serif;font-size:15px;font-weight:800;color:#fff}
-.qr-close-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:7px 18px;font-family:'Sarabun',sans-serif;font-size:13px;font-weight:700;color:#fff;cursor:pointer}
-.qr-footer{position:absolute;bottom:0;left:0;right:0;z-index:10;padding:16px 20px 40px;background:linear-gradient(to top,rgba(0,0,0,.85),transparent);text-align:center}
-.qr-status-text{font-size:14px;font-weight:700;color:#22d3c8;letter-spacing:.5px;margin-bottom:6px}
-.qr-hint-text{font-size:11px;color:rgba(255,255,255,.55);line-height:1.5;margin-bottom:8px}
-/* DEBUG BOX */
-.qr-debug-box{background:rgba(0,0,0,.7);border:1px solid rgba(255,255,100,.3);border-radius:8px;padding:8px 12px;margin-top:6px;display:none}
-.qr-debug-box.show{display:block}
-.qr-debug-label{font-size:9px;font-weight:700;letter-spacing:1px;color:rgba(255,255,100,.7);text-transform:uppercase;margin-bottom:3px}
-.qr-debug-val{font-size:11px;color:#fff;word-break:break-all;font-family:monospace;line-height:1.4}
-#qrFlash{position:absolute;inset:0;z-index:9;background:rgba(0,220,170,.4);opacity:0;pointer-events:none;transition:opacity .15s}
+#qrVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#qrCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:6;pointer-events:none}
+.qr-top-bar{position:absolute;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:linear-gradient(to bottom,rgba(0,0,0,.8),transparent)}
+.qr-top-title{font-family:'Manrope',sans-serif;font-size:15px;font-weight:800;color:#fff}
+.qr-top-close{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);border-radius:10px;padding:8px 20px;font-family:'Sarabun',sans-serif;font-size:13px;font-weight:700;color:#fff;cursor:pointer}
+.qr-bottom-bar{position:absolute;bottom:0;left:0;right:0;z-index:10;padding:20px 20px 44px;background:linear-gradient(to top,rgba(0,0,0,.9),transparent);text-align:center}
+.qr-status-line{font-size:15px;font-weight:700;letter-spacing:.3px;margin-bottom:6px}
+.qr-debug-row{font-size:11px;color:rgba(255,255,200,.7);font-family:monospace;background:rgba(0,0,0,.5);border-radius:6px;padding:4px 10px;margin-top:6px;word-break:break-all;display:none}
+.qr-debug-row.show{display:block}
+#qrFlash{position:absolute;inset:0;z-index:9;background:rgba(34,211,200,.45);opacity:0;pointer-events:none;transition:opacity .15s}
 #qrFlash.on{opacity:1}
-/* CHECKLIST */
 .checklist-wrap{flex:1;padding:0 16px;overflow:hidden;display:flex;flex-direction:column;min-height:0}
-.checklist-card{background:rgba(22,27,34,.8);border:1px solid rgba(0,200,160,.25);border-radius:20px;overflow:hidden;flex:1;display:flex;flex-direction:column;box-shadow:0 0 0 1px rgba(0,200,160,.1),0 0 30px rgba(0,200,160,.08),0 8px 32px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.05);position:relative;min-height:0}
+.checklist-card{background:rgba(22,27,34,.8);border:1px solid rgba(0,200,160,.25);border-radius:20px;overflow:hidden;flex:1;display:flex;flex-direction:column;box-shadow:0 0 0 1px rgba(0,200,160,.1),0 8px 32px rgba(0,0,0,.5);position:relative;min-height:0}
 .checklist-card::before{content:'';position:absolute;inset:-1px;border-radius:21px;background:linear-gradient(135deg,rgba(0,200,160,.3),transparent 50%,rgba(0,120,200,.2));z-index:0;pointer-events:none}
 .checklist-inner{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0}
 .cl-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px 8px;border-bottom:1px solid rgba(255,255,255,.05);flex-shrink:0}
@@ -159,13 +152,13 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .row-num{font-family:'Manrope',sans-serif;font-size:11px;font-weight:800;color:var(--text3);min-width:20px;flex-shrink:0}
 .row-text{flex:1;font-size:13.5px;font-weight:600;color:var(--text);line-height:1.2}
 .check-row.fail-row .row-text{color:#fca5a5}
-.toggle-pill{display:flex;align-items:center;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.1);flex-shrink:0;cursor:pointer;transition:all .2s;min-width:68px;height:26px;position:relative;background:rgba(255,255,255,.05)}
+.toggle-pill{display:flex;align-items:center;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.1);flex-shrink:0;cursor:pointer;transition:all .2s;min-width:68px;height:26px;background:rgba(255,255,255,.05)}
 .toggle-pill.pass-pill{background:var(--pass-bg);border-color:var(--pass-border);box-shadow:0 0 8px rgba(34,197,94,.3);flex-direction:row-reverse}
 .toggle-pill.fail-pill{background:var(--fail-bg);border-color:var(--fail-border);box-shadow:0 0 8px rgba(239,68,68,.3)}
-.pill-dot{width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.15);margin:2px;flex-shrink:0;transition:all .2s}
+.pill-dot{width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.15);margin:2px;flex-shrink:0}
 .toggle-pill.pass-pill .pill-dot{background:var(--pass-border);box-shadow:0 0 6px rgba(34,197,94,.5)}
 .toggle-pill.fail-pill .pill-dot{background:var(--fail-border);box-shadow:0 0 6px rgba(239,68,68,.5)}
-.pill-label{font-family:'Manrope',sans-serif;font-size:10px;font-weight:800;letter-spacing:.5px;padding:0 6px;flex:1;text-align:center;color:var(--text3);user-select:none;transition:color .2s}
+.pill-label{font-family:'Manrope',sans-serif;font-size:10px;font-weight:800;letter-spacing:.5px;padding:0 6px;flex:1;text-align:center;color:var(--text3);user-select:none}
 .toggle-pill.pass-pill .pill-label{color:var(--pass-text)}
 .toggle-pill.fail-pill .pill-label{color:var(--fail-text)}
 .submit-section{padding:10px 16px 28px;flex-shrink:0}
@@ -176,10 +169,10 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .s-pass .stat-mini-val{color:#4ade80}.s-fail .stat-mini-val{color:#f87171}.s-total .stat-mini-val{color:#22d3c8}
 .s-pass{background:rgba(34,197,94,.06);border-color:rgba(34,197,94,.15)}
 .s-fail{background:rgba(239,68,68,.06);border-color:rgba(239,68,68,.15)}
-.btn-save{width:100%;padding:17px;background:var(--grad-btn);border:none;border-radius:50px;font-family:'Sarabun',sans-serif;font-size:17px;font-weight:800;color:#fff;cursor:pointer;letter-spacing:.5px;box-shadow:0 0 24px rgba(0,200,160,.4),0 6px 24px rgba(0,0,0,.4);transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;position:relative;overflow:hidden}
+.btn-save{width:100%;padding:17px;background:var(--grad-btn);border:none;border-radius:50px;font-family:'Sarabun',sans-serif;font-size:17px;font-weight:800;color:#fff;cursor:pointer;letter-spacing:.5px;box-shadow:0 0 24px rgba(0,200,160,.4),0 6px 24px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;gap:8px;position:relative;overflow:hidden}
 .btn-save::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.1),transparent);pointer-events:none}
 .btn-save:active{transform:scale(.97)}
-.btn-save:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.btn-save:disabled{opacity:.4;cursor:not-allowed}
 .result-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 20px;text-align:center}
 .res-icon{width:88px;height:88px;border-radius:28px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;animation:pop .4s cubic-bezier(.175,.885,.32,1.275)}
 @keyframes pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
@@ -189,15 +182,14 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .res-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:12.5px}
 .res-row:last-child{border-bottom:none}
 .res-key{color:var(--text2)}.res-val{font-weight:700;color:var(--text)}
-.btn-next{background:var(--grad-btn);color:#fff;border:none;border-radius:14px;padding:13px 32px;font-family:'Sarabun',sans-serif;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(0,160,130,.35);transition:all .2s}
-.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(22,27,34,.97);border:1px solid rgba(0,200,160,.3);border-radius:14px;padding:11px 20px;font-size:12px;font-weight:700;color:#22d3c8;z-index:9999;transition:transform .3s;white-space:nowrap;backdrop-filter:blur(12px);box-shadow:0 8px 32px rgba(0,0,0,.5);display:flex;align-items:center;gap:7px}
+.btn-next{background:var(--grad-btn);color:#fff;border:none;border-radius:14px;padding:13px 32px;font-family:'Sarabun',sans-serif;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(0,160,130,.35)}
+.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(22,27,34,.97);border:1px solid rgba(0,200,160,.3);border-radius:14px;padding:11px 20px;font-size:12px;font-weight:700;color:#22d3c8;z-index:9999;transition:transform .3s;white-space:nowrap;backdrop-filter:blur(12px);box-shadow:0 8px 32px rgba(0,0,0,.5)}
 .toast.terr{border-color:rgba(239,68,68,.3);color:#f87171}
 .toast.tinfo{border-color:rgba(251,191,36,.3);color:#fbbf24}
 .toast.show{transform:translateX(-50%) translateY(0)}
 .config-loading{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--text3);padding:6px 12px;background:rgba(255,255,255,.03);border-radius:8px;margin-bottom:8px}
 .spin{width:12px;height:12px;border:2px solid rgba(0,200,160,.2);border-top-color:#22d3c8;border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-@media(max-width:380px){.row-text{font-size:12.5px}.toggle-pill{min-width:62px}}
 </style>
 </head>
 <body>
@@ -228,8 +220,8 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
       <div class="emergency-countdown" id="emergencyCountdownText">--:--</div>
     </div>
   </div>
-  <button class="unlock-allow-btn" id="emergencyProceedBtn" style="display:none" onclick="proceedWithEmergencyUnlock()">ดำเนินการตรวจสอบต่อ</button>
-  <button class="btn-contact" onclick="requestUnlock()">
+  <button class="unlock-allow-btn" id="emergencyProceedBtn" style="display:none" onclick="proceedEmergency()">ดำเนินการตรวจสอบต่อ</button>
+  <button class="btn-contact" onclick="reqUnlock()">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:6px"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.56 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
     ติดต่อผู้ดูแลระบบ เพื่อปลดล็อค
   </button>
@@ -238,23 +230,17 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 
 <!-- QR MODAL -->
 <div id="qrModal" class="qr-modal">
-  <video id="qrVideo" playsinline autoplay muted></video>
-  <canvas id="qrOverlayCanvas"></canvas>
-
-  <div class="qr-header">
-    <div class="qr-header-title">สแกน QR Code วิทยุสื่อสาร</div>
-    <button class="qr-close-btn" onclick="closeQR()">ยกเลิก</button>
-  </div>
-
+  <video id="qrVideo" playsinline muted></video>
+  <canvas id="qrCanvas"></canvas>
   <div id="qrFlash"></div>
-
-  <div class="qr-footer">
-    <div class="qr-status-text" id="qrStatusText">● เปิดกล้อง...</div>
-    <div class="qr-hint-text">จ่อกล้องไปที่ QR Code บนการ์ดวิทยุ · ระยะ 10–20 ซม.</div>
-    <div class="qr-debug-box" id="qrDebugBox">
-      <div class="qr-debug-label">QR Raw Data (Debug)</div>
-      <div class="qr-debug-val" id="qrDebugVal">—</div>
-    </div>
+  <div class="qr-top-bar">
+    <div class="qr-top-title">สแกน QR Code วิทยุสื่อสาร</div>
+    <button class="qr-top-close" onclick="closeQR()">ยกเลิก</button>
+  </div>
+  <div class="qr-bottom-bar">
+    <div class="qr-status-line" id="qrStatusLine" style="color:#22d3c8">● เปิดกล้อง...</div>
+    <div style="font-size:11px;color:rgba(255,255,255,.5)">จ่อกล้องไปที่ QR Code · ระยะ 10–20 ซม.</div>
+    <div class="qr-debug-row" id="qrDebug"></div>
   </div>
 </div>
 
@@ -402,15 +388,22 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
     <button class="btn-next" onclick="startNew()">ตรวจสอบเครื่องถัดไป</button>
   </div>
 </div>
-
 <div id="toast" class="toast"></div>
 
+<!-- ══════════════════════════════════════════════
+     STEP 1: Load jsQR as plain script (NOT module)
+     so window.jsQR is available globally
+══════════════════════════════════════════════ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
+
+<!-- ══════════════════════════════════════════════
+     STEP 2: Firebase as module
+══════════════════════════════════════════════ -->
 <script type="module">
 import { initializeApp }       from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, collection, addDoc, doc, setDoc, getDoc, getDocs, onSnapshot, serverTimestamp }
                                from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-/* ── RADIO LIST ── */
 const RADIOS=[
   {id:1,area:"จุดตรวจโลหะที่ 1",sn:"WD1 S/N 278TBPG297"},{id:2,area:"Support 5 Ph1",sn:"WD2 S/N 278TBPG307"},
   {id:3,area:"Main Entrance Ph1",sn:"WD3 S/N 278TBPG308"},{id:4,area:"จุดตรวจโลหะที่ 4",sn:"WD4 S/N 278TBPG324"},
@@ -431,7 +424,6 @@ const RADIOS=[
   {id:36,area:"Gate 4",sn:"WD36 S/N 278TBPG567"},{id:37,area:"Patrol North",sn:"WD37 S/N 278TBPG570"},
   {id:38,area:"Patrol South",sn:"WD38 S/N 278TBPG572"},
 ];
-
 const DEFAULT_ITEMS=[
   {id:1,th:"เสาอากาศ",en:"Antenna"},{id:2,th:"แบตเตอรี่",en:"Battery"},
   {id:3,th:"ปุ่มกดพูด",en:"PTT Button"},{id:4,th:"ลำโพง",en:"Speaker"},
@@ -446,14 +438,7 @@ const DEFAULT_ITEMS=[
   {id:21,th:"เอกสารประกอบ",en:"Documentation"},
 ];
 
-const fbCfg={
-  apiKey:"AIzaSyCBSvlRDbhibsNIgqNRd9UB5fdnm8g-G2A",
-  authDomain:"building-access-control.firebaseapp.com",
-  projectId:"building-access-control",
-  storageBucket:"building-access-control.firebasestorage.app",
-  messagingSenderId:"492098937762",
-  appId:"1:492098937762:web:53c52cbbfd4cb030ad08fb"
-};
+const fbCfg={apiKey:"AIzaSyCBSvlRDbhibsNIgqNRd9UB5fdnm8g-G2A",authDomain:"building-access-control.firebaseapp.com",projectId:"building-access-control",storageBucket:"building-access-control.firebasestorage.app",messagingSenderId:"492098937762",appId:"1:492098937762:web:53c52cbbfd4cb030ad08fb"};
 let db;
 try{const app=initializeApp(fbCfg);db=getFirestore(app);}catch(e){console.warn(e);}
 
@@ -461,590 +446,351 @@ let user=null,chk={},selectedShift=null,scannedRadioId=null;
 let lockActive=false,emergencyActive=false,emergencyUntilMs=null;
 let ITEMS=[...DEFAULT_ITEMS];
 
-/* ── SHIFT CONFIG ── */
 let shiftCfg={
   day:{inspStart:"07:30",inspEnd:"10:00",shiftStart:"07:30",shiftEnd:"19:30",emergencyUnlock:false,emergencyUntil:null},
   night:{inspStart:"19:30",inspEnd:"22:00",shiftStart:"19:30",shiftEnd:"07:30",emergencyUnlock:false,emergencyUntil:null}
 };
 
-function resolveUntilMs(val){
-  if(!val)return null;
-  if(typeof val==='object'&&val.toDate)return val.toDate().getTime();
-  const ms=new Date(val).getTime();
-  return isNaN(ms)?null:ms;
-}
-function applyFirestoreDoc(data){
-  ['day','night'].forEach(sh=>{
-    const src=data[sh];
-    if(src&&typeof src==='object'){
-      if(src.inspStart)shiftCfg[sh].inspStart=src.inspStart;
-      if(src.inspEnd)shiftCfg[sh].inspEnd=src.inspEnd;
-      if(src.shiftStart)shiftCfg[sh].shiftStart=src.shiftStart;
-      if(src.shiftEnd)shiftCfg[sh].shiftEnd=src.shiftEnd;
-      shiftCfg[sh].emergencyUnlock=!!src.emergencyUnlock;
-      shiftCfg[sh].emergencyUntil=src.emergencyUntil||null;
-    }
-  });
-  if(data.dayInspStart)shiftCfg.day.inspStart=data.dayInspStart;
-  if(data.dayInspEnd)shiftCfg.day.inspEnd=data.dayInspEnd;
-  if(data.nightInspStart)shiftCfg.night.inspStart=data.nightInspStart;
-  if(data.nightInspEnd)shiftCfg.night.inspEnd=data.nightInspEnd;
+function resolveUntilMs(val){if(!val)return null;if(typeof val==='object'&&val.toDate)return val.toDate().getTime();const ms=new Date(val).getTime();return isNaN(ms)?null:ms;}
+function applyFSDoc(data){
+  ['day','night'].forEach(sh=>{const src=data[sh];if(src&&typeof src==='object'){if(src.inspStart)shiftCfg[sh].inspStart=src.inspStart;if(src.inspEnd)shiftCfg[sh].inspEnd=src.inspEnd;if(src.shiftStart)shiftCfg[sh].shiftStart=src.shiftStart;if(src.shiftEnd)shiftCfg[sh].shiftEnd=src.shiftEnd;shiftCfg[sh].emergencyUnlock=!!src.emergencyUnlock;shiftCfg[sh].emergencyUntil=src.emergencyUntil||null;}});
+  if(data.dayInspStart)shiftCfg.day.inspStart=data.dayInspStart;if(data.dayInspEnd)shiftCfg.day.inspEnd=data.dayInspEnd;
+  if(data.nightInspStart)shiftCfg.night.inspStart=data.nightInspStart;if(data.nightInspEnd)shiftCfg.night.inspEnd=data.nightInspEnd;
   resolveEmergency();
 }
 function resolveEmergency(){
   const now=Date.now();let anyE=false,latestUntil=null;
-  ['day','night'].forEach(sh=>{
-    const ms=resolveUntilMs(shiftCfg[sh].emergencyUntil);
-    if(shiftCfg[sh].emergencyUnlock&&ms&&now<ms){anyE=true;if(!latestUntil||ms>latestUntil)latestUntil=ms;}
-  });
+  ['day','night'].forEach(sh=>{const ms=resolveUntilMs(shiftCfg[sh].emergencyUntil);if(shiftCfg[sh].emergencyUnlock&&ms&&now<ms){anyE=true;if(!latestUntil||ms>latestUntil)latestUntil=ms;}});
   const was=emergencyActive;emergencyActive=anyE;emergencyUntilMs=latestUntil;
-  if(!was&&emergencyActive&&lockActive){updateLockOverlay();toast("🔓 Admin ปลดล็อคแล้ว!","info");}
-  if(lockActive&&selectedShift&&isAllowed(selectedShift)&&!emergencyActive){hideLock();toast("เข้าสู่ช่วงเวลาตรวจสอบแล้ว");}
+  if(!was&&emergencyActive&&lockActive){updateLockUI();showToast("🔓 Admin ปลดล็อคแล้ว!","info");}
+  if(lockActive&&selectedShift&&isAllowed(selectedShift)&&!emergencyActive){hideLock();showToast("เข้าสู่ช่วงเวลาตรวจสอบแล้ว");}
 }
 function toMin(s){if(!s)return 0;const p=s.split(":");return parseInt(p[0])*60+parseInt(p[1]||0);}
 function nowMin(){const n=new Date();return n.getHours()*60+n.getMinutes();}
 function fmtCd(ms){if(ms<=0)return"00:00";const s=Math.floor(ms/1000),m=Math.floor(s/60);return String(m).padStart(2,"0")+":"+String(s%60).padStart(2,"0");}
-function isAllowed(sh){
-  const cfg=shiftCfg[sh];
-  const ms=resolveUntilMs(cfg.emergencyUntil);
-  if(cfg.emergencyUnlock&&ms&&Date.now()<ms)return true;
-  const t=nowMin(),s=toMin(cfg.inspStart),e=toMin(cfg.inspEnd);
-  return s<=e?(t>=s&&t<e):(t>=s||t<e);
-}
+function isAllowed(sh){const cfg=shiftCfg[sh];const ms=resolveUntilMs(cfg.emergencyUntil);if(cfg.emergencyUnlock&&ms&&Date.now()<ms)return true;const t=nowMin(),s=toMin(cfg.inspStart),e=toMin(cfg.inspEnd);return s<=e?(t>=s&&t<e):(t>=s||t<e);}
 function winLabel(sh){const c=shiftCfg[sh];return c?c.inspStart+"–"+c.inspEnd+" น.":"—";}
-function shiftTimeLabel(sh){const c=shiftCfg[sh];return c?c.shiftStart+" – "+c.shiftEnd+" น.":"—";}
+function shiftTLabel(sh){const c=shiftCfg[sh];return c?c.shiftStart+" – "+c.shiftEnd+" น.":"—";}
 
-async function fetchConfig(){
+async function fetchCfg(){
   if(!db){updateShiftUI();return;}
-  try{
-    const snap=await getDoc(doc(db,"shiftConfig","main"));
-    if(snap.exists()){applyFirestoreDoc(snap.data());const el=document.getElementById("configSyncStatus");if(el)el.textContent="ซิงค์แล้ว — "+new Date().toLocaleTimeString("th-TH");}
-  }catch(e){console.warn("fetchConfig:",e);}
+  try{const snap=await getDoc(doc(db,"shiftConfig","main"));if(snap.exists()){applyFSDoc(snap.data());const el=document.getElementById("configSyncStatus");if(el)el.textContent="ซิงค์แล้ว — "+new Date().toLocaleTimeString("th-TH");}}catch(e){console.warn(e);}
   updateShiftUI();
 }
-function startConfigListener(){
+function startCfgListener(){
   if(!db)return;
-  try{
-    onSnapshot(doc(db,"shiftConfig","main"),snap=>{
-      if(!snap.exists())return;
-      applyFirestoreDoc(snap.data());updateShiftUI();
-      const el=document.getElementById("configSyncStatus");if(el)el.textContent="ซิงค์แล้ว — "+new Date().toLocaleTimeString("th-TH");
-      if(lockActive)updateLockOverlay();
-    });
-  }catch(e){console.warn(e);}
+  try{onSnapshot(doc(db,"shiftConfig","main"),snap=>{if(!snap.exists())return;applyFSDoc(snap.data());updateShiftUI();const el=document.getElementById("configSyncStatus");if(el)el.textContent="ซิงค์แล้ว — "+new Date().toLocaleTimeString("th-TH");if(lockActive)updateLockUI();});}catch(e){}
 }
-async function fetchChecklist(){
+async function fetchCL(){
   if(!db){buildList();return;}
-  try{
-    const snap=await getDocs(collection(db,"checklistItems"));
-    if(!snap.empty){const items=[];snap.forEach(d=>{const x=d.data();items.push({id:x.id||x.order||items.length+1,th:x.th||x.nameTH||d.id,en:x.en||x.nameEN||""});});items.sort((a,b)=>a.id-b.id);if(items.length>0)ITEMS=items;}
-  }catch(e){console.warn(e);}
+  try{const snap=await getDocs(collection(db,"checklistItems"));if(!snap.empty){const items=[];snap.forEach(d=>{const x=d.data();items.push({id:x.id||x.order||items.length+1,th:x.th||x.nameTH||d.id,en:x.en||x.nameEN||""});});items.sort((a,b)=>a.id-b.id);if(items.length>0)ITEMS=items;}}catch(e){}
   chk={};ITEMS.forEach(i=>chk[i.id]=null);buildList();updateUI();
 }
-async function initDef(){
-  if(!db)return;
-  try{const s=await getDocs(collection(db,"radioUsers"));if(s.empty){const d=[{userId:"admin",name:"Administrator",password:"admin1234",role:"admin",enabled:true},{userId:"U001",name:"นายสมชาย ใจดี",password:"1234",role:"user",enabled:true,empId:"IND-5501",dept:"Security",position:"Security Inspector"},{userId:"U002",name:"นางสาวสมหญิง ดีใจ",password:"5678",role:"user",enabled:true,empId:"IND-5502",dept:"Security",position:"Security Inspector"}];for(const u of d)await setDoc(doc(db,"radioUsers",u.userId),u);}}catch(e){}
-}
+async function initDef(){if(!db)return;try{const s=await getDocs(collection(db,"radioUsers"));if(s.empty){const d=[{userId:"admin",name:"Administrator",password:"admin1234",role:"admin",enabled:true},{userId:"U001",name:"นายสมชาย ใจดี",password:"1234",role:"user",enabled:true,empId:"IND-5501",dept:"Security",position:"Security Inspector"},{userId:"U002",name:"นางสาวสมหญิง ดีใจ",password:"5678",role:"user",enabled:true,empId:"IND-5502",dept:"Security",position:"Security Inspector"}];for(const u of d)await setDoc(doc(db,"radioUsers",u.userId),u);}}catch(e){}}
 initDef();
 
-/* ── CLOCK ── */
 function tick(){
   const n=new Date(),t=n.toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"});
-  const sbTime=document.getElementById("sbTime");if(sbTime)sbTime.textContent=t;
-  const lc=document.getElementById("lockClock");if(lc)lc.textContent=t;
-  const ln=document.getElementById("lockNowTime");if(ln)ln.textContent=t+" น.";
-  const ld=document.getElementById("lockDate");if(ld)ld.textContent=n.toLocaleDateString("th-TH",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
-  if(lockActive&&emergencyActive&&emergencyUntilMs){
-    const rem=emergencyUntilMs-Date.now();
-    const cd=document.getElementById("emergencyCountdownText");
-    if(rem>0){if(cd)cd.textContent=fmtCd(rem);}else{emergencyActive=false;emergencyUntilMs=null;updateLockOverlay();}
-  }
-  const eb=document.getElementById("emergencyBadgeSb");
-  if(eb)eb.style.display=(emergencyActive&&emergencyUntilMs&&Date.now()<emergencyUntilMs)?"inline-flex":"none";
-  if(document.getElementById("s-main").classList.contains("active")){
-    updateShiftBadges();
-    if(!lockActive&&selectedShift&&!isAllowed(selectedShift))showLock(selectedShift,true);
-  }
+  const el=id=>document.getElementById(id);
+  if(el("sbTime"))el("sbTime").textContent=t;
+  if(el("lockClock"))el("lockClock").textContent=t;
+  if(el("lockNowTime"))el("lockNowTime").textContent=t+" น.";
+  if(el("lockDate"))el("lockDate").textContent=n.toLocaleDateString("th-TH",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
+  if(lockActive&&emergencyActive&&emergencyUntilMs){const rem=emergencyUntilMs-Date.now();const cd=el("emergencyCountdownText");if(rem>0){if(cd)cd.textContent=fmtCd(rem);}else{emergencyActive=false;emergencyUntilMs=null;updateLockUI();}}
+  if(el("emergencyBadgeSb"))el("emergencyBadgeSb").style.display=(emergencyActive&&emergencyUntilMs&&Date.now()<emergencyUntilMs)?"inline-flex":"none";
+  if(el("s-main")&&el("s-main").classList.contains("active")){updateShiftBadges();if(!lockActive&&selectedShift&&!isAllowed(selectedShift))showLock(selectedShift,true);}
 }
-tick();setInterval(tick,1000);setInterval(fetchConfig,30000);
+tick();setInterval(tick,1000);setInterval(fetchCfg,30000);
 
 function updateShiftUI(){
-  const lr=document.getElementById("configLoadingRow");if(lr)lr.style.display="none";
-  const dw=document.getElementById("shiftDayWindow");if(dw)dw.textContent="⏱ ตรวจได้ "+winLabel("day");
-  const nw=document.getElementById("shiftNightWindow");if(nw)nw.textContent="⏱ ตรวจได้ "+winLabel("night");
-  const dt=document.getElementById("shiftDayTime");if(dt)dt.textContent=shiftTimeLabel("day");
-  const nt=document.getElementById("shiftNightTime");if(nt)nt.textContent=shiftTimeLabel("night");
-  updateShiftBadges();if(lockActive)updateLockOverlay();
+  const el=id=>document.getElementById(id);
+  if(el("configLoadingRow"))el("configLoadingRow").style.display="none";
+  if(el("shiftDayWindow"))el("shiftDayWindow").textContent="⏱ ตรวจได้ "+winLabel("day");
+  if(el("shiftNightWindow"))el("shiftNightWindow").textContent="⏱ ตรวจได้ "+winLabel("night");
+  if(el("shiftDayTime"))el("shiftDayTime").textContent=shiftTLabel("day");
+  if(el("shiftNightTime"))el("shiftNightTime").textContent=shiftTLabel("night");
+  updateShiftBadges();if(lockActive)updateLockUI();
 }
 function updateShiftBadges(){
   ["day","night"].forEach(s=>{
     const badge=document.getElementById("badge"+s.charAt(0).toUpperCase()+s.slice(1));if(!badge)return;
-    const cfg=shiftCfg[s];const ms=resolveUntilMs(cfg.emergencyUntil);
-    const pse=cfg.emergencyUnlock&&ms&&Date.now()<ms;
+    const cfg=shiftCfg[s];const ms=resolveUntilMs(cfg.emergencyUntil);const pse=cfg.emergencyUnlock&&ms&&Date.now()<ms;
     if(pse){badge.textContent="ปลดล็อค";badge.className="shift-badge badge-emergency";}
     else{const ok=isAllowed(s);badge.textContent=ok?"เปิด":"ปิด";badge.className="shift-badge "+(ok?"badge-ok":"badge-locked");}
   });
 }
-function updateLockOverlay(){
+function updateLockUI(){
   if(!selectedShift)return;
-  const names={day:"ผลัดกลางวัน",night:"ผลัดกลางคืน"};
-  document.getElementById("lockShiftName").textContent=names[selectedShift];
-  document.getElementById("lockAllowTime").textContent=winLabel(selectedShift);
-  const cfg=shiftCfg[selectedShift];const ms=resolveUntilMs(cfg.emergencyUntil);
-  const pse=cfg.emergencyUnlock&&ms&&Date.now()<ms;
-  if(pse){
-    document.getElementById("lockIconEl").className="lock-icon emergency";
-    document.getElementById("lockIconSvg").setAttribute("stroke","#fbbf24");
-    document.getElementById("lockTitle").textContent="ปลดล็อคฉุกเฉิน";
-    document.getElementById("lockTitle").className="lock-title t-yellow";
-    document.getElementById("lockBody").textContent="Admin ปลดล็อคฉุกเฉินชั่วคราว กรุณาดำเนินการตรวจสอบก่อนหมดเวลา";
-    document.getElementById("lockWindowBadge").className="lock-window-badge badge-yellow";
-    document.getElementById("lockWindowText").textContent="ปลดล็อคฉุกเฉินอยู่";
-    document.getElementById("emergencyCountdownBox").style.display="block";
-    document.getElementById("emergencyProceedBtn").style.display="block";
-    if(ms)document.getElementById("emergencyCountdownText").textContent=fmtCd(ms-Date.now());
-  }else{
-    document.getElementById("lockIconEl").className="lock-icon locked";
-    document.getElementById("lockIconSvg").setAttribute("stroke","#ef4444");
-    document.getElementById("lockTitle").className="lock-title t-red";
-    document.getElementById("lockWindowBadge").className="lock-window-badge badge-red";
-    document.getElementById("lockWindowText").textContent="กรุณาเริ่มตรวจสอบในช่วงเวลาที่กำหนด";
-    document.getElementById("emergencyCountdownBox").style.display="none";
-    document.getElementById("emergencyProceedBtn").style.display="none";
-  }
+  const el=id=>document.getElementById(id);const names={day:"ผลัดกลางวัน",night:"ผลัดกลางคืน"};
+  el("lockShiftName").textContent=names[selectedShift];el("lockAllowTime").textContent=winLabel(selectedShift);
+  const cfg=shiftCfg[selectedShift];const ms=resolveUntilMs(cfg.emergencyUntil);const pse=cfg.emergencyUnlock&&ms&&Date.now()<ms;
+  if(pse){el("lockIconEl").className="lock-icon emergency";el("lockIconSvg").setAttribute("stroke","#fbbf24");el("lockTitle").textContent="ปลดล็อคฉุกเฉิน";el("lockTitle").className="lock-title t-yellow";el("lockBody").textContent="Admin ปลดล็อคฉุกเฉินชั่วคราว";el("lockWindowBadge").className="lock-window-badge badge-yellow";el("lockWindowText").textContent="ปลดล็อคฉุกเฉินอยู่";el("emergencyCountdownBox").style.display="block";el("emergencyProceedBtn").style.display="block";if(ms)el("emergencyCountdownText").textContent=fmtCd(ms-Date.now());}
+  else{el("lockIconEl").className="lock-icon locked";el("lockIconSvg").setAttribute("stroke","#ef4444");el("lockTitle").className="lock-title t-red";el("lockWindowBadge").className="lock-window-badge badge-red";el("lockWindowText").textContent="กรุณาเริ่มตรวจสอบในช่วงเวลาที่กำหนด";el("emergencyCountdownBox").style.display="none";el("emergencyProceedBtn").style.display="none";}
 }
-function showLock(sh,auto=false){
-  lockActive=true;selectedShift=sh;
-  const names={day:"ผลัดกลางวัน",night:"ผลัดกลางคืน"},s=names[sh];
-  document.getElementById("lockTitle").textContent=auto?"หมดเวลาตรวจสอบ":"ไม่อยู่ในช่วงเวลาที่กำหนด";
-  document.getElementById("lockBody").textContent=auto?"หมดช่วงเวลาสำหรับ "+s+" กรุณาติดต่อผู้ดูแลระบบ":"ขณะนี้ไม่อยู่ในช่วงเวลาที่อนุญาตสำหรับ "+s;
-  updateLockOverlay();document.getElementById("lockOverlay").classList.add("show");
-}
+function showLock(sh,auto=false){lockActive=true;selectedShift=sh;const names={day:"ผลัดกลางวัน",night:"ผลัดกลางคืน"},s=names[sh];document.getElementById("lockTitle").textContent=auto?"หมดเวลาตรวจสอบ":"ไม่อยู่ในช่วงเวลาที่กำหนด";document.getElementById("lockBody").textContent=auto?"หมดช่วงเวลาสำหรับ "+s:"ขณะนี้ไม่อยู่ในช่วงเวลาที่อนุญาตสำหรับ "+s;updateLockUI();document.getElementById("lockOverlay").classList.add("show");}
 function hideLock(){lockActive=false;document.getElementById("lockOverlay").classList.remove("show");}
-window.proceedWithEmergencyUnlock=function(){if(isAllowed(selectedShift)){hideLock();toast("ดำเนินการตรวจสอบในโหมดฉุกเฉิน","info");}};
+window.proceedEmergency=function(){if(isAllowed(selectedShift)){hideLock();showToast("ดำเนินการตรวจสอบในโหมดฉุกเฉิน","info");}};
 
-function show(id){
-  document.querySelectorAll(".screen").forEach(s=>{s.classList.remove("active");s.style.display="none";});
-  const s=document.getElementById(id);if(s){s.classList.add("active");s.style.display="flex";}
-}
+function showScreen(id){document.querySelectorAll(".screen").forEach(s=>{s.classList.remove("active");s.style.display="none";});const s=document.getElementById(id);if(s){s.classList.add("active");s.style.display="flex";}}
 
-/* ── LOGIN ── */
 window.doLogin=async function(){
   const id=document.getElementById("lId").value.trim(),pw=document.getElementById("lPw").value.trim();
-  const errEl=document.getElementById("loginErr");errEl.style.display="none";
-  if(!id||!pw){setErr("กรุณากรอกข้อมูลให้ครบ");return;}
-  try{
-    const snap=await getDocs(collection(db,"radioUsers"));let found=null;
-    snap.forEach(d=>{if(d.data().userId===id)found=d.data();});
-    if(!found){setErr("ไม่พบรหัสพนักงานนี้");return;}
-    if(found.password!==pw){setErr("รหัสผ่านไม่ถูกต้อง");return;}
-    if(!found.enabled){setErr("บัญชีถูกระงับ");return;}
-    if(found.role==="admin"){setErr("กรุณาใช้บัญชี User เท่านั้น");return;}
-    user=found;await fetchConfig();await fetchChecklist();startConfigListener();initMain();
-  }catch(e){setErr("เกิดข้อผิดพลาด: "+e.message);}
+  document.getElementById("loginErr").style.display="none";
+  if(!id||!pw){setLoginErr("กรุณากรอกข้อมูลให้ครบ");return;}
+  try{const snap=await getDocs(collection(db,"radioUsers"));let found=null;snap.forEach(d=>{if(d.data().userId===id)found=d.data();});if(!found){setLoginErr("ไม่พบรหัสพนักงานนี้");return;}if(found.password!==pw){setLoginErr("รหัสผ่านไม่ถูกต้อง");return;}if(!found.enabled){setLoginErr("บัญชีถูกระงับ");return;}if(found.role==="admin"){setLoginErr("กรุณาใช้บัญชี User เท่านั้น");return;}user=found;await fetchCfg();await fetchCL();startCfgListener();initMain();}catch(e){setLoginErr("เกิดข้อผิดพลาด: "+e.message);}
 };
-function setErr(m){const e=document.getElementById("loginErr");e.textContent=m;e.style.display="block";}
-window.doLogout=function(){
-  user=null;selectedShift=null;scannedRadioId=null;chk={};ITEMS.forEach(i=>chk[i.id]=null);
-  stopQR();document.getElementById("lockOverlay").classList.remove("show");lockActive=false;
-  show("s-login");document.getElementById("lId").value="";document.getElementById("lPw").value="";
-};
-function initMain(){
-  const n=user.name||user.userId;
-  document.getElementById("profAv").textContent=n.charAt(0).toUpperCase();
-  document.getElementById("profName").textContent=n;
-  document.getElementById("profId").textContent="ID: "+(user.empId||user.userId);
-  document.getElementById("profDept").textContent=(user.dept||"Security")+" — "+(user.position||"Inspector");
-  updateShiftUI();show("s-main");
-}
-window.selShift=function(s){
-  selectedShift=s;
-  document.getElementById("shiftDay").classList.toggle("active-day",s==="day");
-  document.getElementById("shiftNight").classList.toggle("active-night",s==="night");
-  const tag=document.getElementById("profShiftTag");const names={day:"ผลัดกลางวัน",night:"ผลัดกลางคืน"};
-  tag.textContent=names[s];tag.className="prof-tag tag-shift"+(s==="night"?" night":"");tag.style.display="inline";
-  if(!isAllowed(s)){showLock(s,false);}else{hideLock();toast(names[s]+" — "+winLabel(s)+" เปิดให้ตรวจสอบแล้ว");}
-};
-window.requestUnlock=function(){toast("กรุณาติดต่อผู้ดูแลระบบ","info");alert("กรุณาติดต่อผู้ดูแลระบบ\nเพื่อปลดล็อคจาก Dashboard → ตั้งค่าเวลาผลัด");};
+function setLoginErr(m){const e=document.getElementById("loginErr");e.textContent=m;e.style.display="block";}
+window.doLogout=function(){user=null;selectedShift=null;scannedRadioId=null;chk={};ITEMS.forEach(i=>chk[i.id]=null);stopQR();document.getElementById("lockOverlay").classList.remove("show");lockActive=false;showScreen("s-login");document.getElementById("lId").value="";document.getElementById("lPw").value="";};
+function initMain(){const n=user.name||user.userId;document.getElementById("profAv").textContent=n.charAt(0).toUpperCase();document.getElementById("profName").textContent=n;document.getElementById("profId").textContent="ID: "+(user.empId||user.userId);document.getElementById("profDept").textContent=(user.dept||"Security")+" — "+(user.position||"Inspector");updateShiftUI();showScreen("s-main");}
+window.selShift=function(s){selectedShift=s;document.getElementById("shiftDay").classList.toggle("active-day",s==="day");document.getElementById("shiftNight").classList.toggle("active-night",s==="night");const tag=document.getElementById("profShiftTag");const names={day:"ผลัดกลางวัน",night:"ผลัดกลางคืน"};tag.textContent=names[s];tag.className="prof-tag tag-shift"+(s==="night"?" night":"");tag.style.display="inline";if(!isAllowed(s)){showLock(s,false);}else{hideLock();showToast(names[s]+" — "+winLabel(s)+" เปิดให้ตรวจสอบแล้ว");}};
+window.reqUnlock=function(){showToast("กรุณาติดต่อผู้ดูแลระบบ","info");alert("กรุณาติดต่อผู้ดูแลระบบ\nเพื่อปลดล็อคจาก Dashboard → ตั้งค่าเวลาผลัด");};
 
-/* ══════════════════════════════════════════════════════
-   QR SCANNER — V6
-   แก้ปัญหา: สแกน full frame ทุก 150ms ด้วย setInterval
-   ใช้ canvas decode แยกต่างหาก ไม่ reuse
-   รองรับ format: JSON / WDN / N / URL ที่มี id=N
-   มี debug box แสดง raw text ที่อ่านได้
-══════════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════════════
+   QR SCANNER — ROOT CAUSE FIX
+   KEY: jsQR loaded as plain <script> above → window.jsQR
+   Canvas drawn inline each frame (no reuse issues)
+   setInterval 200ms — stable polling
+   Draw viewfinder on qrCanvas with requestAnimationFrame
+══════════════════════════════════════════════════════════════ */
 
-let qrStream=null;
-let qrTimer=null;
-let qrActive=false;
-let qrLocked=false; /* debounce after detect */
+let _qrStream=null;
+let _qrTimer=null;
+let _qrRunning=false;
+let _qrLocked=false;
+let _qrRaf=null;
 
-/* ─── Parse QR text ─── supports ALL likely formats from Admin dashboard */
-function parseQRText(raw){
-  if(!raw)return null;
-  const s=raw.trim();
-
-  /* 1) JSON: {"id":1,...} or {"radioId":1} */
-  try{
-    const p=JSON.parse(s);
-    const rid=parseInt(p.id||p.radioId||p.radio_id||0);
-    if(rid>0)return rid;
-  }catch(e){}
-
-  /* 2) "WD1", "WD 1", "WD-1", "WD_1" */
-  const mWD=s.match(/WD[\s\-_]?(\d+)/i);
-  if(mWD)return parseInt(mWD[1]);
-
-  /* 3) Pure number "1" */
-  const mNum=s.match(/^(\d+)$/);
-  if(mNum)return parseInt(mNum[1]);
-
-  /* 4) URL with id param: "https://...?id=1" */
-  try{
-    const url=new URL(s);
-    const idParam=url.searchParams.get("id")||url.searchParams.get("radioId");
-    if(idParam)return parseInt(idParam);
-  }catch(e){}
-
-  /* 5) Partial match anywhere: "radio:5" "id:5" "no.5" */
-  const mPartial=s.match(/(?:radio|id|no|num|เครื่อง)[\s:.\-_]?(\d+)/i);
-  if(mPartial)return parseInt(mPartial[1]);
-
-  /* 6) Any first number found in string */
-  const mAny=s.match(/\d+/);
-  if(mAny)return parseInt(mAny[0]);
-
+/* Parse ANY format the admin might use */
+function parseQR(raw){
+  const s=(raw||"").trim();
+  if(!s)return null;
+  /* JSON */
+  try{const p=JSON.parse(s);const n=parseInt(p.id||p.radioId||p.radio_id||0);if(n>0)return n;}catch(e){}
+  /* WD1 / WD-1 / WD_1 / WD 1 */
+  const m1=s.match(/WD[\s\-_]?(\d+)/i);if(m1)return parseInt(m1[1]);
+  /* pure number */
+  const m2=s.match(/^(\d+)$/);if(m2)return parseInt(m2[1]);
+  /* URL ?id=N */
+  try{const u=new URL(s);const p=u.searchParams.get("id")||u.searchParams.get("radioId");if(p)return parseInt(p);}catch(e){}
+  /* any first number */
+  const m3=s.match(/\d+/);if(m3)return parseInt(m3[0]);
   return null;
 }
 
-/* ─── Draw overlay on qrOverlayCanvas ─── */
-function drawQROverlay(){
-  const oc=document.getElementById("qrOverlayCanvas");
+function setQrStatus(msg,color){
+  const el=document.getElementById("qrStatusLine");
+  if(el){el.textContent=msg;el.style.color=color||"#22d3c8";}
+}
+function setQrDebug(txt){
+  const el=document.getElementById("qrDebug");
+  if(!el)return;
+  if(txt){el.textContent="RAW: "+txt.slice(0,100);el.classList.add("show");}
+  else{el.textContent="";el.classList.remove("show");}
+}
+
+/* Draw viewfinder overlay onto qrCanvas */
+function drawViewfinder(){
+  const oc=document.getElementById("qrCanvas");
   if(!oc)return;
   const W=window.innerWidth,H=window.innerHeight;
-  oc.width=W;oc.height=H;
+  if(oc.width!==W)oc.width=W;
+  if(oc.height!==H)oc.height=H;
   const ctx=oc.getContext("2d");
   ctx.clearRect(0,0,W,H);
 
-  const size=Math.min(Math.min(W,H)*0.68,260);
-  const bx=(W-size)/2,by=(H-size)/2;
+  const sz=Math.min(Math.min(W,H)*0.65,256);
+  const x=(W-sz)/2,y=(H-sz)/2;
 
-  /* dark vignette outside box */
-  ctx.fillStyle="rgba(0,0,0,0.52)";
+  /* dark vignette */
+  ctx.fillStyle="rgba(0,0,0,0.55)";
   ctx.fillRect(0,0,W,H);
-  ctx.clearRect(bx,by,size,size);
+  ctx.clearRect(x,y,sz,sz);
 
-  /* corner lines */
-  const cl=28,lw=3.5;
+  /* corner brackets */
+  const c=24,lw=3.5;
   ctx.strokeStyle="#22d3c8";ctx.lineWidth=lw;ctx.lineCap="round";
-  /* TL */ctx.beginPath();ctx.moveTo(bx,by+cl);ctx.lineTo(bx,by);ctx.lineTo(bx+cl,by);ctx.stroke();
-  /* TR */ctx.beginPath();ctx.moveTo(bx+size-cl,by);ctx.lineTo(bx+size,by);ctx.lineTo(bx+size,by+cl);ctx.stroke();
-  /* BL */ctx.beginPath();ctx.moveTo(bx,by+size-cl);ctx.lineTo(bx,by+size);ctx.lineTo(bx+cl,by+size);ctx.stroke();
-  /* BR */ctx.beginPath();ctx.moveTo(bx+size-cl,by+size);ctx.lineTo(bx+size,by+size);ctx.lineTo(bx+size,by+size-cl);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x,y+c);ctx.lineTo(x,y);ctx.lineTo(x+c,y);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x+sz-c,y);ctx.lineTo(x+sz,y);ctx.lineTo(x+sz,y+c);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x,y+sz-c);ctx.lineTo(x,y+sz);ctx.lineTo(x+c,y+sz);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x+sz-c,y+sz);ctx.lineTo(x+sz,y+sz);ctx.lineTo(x+sz,y+sz-c);ctx.stroke();
 
-  /* scan line animation — redraw each frame with offset */
-  const elapsed=(Date.now()%2000)/2000; /* 0..1 cycle */
-  const lineY=by+(elapsed<0.5?elapsed*2:2-elapsed*2)*size;
-  const grad=ctx.createLinearGradient(bx,0,bx+size,0);
-  grad.addColorStop(0,"transparent");
-  grad.addColorStop(0.3,"rgba(34,211,200,0.8)");
-  grad.addColorStop(0.7,"rgba(34,211,200,0.8)");
-  grad.addColorStop(1,"transparent");
-  ctx.strokeStyle=grad;ctx.lineWidth=2;
-  ctx.beginPath();ctx.moveTo(bx,lineY);ctx.lineTo(bx+size,lineY);ctx.stroke();
+  /* animated scan line */
+  const phase=((Date.now()%2000)/2000);
+  const ly=y+(phase<0.5?phase*2:(2-phase*2))*sz;
+  const g=ctx.createLinearGradient(x,0,x+sz,0);
+  g.addColorStop(0,"rgba(34,211,200,0)");g.addColorStop(0.4,"rgba(34,211,200,0.85)");g.addColorStop(0.6,"rgba(34,211,200,0.85)");g.addColorStop(1,"rgba(34,211,200,0)");
+  ctx.strokeStyle=g;ctx.lineWidth=2;
+  ctx.beginPath();ctx.moveTo(x,ly);ctx.lineTo(x+sz,ly);ctx.stroke();
 }
 
-let overlayRafId=null;
-function startOverlayAnim(){
-  function loop(){
-    if(!qrActive){overlayRafId=null;return;}
-    drawQROverlay();
-    overlayRafId=requestAnimationFrame(loop);
-  }
-  if(!overlayRafId)overlayRafId=requestAnimationFrame(loop);
+function rafLoop(){
+  if(!_qrRunning){_qrRaf=null;return;}
+  drawViewfinder();
+  _qrRaf=requestAnimationFrame(rafLoop);
 }
 
-/* ─── Open QR modal ─── */
 window.openQR=async function(){
-  if(qrActive)return;
+  if(_qrRunning)return;
   const modal=document.getElementById("qrModal");
   modal.classList.add("show");
-  setQRStatus("● เปิดกล้อง...","#22d3c8");
-  hideDebug();
+  setQrStatus("● เปิดกล้อง...","#22d3c8");
+  setQrDebug(null);
+
+  /* Verify jsQR is available */
+  if(typeof window.jsQR!=="function"){
+    setQrStatus("❌ jsQR ไม่พร้อม — รีโหลดหน้าใหม่","#f87171");
+    return;
+  }
 
   try{
-    qrStream=await navigator.mediaDevices.getUserMedia({
+    _qrStream=await navigator.mediaDevices.getUserMedia({
       video:{
         facingMode:{ideal:"environment"},
-        width:{ideal:1920},
-        height:{ideal:1080}
+        width:{ideal:1280},
+        height:{ideal:720}
       }
     });
-
     const video=document.getElementById("qrVideo");
-    video.srcObject=qrStream;
+    video.srcObject=_qrStream;
     video.setAttribute("playsinline","");
+    video.muted=true;
     await video.play();
 
-    /* autofocus quietly */
-    try{
-      const track=qrStream.getVideoTracks()[0];
-      if(track&&track.getCapabilities){
-        const caps=track.getCapabilities();
-        if(caps.focusMode&&caps.focusMode.includes("continuous")){
-          await track.applyConstraints({advanced:[{focusMode:"continuous"}]});
-        }
+    /* quiet autofocus */
+    try{const track=_qrStream.getVideoTracks()[0];if(track&&track.getCapabilities){const caps=track.getCapabilities();if(caps.focusMode&&caps.focusMode.includes("continuous"))await track.applyConstraints({advanced:[{focusMode:"continuous"}]});}}catch(e2){}
+
+    /* wait for video data */
+    if(video.readyState<2){
+      await new Promise(res=>video.addEventListener("canplay",res,{once:true}));
+    }
+
+    _qrRunning=true;
+    _qrLocked=false;
+    setQrStatus("● กำลังสแกน...","#22d3c8");
+
+    /* start viewfinder animation */
+    _qrRaf=requestAnimationFrame(rafLoop);
+
+    /* ── DECODE LOOP — setInterval every 200ms ── */
+    const dcv=document.createElement("canvas");
+    const dctx=dcv.getContext("2d");
+
+    _qrTimer=setInterval(()=>{
+      if(!_qrRunning||_qrLocked)return;
+      if(video.readyState<2||!video.videoWidth)return;
+
+      const vw=video.videoWidth,vh=video.videoHeight;
+
+      /* Pass 1: full frame native res */
+      dcv.width=vw;dcv.height=vh;
+      dctx.drawImage(video,0,0,vw,vh);
+      let d=dctx.getImageData(0,0,vw,vh);
+      let result=window.jsQR(d.data,vw,vh,{inversionAttempts:"attemptBoth"});
+
+      /* Pass 2: scale to 640px wide */
+      if(!result){
+        const tw=640,th=Math.round(640*(vh/vw));
+        dcv.width=tw;dcv.height=th;
+        dctx.drawImage(video,0,0,vw,vh,0,0,tw,th);
+        d=dctx.getImageData(0,0,tw,th);
+        result=window.jsQR(d.data,tw,th,{inversionAttempts:"attemptBoth"});
       }
-    }catch(e){}
 
-    /* wait for first frame */
-    await new Promise(res=>{
-      if(video.readyState>=2){res();return;}
-      video.addEventListener("canplay",res,{once:true});
-    });
+      /* Pass 3: center 60% crop */
+      if(!result){
+        const cx=Math.round(vw*0.2),cy=Math.round(vh*0.2);
+        const cw=Math.round(vw*0.6),ch=Math.round(vh*0.6);
+        dcv.width=cw;dcv.height=ch;
+        dctx.drawImage(video,cx,cy,cw,ch,0,0,cw,ch);
+        d=dctx.getImageData(0,0,cw,ch);
+        result=window.jsQR(d.data,cw,ch,{inversionAttempts:"attemptBoth"});
+      }
 
-    qrActive=true;
-    qrLocked=false;
-    setQRStatus("● กำลังสแกน...","#22d3c8");
-    startOverlayAnim();
-
-    /* ── MAIN SCAN LOOP ── poll every 150ms */
-    qrTimer=setInterval(()=>{
-      if(!qrActive||qrLocked)return;
-      doScanFrame();
-    },150);
+      if(result){
+        const raw=result.data.trim();
+        setQrDebug(raw);
+        const radioId=parseQR(raw);
+        const radio=radioId?RADIOS.find(r=>r.id===radioId):null;
+        if(!radio){
+          setQrStatus("⚠ อ่านได้แต่ไม่พบวิทยุ — ลองใหม่","#fbbf24");
+          return;
+        }
+        /* SUCCESS */
+        _qrLocked=true;
+        setQrStatus("✅ พบ WD"+radio.id+" — "+radio.area,"#4ade80");
+        if(navigator.vibrate)navigator.vibrate([60,40,100]);
+        const flash=document.getElementById("qrFlash");
+        flash.classList.add("on");
+        setTimeout(()=>flash.classList.remove("on"),200);
+        setTimeout(()=>{stopQR();document.getElementById("qrModal").classList.remove("show");setScannedRadio(radio);},700);
+      }
+    },200);
 
   }catch(e){
-    modal.classList.remove("show");
-    toast("ไม่สามารถเข้าถึงกล้อง: "+e.message,"err");
+    document.getElementById("qrModal").classList.remove("show");
+    showToast("ไม่สามารถเข้าถึงกล้อง: "+e.message,"err");
   }
 };
 
-/* ─── Decode one frame ─── */
-const _dc=document.createElement("canvas");
-const _dctx=_dc.getContext("2d");
-
-function doScanFrame(){
-  const video=document.getElementById("qrVideo");
-  if(!video||video.readyState<2||!video.videoWidth||!video.videoHeight)return;
-
-  const vw=video.videoWidth,vh=video.videoHeight;
-
-  /* Pass 1 — full native resolution */
-  _dc.width=vw;_dc.height=vh;
-  _dctx.drawImage(video,0,0,vw,vh);
-  const d1=_dctx.getImageData(0,0,vw,vh);
-  let code=jsQR(d1.data,vw,vh,{inversionAttempts:"attemptBoth"});
-  if(code){onQRDetected(code.data);return;}
-
-  /* Pass 2 — scale to 640×480 (helps pixelated/tiny QR) */
-  const tw=640,th=Math.round(640*vh/vw);
-  _dc.width=tw;_dc.height=th;
-  _dctx.drawImage(video,0,0,vw,vh,0,0,tw,th);
-  const d2=_dctx.getImageData(0,0,tw,th);
-  code=jsQR(d2.data,tw,th,{inversionAttempts:"attemptBoth"});
-  if(code){onQRDetected(code.data);return;}
-
-  /* Pass 3 — center crop 50% of frame (QR held close) */
-  const cx=Math.round(vw*0.25),cy=Math.round(vh*0.25);
-  const cw=Math.round(vw*0.5),ch=Math.round(vh*0.5);
-  _dc.width=cw;_dc.height=ch;
-  _dctx.drawImage(video,cx,cy,cw,ch,0,0,cw,ch);
-  const d3=_dctx.getImageData(0,0,cw,ch);
-  code=jsQR(d3.data,cw,ch,{inversionAttempts:"attemptBoth"});
-  if(code)onQRDetected(code.data);
-}
-
-/* ─── Handle detected QR ─── */
-function onQRDetected(raw){
-  if(qrLocked)return;
-  const s=raw.trim();
-
-  /* always show debug */
-  showDebug(s);
-
-  const radioId=parseQRText(s);
-  const radio=radioId?RADIOS.find(r=>r.id===radioId):null;
-
-  if(!radio){
-    /* show what was read but no match */
-    setQRStatus("⚠ อ่านได้แต่ไม่พบวิทยุ — ลองใหม่","#fbbf24");
-    return; /* keep scanning */
-  }
-
-  /* found! */
-  qrLocked=true;
-  setQRStatus("✅ พบ WD"+radio.id+" — "+radio.area,"#4ade80");
-  if(navigator.vibrate)navigator.vibrate([60,40,100]);
-
-  const flash=document.getElementById("qrFlash");
-  flash.classList.add("on");
-  setTimeout(()=>flash.classList.remove("on"),200);
-
-  setTimeout(()=>{
-    stopQR();
-    document.getElementById("qrModal").classList.remove("show");
-    setScannedRadio(radio);
-  },600);
-}
-
-function setQRStatus(msg,color){
-  const el=document.getElementById("qrStatusText");
-  if(el){el.textContent=msg;el.style.color=color||"#22d3c8";}
-}
-function showDebug(val){
-  const box=document.getElementById("qrDebugBox");
-  const dv=document.getElementById("qrDebugVal");
-  if(box)box.classList.add("show");
-  if(dv)dv.textContent=val.slice(0,120)+(val.length>120?"…":"");
-}
-function hideDebug(){
-  const box=document.getElementById("qrDebugBox");
-  if(box)box.classList.remove("show");
-  const dv=document.getElementById("qrDebugVal");
-  if(dv)dv.textContent="—";
-}
-
 window.closeQR=function(){stopQR();document.getElementById("qrModal").classList.remove("show");};
-
 function stopQR(){
-  qrActive=false;qrLocked=false;
-  if(qrTimer){clearInterval(qrTimer);qrTimer=null;}
-  if(overlayRafId){cancelAnimationFrame(overlayRafId);overlayRafId=null;}
-  if(qrStream){qrStream.getTracks().forEach(t=>t.stop());qrStream=null;}
-  const v=document.getElementById("qrVideo");
-  if(v){v.pause();v.srcObject=null;}
+  _qrRunning=false;_qrLocked=false;
+  if(_qrTimer){clearInterval(_qrTimer);_qrTimer=null;}
+  if(_qrRaf){cancelAnimationFrame(_qrRaf);_qrRaf=null;}
+  if(_qrStream){_qrStream.getTracks().forEach(t=>t.stop());_qrStream=null;}
+  const v=document.getElementById("qrVideo");if(v){v.pause();v.srcObject=null;}
 }
+window.addEventListener("resize",()=>{if(_qrRunning)drawViewfinder();});
 
-window.addEventListener("resize",()=>{
-  if(qrActive)drawQROverlay();
-});
-
-/* ── Manual entry ── */
 window.manualEntry=function(){
   const val=document.getElementById("manualId").value.trim();
   const m=val.match(/WD[\s\-_]?(\d+)/i)||val.match(/^(\d+)$/);
-  if(!m){toast("รูปแบบไม่ถูกต้อง เช่น WD1 หรือ 1","err");return;}
+  if(!m){showToast("รูปแบบไม่ถูกต้อง เช่น WD1 หรือ 1","err");return;}
   const radio=RADIOS.find(r=>r.id===parseInt(m[1]));
-  if(!radio){toast("ไม่พบ WD"+m[1],"err");return;}
+  if(!radio){showToast("ไม่พบ WD"+m[1],"err");return;}
   setScannedRadio(radio);document.getElementById("manualId").value="";
 };
-function setScannedRadio(radio){
-  scannedRadioId=radio.id;
-  document.getElementById("qrResultId").textContent="WD"+radio.id;
-  document.getElementById("qrResultArea").textContent=radio.area;
-  document.getElementById("qrResultSn").textContent=radio.sn;
-  document.getElementById("qrBeforeScan").style.display="none";
-  document.getElementById("qrAfterScan").style.display="block";
-  document.getElementById("qrCard").classList.add("scanned");
-  toast("WD"+radio.id+" — "+radio.area);
-}
-window.rescan=function(){
-  scannedRadioId=null;
-  document.getElementById("qrBeforeScan").style.display="block";
-  document.getElementById("qrAfterScan").style.display="none";
-  document.getElementById("qrCard").classList.remove("scanned");
-};
+function setScannedRadio(radio){scannedRadioId=radio.id;document.getElementById("qrResultId").textContent="WD"+radio.id;document.getElementById("qrResultArea").textContent=radio.area;document.getElementById("qrResultSn").textContent=radio.sn;document.getElementById("qrBeforeScan").style.display="none";document.getElementById("qrAfterScan").style.display="block";document.getElementById("qrCard").classList.add("scanned");showToast("WD"+radio.id+" — "+radio.area);}
+window.rescan=function(){scannedRadioId=null;document.getElementById("qrBeforeScan").style.display="block";document.getElementById("qrAfterScan").style.display="none";document.getElementById("qrCard").classList.remove("scanned");};
 
-/* ── CHECKLIST ── */
 function buildList(){
   chk={};ITEMS.forEach(i=>chk[i.id]=null);
-  document.getElementById("checkList").innerHTML=ITEMS.map(it=>`
-    <div class="check-row" id="row-${it.id}" onclick="tog(${it.id})">
-      <div class="row-num">${it.id}.</div>
-      <div style="flex:1"><div class="row-text">${it.th}${it.en?' <span style="font-weight:400;color:var(--text3);font-size:11px">('+it.en+')</span>':''}</div></div>
-      <div class="toggle-pill" id="pill-${it.id}"><div class="pill-dot"></div><div class="pill-label" id="plbl-${it.id}">—</div></div>
-    </div>`).join("");
+  document.getElementById("checkList").innerHTML=ITEMS.map(it=>`<div class="check-row" id="row-${it.id}" onclick="tog(${it.id})"><div class="row-num">${it.id}.</div><div style="flex:1"><div class="row-text">${it.th}${it.en?' <span style="font-weight:400;color:var(--text3);font-size:11px">('+it.en+')</span>':''}</div></div><div class="toggle-pill" id="pill-${it.id}"><div class="pill-dot"></div><div class="pill-label" id="plbl-${it.id}">—</div></div></div>`).join("");
   document.getElementById("sTotal").textContent=ITEMS.length;
   document.getElementById("clProg").textContent="0/"+ITEMS.length;
 }
-window.tog=function(id){
-  const c=chk[id];chk[id]=c===null?"pass":c==="pass"?"fail":null;
-  updateRow(id);updateUI();if(navigator.vibrate)navigator.vibrate(chk[id]==="fail"?[8,4,8]:8);
-};
-function updateRow(id){
-  const state=chk[id],row=document.getElementById("row-"+id),pill=document.getElementById("pill-"+id),lbl=document.getElementById("plbl-"+id);
-  if(!row||!pill||!lbl)return;
-  row.classList.remove("pass-row","fail-row");pill.classList.remove("pass-pill","fail-pill");
-  if(state==="pass"){row.classList.add("pass-row");pill.classList.add("pass-pill");lbl.textContent="Pass";}
-  else if(state==="fail"){row.classList.add("fail-row");pill.classList.add("fail-pill");lbl.textContent="Fail";}
-  else lbl.textContent="—";
-}
-function updateUI(){
-  const pass=Object.values(chk).filter(v=>v==="pass").length,fail=Object.values(chk).filter(v=>v==="fail").length;
-  document.getElementById("sPass").textContent=pass;document.getElementById("sFail").textContent=fail;
-  document.getElementById("profPass").textContent=pass;
-  document.getElementById("clProg").textContent=(pass+fail)+"/"+ITEMS.length;
-  document.getElementById("progFill").style.width=Math.round(pass/ITEMS.length*100)+"%";
-}
-window.setAllPass=function(){ITEMS.forEach(i=>{chk[i.id]="pass";updateRow(i.id);});updateUI();toast("ตั้งค่า All Pass แล้ว");};
+window.tog=function(id){const c=chk[id];chk[id]=c===null?"pass":c==="pass"?"fail":null;updateRow(id);updateUI();if(navigator.vibrate)navigator.vibrate(chk[id]==="fail"?[8,4,8]:8);};
+function updateRow(id){const state=chk[id],row=document.getElementById("row-"+id),pill=document.getElementById("pill-"+id),lbl=document.getElementById("plbl-"+id);if(!row||!pill||!lbl)return;row.classList.remove("pass-row","fail-row");pill.classList.remove("pass-pill","fail-pill");if(state==="pass"){row.classList.add("pass-row");pill.classList.add("pass-pill");lbl.textContent="Pass";}else if(state==="fail"){row.classList.add("fail-row");pill.classList.add("fail-pill");lbl.textContent="Fail";}else lbl.textContent="—";}
+function updateUI(){const pass=Object.values(chk).filter(v=>v==="pass").length,fail=Object.values(chk).filter(v=>v==="fail").length;document.getElementById("sPass").textContent=pass;document.getElementById("sFail").textContent=fail;document.getElementById("profPass").textContent=pass;document.getElementById("clProg").textContent=(pass+fail)+"/"+ITEMS.length;document.getElementById("progFill").style.width=Math.round(pass/ITEMS.length*100)+"%";}
+window.setAllPass=function(){ITEMS.forEach(i=>{chk[i.id]="pass";updateRow(i.id);});updateUI();showToast("ตั้งค่า All Pass แล้ว");};
 window.resetAll=function(){ITEMS.forEach(i=>{chk[i.id]=null;updateRow(i.id);});updateUI();};
 
-/* ── SUBMIT ── */
 window.doSubmit=async function(){
-  if(!selectedShift){toast("กรุณาเลือกผลัดก่อน","err");return;}
-  await fetchConfig();
-  if(!isAllowed(selectedShift)){showLock(selectedShift,false);return;}
-  if(!scannedRadioId){toast("กรุณาสแกน QR Code ก่อน","err");return;}
-  const pend=Object.values(chk).filter(v=>v===null).length;
-  if(pend>0&&!confirm("ยังมี "+pend+" รายการที่ยังไม่ได้ตรวจ\nบันทึกต่อไหม?"))return;
+  if(!selectedShift){showToast("กรุณาเลือกผลัดก่อน","err");return;}
+  await fetchCfg();if(!isAllowed(selectedShift)){showLock(selectedShift,false);return;}
+  if(!scannedRadioId){showToast("กรุณาสแกน QR Code ก่อน","err");return;}
+  const pend=Object.values(chk).filter(v=>v===null).length;if(pend>0&&!confirm("ยังมี "+pend+" รายการที่ยังไม่ได้ตรวจ\nบันทึกต่อไหม?"))return;
   const btn=document.getElementById("saveBtn");btn.disabled=true;
   const radio=RADIOS.find(r=>r.id===scannedRadioId);const now=new Date();
   const pass=Object.values(chk).filter(v=>v==="pass").length,fail=Object.values(chk).filter(v=>v==="fail").length;
   const failItems=ITEMS.filter(i=>chk[i.id]==="fail").map(i=>i.th);
   const checkResults={};ITEMS.forEach(i=>checkResults["item_"+i.id]=chk[i.id]||"pending");
   const names={day:"ผลัดกลางวัน",night:"ผลัดกลางคืน"};
-  const data={
-    userId:user.userId,userName:user.name,empId:user.empId||user.userId,
-    dept:user.dept||"Security",position:user.position||"Inspector",
-    shift:selectedShift,shiftName:names[selectedShift],
-    radioId:scannedRadioId,radioLabel:"WD"+scannedRadioId,area:radio?.area||"",sn:radio?.sn||"",
-    passCount:pass,failCount:fail,totalItems:ITEMS.length,
-    passRate:Math.round(pass/ITEMS.length*100),failItems,checkResults,
-    overallStatus:fail===0?"PASS":"FAIL",scanMethod:"qr",emergencyUnlock:emergencyActive,
-    date:now.toISOString().slice(0,10),
-    time:now.toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"}),
-    timestamp:serverTimestamp(),formType:"21items_v6",
-  };
+  const data={userId:user.userId,userName:user.name,empId:user.empId||user.userId,dept:user.dept||"Security",position:user.position||"Inspector",shift:selectedShift,shiftName:names[selectedShift],radioId:scannedRadioId,radioLabel:"WD"+scannedRadioId,area:radio?.area||"",sn:radio?.sn||"",passCount:pass,failCount:fail,totalItems:ITEMS.length,passRate:Math.round(pass/ITEMS.length*100),failItems,checkResults,overallStatus:fail===0?"PASS":"FAIL",scanMethod:"qr",emergencyUnlock:emergencyActive,date:now.toISOString().slice(0,10),time:now.toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"}),timestamp:serverTimestamp(),formType:"21items_v6"};
   try{
     if(db)await addDoc(collection(db,"submissions"),data);
     const hasFail=fail>0;
-    document.getElementById("resIcon").innerHTML=hasFail
-      ?`<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`
-      :`<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+    document.getElementById("resIcon").innerHTML=hasFail?`<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`:`<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
     document.getElementById("resIcon").style.cssText=`width:88px;height:88px;border-radius:28px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;background:${hasFail?"rgba(239,68,68,.12)":"rgba(34,197,94,.1)"};border:2px solid ${hasFail?"rgba(239,68,68,.3)":"rgba(34,197,94,.3)"};animation:pop .4s cubic-bezier(.175,.885,.32,1.275)`;
     document.getElementById("resTitle").textContent=hasFail?"มีรายการ Fail":"ผ่านทุกรายการ!";
     document.getElementById("resTitle").style.color=hasFail?"#ef4444":"#22c55e";
     document.getElementById("resSub").textContent=hasFail?"พบ "+fail+" รายการ Fail\nข้อมูลบันทึกแล้ว":"ผ่านครบ "+pass+" รายการ\nข้อมูลบันทึกแล้ว";
-    document.getElementById("resInfo").innerHTML=`
-      <div class="res-row"><span class="res-key">ผู้ตรวจ</span><span class="res-val">${user.name}</span></div>
-      <div class="res-row"><span class="res-key">ผลัด</span><span class="res-val">${names[selectedShift]}</span></div>
-      <div class="res-row"><span class="res-key">ช่วงตรวจ</span><span class="res-val">${winLabel(selectedShift)}</span></div>
-      <div class="res-row"><span class="res-key">วิทยุ</span><span class="res-val">WD${scannedRadioId}</span></div>
-      <div class="res-row"><span class="res-key">พื้นที่</span><span class="res-val">${radio?.area||"—"}</span></div>
-      <div class="res-row"><span class="res-key">Pass</span><span class="res-val" style="color:#22c55e">${pass}</span></div>
-      <div class="res-row"><span class="res-key">Fail</span><span class="res-val" style="color:${fail>0?"#ef4444":"#22c55e"}">${fail}</span></div>
-      <div class="res-row"><span class="res-key">เวลา</span><span class="res-val">${data.time} น.</span></div>
-      ${emergencyActive?'<div class="res-row"><span class="res-key">โหมด</span><span class="res-val" style="color:#fbbf24">ปลดล็อคฉุกเฉิน</span></div>':""}
-      ${failItems.length?`<div class="res-row" style="flex-direction:column;align-items:flex-start;gap:6px"><span class="res-key">รายการ Fail</span><div style="margin-top:6px">${failItems.map(f=>`<span style="display:inline-block;font-size:11px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#fca5a5;padding:2px 9px;border-radius:12px;margin:2px">${f}</span>`).join("")}</div></div>`:""}`;
-    show("s-result");
-  }catch(e){toast("บันทึกไม่สำเร็จ: "+e.message,"err");}
+    document.getElementById("resInfo").innerHTML=`<div class="res-row"><span class="res-key">ผู้ตรวจ</span><span class="res-val">${user.name}</span></div><div class="res-row"><span class="res-key">ผลัด</span><span class="res-val">${names[selectedShift]}</span></div><div class="res-row"><span class="res-key">ช่วงตรวจ</span><span class="res-val">${winLabel(selectedShift)}</span></div><div class="res-row"><span class="res-key">วิทยุ</span><span class="res-val">WD${scannedRadioId}</span></div><div class="res-row"><span class="res-key">พื้นที่</span><span class="res-val">${radio?.area||"—"}</span></div><div class="res-row"><span class="res-key">Pass</span><span class="res-val" style="color:#22c55e">${pass}</span></div><div class="res-row"><span class="res-key">Fail</span><span class="res-val" style="color:${fail>0?"#ef4444":"#22c55e"}">${fail}</span></div><div class="res-row"><span class="res-key">เวลา</span><span class="res-val">${data.time} น.</span></div>${emergencyActive?'<div class="res-row"><span class="res-key">โหมด</span><span class="res-val" style="color:#fbbf24">ปลดล็อคฉุกเฉิน</span></div>':""}${failItems.length?`<div class="res-row" style="flex-direction:column;align-items:flex-start;gap:6px"><span class="res-key">รายการ Fail</span><div style="margin-top:6px">${failItems.map(f=>`<span style="display:inline-block;font-size:11px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#fca5a5;padding:2px 9px;border-radius:12px;margin:2px">${f}</span>`).join("")}</div></div>`:""}`;
+    showScreen("s-result");
+  }catch(e){showToast("บันทึกไม่สำเร็จ: "+e.message,"err");}
   btn.disabled=false;
 };
-window.startNew=function(){
-  ITEMS.forEach(i=>{chk[i.id]=null;updateRow(i.id);});
-  selectedShift=null;scannedRadioId=null;
-  document.getElementById("shiftDay").classList.remove("active-day");
-  document.getElementById("shiftNight").classList.remove("active-night");
-  document.getElementById("profShiftTag").style.display="none";
-  rescan();updateUI();show("s-main");window.scrollTo(0,0);
-};
-function toast(m,t="ok"){
-  const el=document.getElementById("toast");el.textContent=m;
-  el.className="toast"+(t==="err"?" terr":t==="info"?" tinfo":"");
-  el.classList.add("show");setTimeout(()=>el.classList.remove("show"),3200);
-}
+window.startNew=function(){ITEMS.forEach(i=>{chk[i.id]=null;updateRow(i.id);});selectedShift=null;scannedRadioId=null;document.getElementById("shiftDay").classList.remove("active-day");document.getElementById("shiftNight").classList.remove("active-night");document.getElementById("profShiftTag").style.display="none";rescan();updateUI();showScreen("s-main");window.scrollTo(0,0);};
+function showToast(m,t="ok"){const el=document.getElementById("toast");el.textContent=m;el.className="toast"+(t==="err"?" terr":t==="info"?" tinfo":"");el.classList.add("show");setTimeout(()=>el.classList.remove("show"),3200);}
 document.getElementById("lPw").addEventListener("keydown",e=>{if(e.key==="Enter")doLogin();});
 document.getElementById("lId").addEventListener("keydown",e=>{if(e.key==="Enter")document.getElementById("lPw").focus();});
 </script>
