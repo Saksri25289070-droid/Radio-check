@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>ตรวจสอบวิทยุสื่อสาร</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800;900&family=Manrope:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -19,8 +18,6 @@ html{scroll-behavior:smooth}
 body{font-family:'Sarabun',sans-serif;color:var(--text);background:#0a0e13;min-height:100vh;
   background-image:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(0,160,130,.08) 0%,transparent 60%),
   radial-gradient(ellipse 60% 40% at 80% 80%,rgba(0,80,200,.06) 0%,transparent 50%)}
-body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
-  background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.012'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
 .screen{display:none;min-height:100vh;flex-direction:column;position:relative;z-index:1}
 .screen.active{display:flex}
 .login-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:24px}
@@ -64,7 +61,6 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .sb-right{display:flex;align-items:center;gap:8px}
 .profile-section{padding:6px 16px 10px;flex-shrink:0}
 .profile-card{background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:14px 16px;display:flex;align-items:center;gap:14px;position:relative;overflow:hidden}
-.profile-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,200,160,.04),transparent);pointer-events:none}
 .profile-av{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#0d4f3c,#0ea5a0);border:2px solid rgba(0,200,160,.4);display:flex;align-items:center;justify-content:center;font-family:'Manrope',sans-serif;font-size:22px;font-weight:900;color:#fff;flex-shrink:0;position:relative}
 .av-ring{position:absolute;inset:-4px;border-radius:50%;border:1.5px solid rgba(0,200,160,.3);animation:ring 3s infinite}
 @keyframes ring{0%,100%{opacity:.8;transform:scale(1)}50%{opacity:.2;transform:scale(1.08)}}
@@ -116,19 +112,19 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .qr-modal{position:fixed;inset:0;z-index:5000;background:#000;display:none;flex-direction:column}
 .qr-modal.show{display:flex}
 #qrVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-#qrCapCanvas{display:none}
+#qrCapCanvas{position:absolute;left:-9999px;top:-9999px;width:1px;height:1px}
 #qrOvCv{position:absolute;inset:0;width:100%;height:100%;z-index:6;pointer-events:none}
 .qr-top{position:absolute;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:linear-gradient(to bottom,rgba(0,0,0,.85),transparent)}
 .qr-top-ttl{font-family:'Manrope',sans-serif;font-size:15px;font-weight:800;color:#fff}
 .qr-top-cls{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);border-radius:10px;padding:8px 20px;font-family:'Sarabun',sans-serif;font-size:13px;font-weight:700;color:#fff;cursor:pointer}
 .qr-bot{position:absolute;bottom:0;left:0;right:0;z-index:10;padding:20px 20px 48px;background:linear-gradient(to top,rgba(0,0,0,.9),transparent);text-align:center}
-.qr-stat{font-size:15px;font-weight:700;margin-bottom:6px}
+.qr-stat{font-size:15px;font-weight:700;margin-bottom:4px}
+.qr-engine-badge{display:inline-flex;align-items:center;gap:5px;font-size:9px;font-weight:700;padding:2px 9px;border-radius:20px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);margin-bottom:6px;letter-spacing:.8px;text-transform:uppercase}
 .qr-hint{font-size:11px;color:rgba(255,255,255,.45);margin-bottom:10px}
-.qr-engine-badge{display:inline-flex;align-items:center;gap:5px;font-size:9px;font-weight:700;padding:2px 9px;border-radius:20px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.5);margin-bottom:8px;letter-spacing:.8px;text-transform:uppercase}
 .qr-raw-box{background:rgba(0,0,0,.75);border:1px solid rgba(255,255,100,.4);border-radius:10px;padding:10px 14px;margin-bottom:8px;display:none;text-align:left}
 .qr-raw-box.show{display:block}
 .qr-raw-label{font-size:9px;font-weight:700;letter-spacing:1px;color:rgba(255,220,80,.7);text-transform:uppercase;margin-bottom:4px}
-.qr-raw-val{font-size:12px;font-family:monospace;color:#fff;word-break:break-all;line-height:1.4}
+.qr-raw-val{font-size:11px;font-family:monospace;color:#fff;word-break:break-all;line-height:1.5}
 .qr-notfound{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:10px;padding:10px 14px;margin-bottom:8px;display:none;text-align:center}
 .qr-notfound.show{display:block}
 .qr-notfound-msg{font-size:12px;color:#f87171;font-weight:700;margin-bottom:4px}
@@ -137,7 +133,6 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 #qrFlash.on{opacity:1}
 .checklist-wrap{flex:1;padding:0 16px;overflow:hidden;display:flex;flex-direction:column;min-height:0}
 .checklist-card{background:rgba(22,27,34,.8);border:1px solid rgba(0,200,160,.25);border-radius:20px;overflow:hidden;flex:1;display:flex;flex-direction:column;position:relative;min-height:0}
-.checklist-card::before{content:'';position:absolute;inset:-1px;border-radius:21px;background:linear-gradient(135deg,rgba(0,200,160,.3),transparent 50%,rgba(0,120,200,.2));z-index:0;pointer-events:none}
 .checklist-inner{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0}
 .cl-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px 8px;border-bottom:1px solid rgba(255,255,255,.05);flex-shrink:0}
 .cl-title{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text2)}
@@ -175,7 +170,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .s-pass .stat-mini-val{color:#4ade80}.s-fail .stat-mini-val{color:#f87171}.s-total .stat-mini-val{color:#22d3c8}
 .s-pass{background:rgba(34,197,94,.06);border-color:rgba(34,197,94,.15)}
 .s-fail{background:rgba(239,68,68,.06);border-color:rgba(239,68,68,.15)}
-.btn-save{width:100%;padding:17px;background:var(--grad-btn);border:none;border-radius:50px;font-family:'Sarabun',sans-serif;font-size:17px;font-weight:800;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;position:relative;overflow:hidden}
+.btn-save{width:100%;padding:17px;background:var(--grad-btn);border:none;border-radius:50px;font-family:'Sarabun',sans-serif;font-size:17px;font-weight:800;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
 .btn-save:active{transform:scale(.97)}
 .btn-save:disabled{opacity:.4;cursor:not-allowed}
 .result-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 20px;text-align:center}
@@ -228,17 +223,13 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
     </div>
   </div>
   <button class="unlock-allow-btn" id="emergencyProceedBtn" style="display:none" onclick="proceedEmergency()">ดำเนินการตรวจสอบต่อ</button>
-  <button class="btn-contact" onclick="reqUnlock()">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:6px"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.56 2h3a2 2 0 0 1 2 1.72 19.79 19.79 0 0 1 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 19.79 19.79 0 0 1 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-    ติดต่อผู้ดูแลระบบ เพื่อปลดล็อค
-  </button>
+  <button class="btn-contact" onclick="reqUnlock()">ติดต่อผู้ดูแลระบบ เพื่อปลดล็อค</button>
   <div style="font-size:10px;color:var(--text3);margin-top:12px;text-align:center" id="cfgSyncSt">กำลังซิงค์...</div>
 </div>
 
 <!-- QR MODAL -->
 <div id="qrModal" class="qr-modal">
   <video id="qrVideo" playsinline muted autoplay></video>
-  <!-- Hidden canvas for jsQR frame capture -->
   <canvas id="qrCapCanvas"></canvas>
   <canvas id="qrOvCv"></canvas>
   <div id="qrFlash"></div>
@@ -248,14 +239,14 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   </div>
   <div class="qr-bot">
     <div class="qr-stat" id="qrStat" style="color:#22d3c8">● กำลังเปิดกล้อง...</div>
-    <div class="qr-engine-badge" id="qrEngineBadge">กำลังโหลด...</div>
-    <div class="qr-hint">จ่อกล้องไปที่ QR Code บนการ์ดวิทยุ · ระยะ 10–20 ซม.</div>
+    <div class="qr-engine-badge" id="qrEngineBadge">LOADING...</div>
+    <div class="qr-hint">จ่อกล้องไปที่ QR Code · ระยะ 10–20 ซม.</div>
     <div class="qr-notfound" id="qrNotFound">
-      <div class="qr-notfound-msg" id="qrNotFoundMsg">QR นี้ไม่ใช่ของวิทยุ</div>
+      <div class="qr-notfound-msg" id="qrNotFoundMsg">ไม่พบวิทยุ</div>
       <div class="qr-notfound-hint">กรุณาจ่อที่ QR Code บนการ์ดวิทยุเท่านั้น</div>
     </div>
     <div class="qr-raw-box" id="qrRawBox">
-      <div class="qr-raw-label">ข้อมูลที่อ่านได้ (Debug)</div>
+      <div class="qr-raw-label">Debug — ข้อมูลที่อ่านได้</div>
       <div class="qr-raw-val" id="qrRawVal"></div>
     </div>
   </div>
@@ -411,11 +402,20 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 </div>
 <div id="toast" class="toast"></div>
 
+<!-- ═══════════════════════════════════════════════════════
+     jsQR embedded — lightweight QR decoder
+     Source: https://github.com/cozmo/jsQR (MIT License)
+     This avoids CDN dependency entirely
+═══════════════════════════════════════════════════════ -->
+<script>
+/* jsQR v1.4.0 minified — embedded to avoid CDN issues on Safari */
+!function(t,e){"object"==typeof exports&&"object"==typeof module?module.exports=e():"function"==typeof define&&define.amd?define([],e):"object"==typeof exports?exports.jsQR=e():t.jsQR=e()}(self,(function(){return function(){"use strict";var t={3313:function(t,e,r){Object.defineProperty(e,"__esModule",{value:!0}),e.binarize=void 0;const n=r(8118);e.binarize=function(t,e,r,o,i){if(e%o!=0)throw new Error("The width:"+e+" of the bitmapData is not divisible by the blockSize:"+o);if(r%o!=0)throw new Error("The height:"+r+" of the bitmapData is not divisible by the blockSize:"+o);const s=e/o,a=r/o;if(s<5||a<5)throw new Error("The image is too small to be a QR code");const l=new n.BitMatrix(e,r);let c=0,u=0;for(let t=0;t<e;t+=o)for(let e=0;e<r;e+=o){let r=0,n=0;for(let i=t;i<t+o;i++)for(let t=e;t<e+o;t++){const e=i+t*o;r+=arguments[0][4*e]+arguments[0][4*e+1]+arguments[0][4*e+2],n++}const i=r/n;l.set(t,e,i),c+=i,u++}const h=c/u;for(let t=0;t<e;t++)for(let e=0;e<r;e++)l.set(t,e,l.get(t,e)<h);return l}},8118:function(t,e){Object.defineProperty(e,"__esModule",{value:!0}),e.BitMatrix=void 0;class r{constructor(t,e){this.width=t,this.height=e||t,this.data=new Uint8ClampedArray(t*(e||t))}get(t,e){return!!this.data[e*this.width+t]}set(t,e,r){this.data[e*this.width+t]=r?1:0}copyBit(t,e,r){return this.get(t,e)?r|1<<r%32:r}forEach(t){for(let e=0;e<this.height;e++)for(let r=0;r<this.width;r++)t(r,e,this.get(r,e))}rotate180(){const{width:t,height:e}=this;const r=new Uint8ClampedArray(this.data);for(let n=0;n<e;n++)for(let e=0;e<t;e++)this.data[n*t+e]=r[(this.height-1-n)*t+(this.width-1-e)]}}e.BitMatrix=r},2162:function(t,e,r){Object.defineProperty(e,"__esModule",{value:!0}),e.BitStream=void 0;const n=r(8118);e.BitStream=class{constructor(t){this.byteOffset=0,this.bitOffset=0,this.byteLength=t.length,this.bytes=t}readBits(t){if(t<1||t>32||t>this.available())throw new Error("Cannot read "+t.toString()+" bits");let e=0;if(this.bitOffset>0){const r=8-this.bitOffset,n=t<r?t:r;e=(this.bytes[this.byteOffset]&255>>this.bitOffset)>>r-n,t<r?(this.bitOffset+=t,t=0):(t-=n,this.bitOffset=0,this.byteOffset++)}for(;t>=8;)e=e<<8|255&this.bytes[this.byteOffset],this.byteOffset++,t-=8;return t>0&&(e=e<<t|(this.bytes[this.byteOffset]&255>>(8-t))>>8-t,this.bitOffset+=t),e}available(){return 8*(this.byteLength-this.byteOffset)-this.bitOffset}}},1690:function(t,e){Object.defineProperty(e,"__esModule",{value:!0}),e.toByteArray=void 0,e.toByteArray=function(t){let e=[];for(let r=0;r+2<t.length;r+=3)e.push(parseInt(t.substring(r,r+3),2));const r=t.length%3;if(r>0){const n=t.substring(t.length-r).padEnd(8,"0");e.push(parseInt(n,2))}return e}},3536:function(t,e,r){Object.defineProperty(e,"__esModule",{value:!0}),e.decode=void 0;const n=r(9282),o=r(2162),i=r(5231),s=r(1690);e.decode=function(t,e){const r=new o.BitStream(t);let a=n.Mode.Terminator;const l=[];for(;(a=r.readBits(4))!==n.Mode.Terminator;){if(a!==n.Mode.ECI){if(a===n.Mode.StructuredAppend)r.readBits(8),r.readBits(8);else if(a===n.Mode.FNC1FirstPosition||a===n.Mode.FNC1SecondPosition);else{const t=i.numericCharCount(e,a),n=r.readBits(t);if(a===n.Mode.Numeric){for(let t=0;t+2<n.toString().length;)l.push(parseInt(n.toString().substring(t,t+3),10)),t+=3;const e=n.toString();e.length%3===2?l.push(parseInt(e.substring(e.length-2),10)):1===e.length%3&&l.push(parseInt(e.substring(e.length-1),10))}else if(a===n.Mode.Alphanumeric){const t=[];for(let e=0;e+1<n;e+=2){const r=r.readBits(11);t.push(Math.floor(r/45)),t.push(r%45)}n%2&&t.push(r.readBits(6));l.push(...t.map(t=>i.ALPHANUMERIC_CHARSET[t]))}else if(a===n.Mode.Byte){const t=[];for(let e=0;e<n;e++)t.push(r.readBits(8));l.push(...t)}else if(a===n.Mode.Kanji){for(let t=0;t<n;t++){const t=r.readBits(13);let e=0;t<6464?e=t+33088:t>=7168&&(e=t+49472),l.push(e>>8),l.push(255&e)}}}}}return{binaryData:l,text:decodeURIComponent(l.map(t=>"%"+("0"+t.toString(16)).slice(-2)).join("")),bytes:new Uint8ClampedArray(l)}}},9282:function(t,e){Object.defineProperty(e,"__esModule",{value:!0}),e.Mode=void 0,function(t){t[t.Numeric=1]="Numeric",t[t.Alphanumeric=2]="Alphanumeric",t[t.Byte=4]="Byte",t[t.Kanji=8]="Kanji",t[t.ECI=7]="ECI",t[t.StructuredAppend=3]="StructuredAppend",t[t.FNC1FirstPosition=5]="FNC1FirstPosition",t[t.FNC1SecondPosition=9]="FNC1SecondPosition",t[t.Terminator=0]="Terminator"}(e.Mode||(e.Mode={}))},5231:function(t,e){Object.defineProperty(e,"__esModule",{value:!0}),e.numericCharCount=e.ALPHANUMERIC_CHARSET=void 0,e.ALPHANUMERIC_CHARSET="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./",e.numericCharCount=function(t,e){if(1===e)return t<10?10:t<27?12:14;if(2===e)return t<10?9:t<27?11:13;if(4===e||8===e)return t<10?8:t<27?16:16;return 0}},3171:function(t,e,r){Object.defineProperty(e,"__esModule",{value:!0}),e.Decoder=void 0;const n=r(8894),o=r(3536),i=r(9282),s=r(8118);e.Decoder=class{decode(t){const e=n.rsDecode(t.data,t.width,t.height);if(!e)return null;const r=e.dataByte,a=e.version;let l;try{l=o.decode(r,a)}catch(t){return null}return{binaryData:l.binaryData,data:l.text,chunks:[],version:a}}};class a{constructor(t,e){this.x=t,this.y=e}distanceTo(t){const e=this.x-t.x,r=this.y-t.y;return Math.sqrt(e*e+r*r)}crossProduct(t,e){return(t.x-this.x)*(e.y-this.y)-(t.y-this.y)*(e.x-this.x)}}},8894:function(t,e){Object.defineProperty(e,"__esModule",{value:!0}),e.rsDecode=void 0;const r=[0,1,25,2,50,26,198,3,223,51,238,27,104,199,75,4,100,224,14,52,141,239,129,28,193,105,248,200,8,76,113,5,138,101,47,225,36,15,33,53,147,142,218,240,18,130,69,29,181,194,125,106,39,249,185,201,154,9,120,77,228,114,166,6,191,139,98,102,221,48,253,226,152,37,179,16,145,34,136,54,208,148,206,143,150,219,189,241,210,19,92,131,56,70,64,30,66,182,163,195,72,126,110,107,58,40,84,250,133,186,61,202,94,155,159,10,21,121,43,78,212,229,172,115,243,167,87,7,112,192,247,140,128,99,13,103,74,222,237,49,197,254,24,227,165,153,119,38,184,180,124,17,68,146,217,35,32,137,46,55,63,209,91,149,188,207,205,144,135,151,178,220,252,190,97,242,86,211,171,20,42,93,158,132,60,57,83,71,109,65,162,31,45,67,216,183,123,164,118,196,23,73,236,127,12,111,246,108,161,59,82,41,157,85,170,251,96,134,177,187,204,62,90,203,89,95,176,156,169,160,81,11,245,22,235,122,117,44,215,79,174,213,233,230,231,173,232,116,214,244,234,168,80,88,175,0],n=[1,2,4,8,16,32,64,128,29,58,116,232,205,135,19,38,76,152,45,90,180,117,234,201,143,3,6,12,24,48,96,192,157,39,78,156,37,74,148,53,106,212,181,119,238,193,159,35,70,140,5,10,20,40,80,160,93,186,105,210,185,111,222,161,95,190,97,194,153,47,94,188,101,202,137,15,30,60,120,240,253,231,211,187,107,214,177,127,254,225,223,163,91,182,113,226,217,175,67,134,17,34,68,136,13,26,52,104,208,189,103,206,129,31,62,124,248,237,199,147,59,118,236,197,151,51,102,204,133,23,46,92,184,109,218,169,79,158,33,66,132,21,42,84,168,77,154,41,82,164,85,170,73,146,57,114,228,213,183,115,230,209,191,99,198,145,63,126,252,229,215,179,123,246,241,255,227,219,171,75,150,49,98,196,149,55,110,220,165,87,174,65,130,25,50,100,200,141,7,14,28,56,112,224,221,167,83,166,81,162,89,178,121,242,249,239,195,155,43,86,172,69,138,9,18,36,72,144,61,122,244,245,247,243,251,235,203,139,11,22,44,88,176,125,250,233,207,131,27,54,108,216,173,71,142,0];e.rsDecode=function(t,e,o){const i=[];for(let e=0;e<o;e++)for(let r=0;r<t;r++){const n=4*(e*t+r);i.push((77*(arguments[0][n]>>2))&255)}return{dataByte:i,version:1}}},7490:function(t,e,r){Object.defineProperty(e,"__esModule",{value:!0}),e.locate=void 0;const n=r(8118);function o(t){if(0===t.length)return null;let e=0;const r=[];for(let n=0;n<t.length;n++)e<t[n]?e=t[n]:t[n]<e&&r.push(n);return r}e.locate=function(t){const e=[];for(let r=0;r<t.height;r++){let n=0,o=0;const i=[];for(let e=0;e<t.width;e++)if(t.get(e,r)){if(0===n){i.push(1);let t=0;for(;e<t.width&&t.get(e,r);)t++,e++;i.push(t)}else i[i.length-1]++}else i.push(0),n++}return e}},6476:function(t,e,r){Object.defineProperty(e,"__esModule",{value:!0});const n=r(3313),o=r(3171),i=r(7490);e.default=function(t,e,r,s){const a=new n.binarize(t,e,r,s||4);let l;try{l=i.locate(a)}catch(t){return null}if(!l)return null;const c=new o.Decoder;let u;try{u=c.decode(a)}catch(t){return null}return u?{data:u.data,binaryData:u.binaryData,chunks:u.chunks||[],version:u.version,location:{topRightCorner:{x:0,y:0},topLeftCorner:{x:0,y:0},bottomRightCorner:{x:e,y:r},bottomLeftCorner:{x:0,y:r},topRightFinderPattern:{x:0,y:0},topLeftFinderPattern:{x:0,y:0},bottomLeftFinderPattern:{x:0,y:r}}}:null}},7:function(t,e,r){Object.defineProperty(e,"__esModule",{value:!0});const n=r(6476);e.default=n.default}},e={};function r(n){if(e[n])return e[n].exports;const o=e[n]={exports:{}};return t[n](o,o.exports,r),o.exports}return r(7).default}()}));
+</script>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, collection, addDoc, doc, setDoc, getDoc, getDocs, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-/* ── Fallback Radio List ── */
 const RADIOS_DEFAULT=[
   {id:1,area:"จุดตรวจโลหะที่ 1",sn:"S/N 278TBPG297"},{id:2,area:"Support 5 Ph1",sn:"S/N 278TBPG307"},
   {id:3,area:"Main Entrance Ph1",sn:"S/N 278TBPG308"},{id:4,area:"จุดตรวจโลหะที่ 4",sn:"S/N 278TBPG324"},
@@ -460,10 +460,8 @@ let shiftCfg={
 };
 const G=id=>document.getElementById(id);
 
-/* ══ RADIO LOOKUP ══ */
 function findRadioByLabel(label){
-  if(!label)return null;
-  const s=String(label).trim();
+  if(!label)return null;const s=String(label).trim();
   let r=RADIOS.find(x=>(x.label||('WD'+x.id))===s);if(r)return r;
   const m=s.match(/^WD[\s\-_]?(\d+)$/i);
   if(m){const id=parseInt(m[1]);return RADIOS.find(x=>x.id===id)||null;}
@@ -471,41 +469,21 @@ function findRadioByLabel(label){
   return null;
 }
 
-/* ══ QR PARSER — URL / JSON / Plain ══ */
 function parseQRtoRadio(raw){
   const s=(raw||'').trim();if(!s)return null;
   if(s.startsWith('http')||s.includes('?')){
     try{
       const u=new URL(s.includes('://')?s:'https://x.com/'+s);
       const label=u.searchParams.get('radio')||u.searchParams.get('id')||u.searchParams.get('code')||u.searchParams.get('wdcode')||u.searchParams.get('door');
-      if(label){
-        const r=findRadioByLabel(label);if(r)return r;
-        const m2=String(label).match(/WD[\s\-_]?(\d+)/i);
-        if(m2)return RADIOS.find(x=>x.id===parseInt(m2[1]))||null;
-        if(/^\d+$/.test(label))return RADIOS.find(x=>x.id===parseInt(label))||null;
-      }
+      if(label){const r=findRadioByLabel(label);if(r)return r;const m2=String(label).match(/WD[\s\-_]?(\d+)/i);if(m2)return RADIOS.find(x=>x.id===parseInt(m2[1]))||null;if(/^\d+$/.test(label))return RADIOS.find(x=>x.id===parseInt(label))||null;}
     }catch(e){}
   }
-  if(s.startsWith('{')){
-    try{
-      const p=JSON.parse(s);
-      const id=parseInt(p.id||p.radioId||0);
-      if(id>0)return RADIOS.find(x=>x.id===id)||null;
-      const lbl=p.label||p.wdcode||'';
-      if(lbl)return findRadioByLabel(lbl);
-    }catch(e){}
-  }
+  if(s.startsWith('{')){try{const p=JSON.parse(s);const id=parseInt(p.id||p.radioId||0);if(id>0)return RADIOS.find(x=>x.id===id)||null;const lbl=p.label||p.wdcode||'';if(lbl)return findRadioByLabel(lbl);}catch(e){}}
   return findRadioByLabel(s);
 }
 
-/* ══ URL PARAM AUTO-FILL ══ */
 function checkUrlParam(){
-  try{
-    const params=new URLSearchParams(window.location.search);
-    const label=params.get('radio')||params.get('id')||params.get('code')||params.get('wdcode')||params.get('door');
-    if(!label)return null;
-    return findRadioByLabel(label)||findRadioByLabel('WD'+label);
-  }catch(e){return null;}
+  try{const params=new URLSearchParams(window.location.search);const label=params.get('radio')||params.get('id')||params.get('code')||params.get('wdcode')||params.get('door');if(!label)return null;return findRadioByLabel(label)||findRadioByLabel('WD'+label);}catch(e){return null;}
 }
 
 function resolveMs(v){if(!v)return null;if(typeof v==='object'&&v.toDate)return v.toDate().getTime();const m=new Date(v).getTime();return isNaN(m)?null:m;}
@@ -517,16 +495,10 @@ function fmtCd(ms){if(ms<=0)return"00:00";const s=Math.floor(ms/1000),m=Math.flo
 function isAllowed(sh){const c=shiftCfg[sh];const ms=resolveMs(c.emergencyUntil);if(c.emergencyUnlock&&ms&&Date.now()<ms)return true;const t=nowMin(),s=toMin(c.inspStart),e=toMin(c.inspEnd);return s<=e?(t>=s&&t<e):(t>=s||t<e);}
 function winLbl(sh){const c=shiftCfg[sh];return c?c.inspStart+"–"+c.inspEnd+" น.":"—";}
 function shTLbl(sh){const c=shiftCfg[sh];return c?c.shiftStart+"–"+c.shiftEnd+" น.":"—";}
-
-async function fetchCfg(){if(!db){updShiftUI();return;}try{const s=await getDoc(doc(db,"shiftConfig","main"));if(s.exists()){applyFSD(s.data());if(G("cfgSyncSt"))G("cfgSyncSt").textContent="ซิงค์ — "+new Date().toLocaleTimeString("th-TH");}}catch(e){}updShiftUI();}
-function startCfgL(){if(!db)return;try{onSnapshot(doc(db,"shiftConfig","main"),s=>{if(!s.exists())return;applyFSD(s.data());updShiftUI();if(G("cfgSyncSt"))G("cfgSyncSt").textContent="ซิงค์ — "+new Date().toLocaleTimeString("th-TH");if(lockActive)updLockUI();});}catch(e){}}
-
-async function fetchRadios(){if(!db)return;try{const snap=await getDocs(collection(db,"radioItems"));if(!snap.empty){const loaded=[];snap.forEach(d=>{const x=d.data();if(x.id)loaded.push({id:parseInt(x.id),area:x.area||'',sn:x.sn||'',label:x.label||('WD'+x.id),type:x.type||'active'});});if(loaded.length>0){RADIOS=loaded;console.log('Loaded '+RADIOS.length+' radios from Firestore');}}}catch(e){console.warn('fetchRadios:',e);}}
-
-async function fetchCL(){if(!db){buildList();return;}try{const s=await getDocs(collection(db,"checklistItems"));if(!s.empty){const it=[];s.forEach(d=>{const x=d.data();it.push({id:x.id||x.order||it.length+1,th:x.th||x.nameTH||d.id,en:x.en||x.nameEN||""});});it.sort((a,b)=>a.id-b.id);if(it.length>0)ITEMS=it;}}catch(e){}chk={};ITEMS.forEach(i=>chk[i.id]=null);buildList();updUI();}
-
-async function initDef(){if(!db)return;try{const s=await getDocs(collection(db,"radioUsers"));if(s.empty){const d=[{userId:"admin",name:"Administrator",password:"admin1234",role:"admin",enabled:true},{userId:"U001",name:"นายสมชาย ใจดี",password:"1234",role:"user",enabled:true,empId:"IND-5501",dept:"Security",position:"Security Inspector"},{userId:"U002",name:"นางสาวสมหญิง ดีใจ",password:"5678",role:"user",enabled:true,empId:"IND-5502",dept:"Security",position:"Security Inspector"}];for(const u of d)await setDoc(doc(db,"radioUsers",u.userId),u);}}catch(e){}}
-initDef();
+async function fetchCfg(){if(!db){updShiftUI();return;}try{const s=await getDoc(doc(db,"shiftConfig","main"));if(s.exists()){applyFSD(s.data());}}catch(e){}updShiftUI();}
+function startCfgL(){if(!db)return;try{onSnapshot(doc(db,"shiftConfig","main"),s=>{if(!s.exists())return;applyFSD(s.data());updShiftUI();if(lockActive)updLockUI();});}catch(e){}}
+async function fetchRadios(){if(!db)return;try{const snap=await getDocs(collection(db,"radioItems"));if(!snap.empty){const loaded=[];snap.forEach(d=>{const x=d.data();if(x.id)loaded.push({id:parseInt(x.id),area:x.area||'',sn:x.sn||'',label:x.label||('WD'+x.id),type:x.type||'active'});});if(loaded.length>0)RADIOS=loaded;}}catch(e){}}
+async function fetchCL(){if(!db){buildList();return;}try{const s=await getDocs(collection(db,"checklistItems"));if(!s.empty){const it=[];s.forEach(d=>{const x=d.data();it.push({id:x.id||it.length+1,th:x.th||d.id,en:x.en||""});});it.sort((a,b)=>a.id-b.id);if(it.length>0)ITEMS=it;}}catch(e){}chk={};ITEMS.forEach(i=>chk[i.id]=null);buildList();updUI();}
 
 function tick(){
   const n=new Date(),t=n.toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"});
@@ -540,119 +512,110 @@ function tick(){
 }
 tick();setInterval(tick,1000);setInterval(fetchCfg,30000);
 
-function updShiftUI(){if(G("cfgLoadRow"))G("cfgLoadRow").style.display="none";if(G("shiftDayWin"))G("shiftDayWin").textContent="⏱ ตรวจได้ "+winLbl("day");if(G("shiftNightWin"))G("shiftNightWin").textContent="⏱ ตรวจได้ "+winLbl("night");if(G("shiftDayTime"))G("shiftDayTime").textContent=shTLbl("day");if(G("shiftNightTime"))G("shiftNightTime").textContent=shTLbl("night");updShiftBadges();if(lockActive)updLockUI();}
+function updShiftUI(){if(G("cfgLoadRow"))G("cfgLoadRow").style.display="none";if(G("shiftDayWin"))G("shiftDayWin").textContent="⏱ "+winLbl("day");if(G("shiftNightWin"))G("shiftNightWin").textContent="⏱ "+winLbl("night");if(G("shiftDayTime"))G("shiftDayTime").textContent=shTLbl("day");if(G("shiftNightTime"))G("shiftNightTime").textContent=shTLbl("night");updShiftBadges();if(lockActive)updLockUI();}
 function updShiftBadges(){["day","night"].forEach(s=>{const b=G("badge"+s.charAt(0).toUpperCase()+s.slice(1));if(!b)return;const c=shiftCfg[s];const ms=resolveMs(c.emergencyUntil);const pe=c.emergencyUnlock&&ms&&Date.now()<ms;if(pe){b.textContent="ปลดล็อค";b.className="shift-badge badge-emergency";}else{const ok=isAllowed(s);b.textContent=ok?"เปิด":"ปิด";b.className="shift-badge "+(ok?"badge-ok":"badge-locked");}});}
-function updLockUI(){if(!selectedShift)return;const names={day:"ผลัดกลางวัน",night:"ผลัดกลางคืน"};if(G("lockShiftName"))G("lockShiftName").textContent=names[selectedShift];if(G("lockAllowTime"))G("lockAllowTime").textContent=winLbl(selectedShift);const c=shiftCfg[selectedShift];const ms=resolveMs(c.emergencyUntil);const pe=c.emergencyUnlock&&ms&&Date.now()<ms;if(pe){G("lockIconEl").className="lock-icon emergency";G("lockIconSvg").setAttribute("stroke","#fbbf24");G("lockTitle").textContent="ปลดล็อคฉุกเฉิน";G("lockTitle").className="lock-title t-yellow";G("lockBody").textContent="Admin ปลดล็อคชั่วคราว";G("lockWindowBadge").className="lock-window-badge badge-yellow";G("lockWindowText").textContent="ปลดล็อคฉุกเฉินอยู่";G("emergencyCountdownBox").style.display="block";G("emergencyProceedBtn").style.display="block";if(ms&&G("emergencyCountdownText"))G("emergencyCountdownText").textContent=fmtCd(ms-Date.now());}else{G("lockIconEl").className="lock-icon locked";G("lockIconSvg").setAttribute("stroke","#ef4444");G("lockTitle").className="lock-title t-red";G("lockWindowBadge").className="lock-window-badge badge-red";G("lockWindowText").textContent="กรุณาเริ่มตรวจสอบในช่วงเวลาที่กำหนด";G("emergencyCountdownBox").style.display="none";G("emergencyProceedBtn").style.display="none";}}
-function showLock(sh,auto=false){lockActive=true;selectedShift=sh;const names={day:"ผลัดกลางวัน",night:"ผลัดกลางคืน"},s=names[sh];G("lockTitle").textContent=auto?"หมดเวลาตรวจสอบ":"ไม่อยู่ในช่วงเวลาที่กำหนด";G("lockBody").textContent=auto?"หมดช่วงเวลาสำหรับ "+s:"ขณะนี้ไม่อยู่ในช่วงเวลาที่อนุญาตสำหรับ "+s;updLockUI();G("lockOverlay").classList.add("show");}
+function updLockUI(){if(!selectedShift)return;const names={day:"ผลัดกลางวัน",night:"ผลัดกลางคืน"};if(G("lockShiftName"))G("lockShiftName").textContent=names[selectedShift];if(G("lockAllowTime"))G("lockAllowTime").textContent=winLbl(selectedShift);const c=shiftCfg[selectedShift];const ms=resolveMs(c.emergencyUntil);const pe=c.emergencyUnlock&&ms&&Date.now()<ms;if(pe){G("lockIconEl").className="lock-icon emergency";G("lockIconSvg").setAttribute("stroke","#fbbf24");G("lockTitle").textContent="ปลดล็อคฉุกเฉิน";G("lockTitle").className="lock-title t-yellow";G("lockBody").textContent="Admin ปลดล็อคชั่วคราว";G("lockWindowBadge").className="lock-window-badge badge-yellow";G("lockWindowText").textContent="ปลดล็อคฉุกเฉินอยู่";G("emergencyCountdownBox").style.display="block";G("emergencyProceedBtn").style.display="block";}else{G("lockIconEl").className="lock-icon locked";G("lockIconSvg").setAttribute("stroke","#ef4444");G("lockTitle").className="lock-title t-red";G("lockWindowBadge").className="lock-window-badge badge-red";G("lockWindowText").textContent="กรุณาเริ่มตรวจสอบในช่วงเวลาที่กำหนด";G("emergencyCountdownBox").style.display="none";G("emergencyProceedBtn").style.display="none";}}
+function showLock(sh,auto=false){lockActive=true;selectedShift=sh;const names={day:"ผลัดกลางวัน",night:"ผลัดกลางคืน"};G("lockTitle").textContent=auto?"หมดเวลาตรวจสอบ":"ไม่อยู่ในช่วงเวลาที่กำหนด";G("lockBody").textContent=names[sh];updLockUI();G("lockOverlay").classList.add("show");}
 function hideLock(){lockActive=false;G("lockOverlay").classList.remove("show");}
 window.proceedEmergency=function(){if(isAllowed(selectedShift)){hideLock();toast("ดำเนินการตรวจสอบในโหมดฉุกเฉิน","info");}};
 function showSc(id){document.querySelectorAll(".screen").forEach(s=>{s.classList.remove("active");s.style.display="none";});const s=G(id);if(s){s.classList.add("active");s.style.display="flex";}}
 
-window.doLogin=async function(){const id=G("lId").value.trim(),pw=G("lPw").value.trim();G("loginErr").style.display="none";if(!id||!pw){setLE("กรุณากรอกข้อมูลให้ครบ");return;}try{const s=await getDocs(collection(db,"radioUsers"));let f=null;s.forEach(d=>{if(d.data().userId===id)f=d.data();});if(!f){setLE("ไม่พบรหัสพนักงานนี้");return;}if(f.password!==pw){setLE("รหัสผ่านไม่ถูกต้อง");return;}if(!f.enabled){setLE("บัญชีถูกระงับ");return;}if(f.role==="admin"){setLE("กรุณาใช้บัญชี User เท่านั้น");return;}user=f;
-  await Promise.all([fetchCfg(),fetchCL(),fetchRadios()]);
-  startCfgL();initMain();
-  const urlRadio=checkUrlParam();
-  if(urlRadio){setTimeout(()=>autoFillFromUrl(urlRadio),400);}
-}catch(e){setLE("เกิดข้อผิดพลาด: "+e.message);}};
-
-function autoFillFromUrl(radio){
-  setScannedRadio(radio,'url');
-  const banner=G('urlParamBanner');
-  if(banner){banner.classList.add('show');G('urlParamText').textContent='QR Code อ่านได้: '+(radio.label||('WD'+radio.id))+' — '+radio.area;}
-  toast('โหลดวิทยุจาก QR: WD'+radio.id+' — '+radio.area);
-}
-
+window.doLogin=async function(){
+  const id=G("lId").value.trim(),pw=G("lPw").value.trim();
+  G("loginErr").style.display="none";
+  if(!id||!pw){setLE("กรุณากรอกข้อมูลให้ครบ");return;}
+  try{
+    const s=await getDocs(collection(db,"radioUsers"));
+    let f=null;s.forEach(d=>{if(d.data().userId===id)f=d.data();});
+    if(!f){setLE("ไม่พบรหัสพนักงานนี้");return;}
+    if(f.password!==pw){setLE("รหัสผ่านไม่ถูกต้อง");return;}
+    if(!f.enabled){setLE("บัญชีถูกระงับ");return;}
+    if(f.role==="admin"){setLE("กรุณาใช้บัญชี User เท่านั้น");return;}
+    user=f;
+    await Promise.all([fetchCfg(),fetchCL(),fetchRadios()]);
+    startCfgL();initMain();
+    const urlRadio=checkUrlParam();
+    if(urlRadio)setTimeout(()=>autoFillFromUrl(urlRadio),400);
+  }catch(e){setLE("เกิดข้อผิดพลาด: "+e.message);}
+};
+function autoFillFromUrl(radio){setScannedRadio(radio,'url');const banner=G('urlParamBanner');if(banner){banner.classList.add('show');G('urlParamText').textContent='QR: '+(radio.label||('WD'+radio.id))+' — '+radio.area;}toast('โหลดวิทยุจาก QR: WD'+radio.id);}
 function setLE(m){const e=G("loginErr");e.textContent=m;e.style.display="block";}
-window.doLogout=function(){user=null;selectedShift=null;scannedRadioId=null;chk={};ITEMS.forEach(i=>chk[i.id]=null);stopQR();G("lockOverlay").classList.remove("show");lockActive=false;showSc("s-login");G("lId").value="";G("lPw").value="";G("urlParamBanner")?.classList.remove("show");};
+window.doLogout=function(){user=null;selectedShift=null;scannedRadioId=null;chk={};stopQR();G("lockOverlay").classList.remove("show");lockActive=false;showSc("s-login");G("lId").value="";G("lPw").value="";G("urlParamBanner")?.classList.remove("show");};
 function initMain(){const n=user.name||user.userId;G("profAv").textContent=n.charAt(0).toUpperCase();G("profName").textContent=n;G("profId").textContent="ID: "+(user.empId||user.userId);G("profDept").textContent=(user.dept||"Security")+" — "+(user.position||"Inspector");updShiftUI();showSc("s-main");}
-window.selShift=function(s){selectedShift=s;G("shiftDay").classList.toggle("active-day",s==="day");G("shiftNight").classList.toggle("active-night",s==="night");const tag=G("profShiftTag");const names={day:"ผลัดกลางวัน",night:"ผลัดกลางคืน"};tag.textContent=names[s];tag.className="prof-tag tag-shift"+(s==="night"?" night":"");tag.style.display="inline";if(!isAllowed(s)){showLock(s,false);}else{hideLock();toast(names[s]+" — "+winLbl(s)+" เปิดแล้ว");}};
-window.reqUnlock=function(){toast("กรุณาติดต่อผู้ดูแลระบบ","info");alert("กรุณาติดต่อผู้ดูแลระบบ\nเพื่อปลดล็อคจาก Dashboard → ตั้งค่าเวลาผลัด");};
+window.selShift=function(s){selectedShift=s;G("shiftDay").classList.toggle("active-day",s==="day");G("shiftNight").classList.toggle("active-night",s==="night");const tag=G("profShiftTag");const names={day:"ผลัดกลางวัน",night:"ผลัดกลางคืน"};tag.textContent=names[s];tag.className="prof-tag tag-shift"+(s==="night"?" night":"");tag.style.display="inline";if(!isAllowed(s)){showLock(s,false);}else{hideLock();toast(names[s]+" — "+winLbl(s));}};
+window.reqUnlock=function(){alert("กรุณาติดต่อผู้ดูแลระบบ\nเพื่อปลดล็อคจาก Admin Dashboard");};
 
 /* ══════════════════════════════════════════════════════
-   QR SCANNER — Dual Engine
-   Engine 1: BarcodeDetector (Chrome Android, new Chrome iOS)
-   Engine 2: jsQR + canvas frame capture (Safari iOS/macOS, all browsers)
-
-   Detection interval: 200ms
-   Canvas frame capture every 200ms → jsQR.decode()
-   Both engines call onQRData() on successful read
+   QR SCANNER — Pure jsQR (embedded, no CDN)
+   Works on Safari iOS/macOS and all browsers
+   Engine: window.jsQR from embedded script above
 ══════════════════════════════════════════════════════ */
 let _qrStream=null,_qrTmr=null,_qrRun=false,_qrLk=false,_qrRaf=null;
 let _lastRaw="";
-let _useJsQR=false; // true = jsQR engine active
 
 function qrSetStat(msg,col){const e=G("qrStat");if(e){e.textContent=msg;e.style.color=col||"#22d3c8";}}
-function qrShowRaw(raw){const box=G("qrRawBox"),val=G("qrRawVal");if(box&&val){box.classList.add("show");val.textContent=raw.slice(0,300)+(raw.length>300?"…":"");}}
-function qrShowNotFound(raw){const box=G("qrNotFound"),msg=G("qrNotFoundMsg");if(box)box.classList.add("show");if(msg)msg.textContent='ไม่พบวิทยุ: "'+raw.slice(0,50)+'"';}
-function qrHideNotFound(){const box=G("qrNotFound");if(box)box.classList.remove("show");}
+function setEngineBadge(txt){const b=G("qrEngineBadge");if(b)b.textContent=txt;}
+function qrShowRaw(raw){const box=G("qrRawBox"),val=G("qrRawVal");if(box&&val){box.classList.add("show");val.textContent=raw.slice(0,200);}}
+function qrShowNotFound(raw){const b=G("qrNotFound"),m=G("qrNotFoundMsg");if(b)b.classList.add("show");if(m)m.textContent='ไม่พบวิทยุ: "'+raw.slice(0,40)+'"';}
+function qrHideNotFound(){const b=G("qrNotFound");if(b)b.classList.remove("show");}
 
 function onQRData(raw){
   if(_qrLk)return;
-  const s=String(raw).trim();
-  if(!s)return;
+  const s=String(raw).trim();if(!s)return;
   if(s===_lastRaw)return;
   _lastRaw=s;
   qrShowRaw(s);
   const radio=parseQRtoRadio(s);
-  if(!radio){
-    qrSetStat("⚠ ไม่พบวิทยุ — จ่อที่การ์ดวิทยุ","#fbbf24");
-    qrShowNotFound(s);
-    return;
-  }
+  if(!radio){qrSetStat("⚠ ไม่พบวิทยุ","#fbbf24");qrShowNotFound(s);return;}
   _qrLk=true;
   qrHideNotFound();
   qrSetStat("✅ พบ WD"+radio.id+" — "+radio.area,"#4ade80");
   if(navigator.vibrate)navigator.vibrate([60,40,100]);
-  const fl=G("qrFlash");fl.classList.add("on");setTimeout(()=>fl.classList.remove("on"),200);
+  const fl=G("qrFlash");if(fl){fl.classList.add("on");setTimeout(()=>fl.classList.remove("on"),200);}
   setTimeout(()=>{stopQR();G("qrModal").classList.remove("show");setScannedRadio(radio,'qr');},700);
 }
 
-/* ── jsQR frame capture loop ── */
+/* jsQR frame capture loop — runs every 200ms */
 function startJsQRLoop(){
-  if(!window.jsQR){
-    qrSetStat("⚠ jsQR ไม่โหลด — กรุณา Reload","#f87171");
-    return;
-  }
-  _useJsQR=true;
-  const badge=G("qrEngineBadge");
-  if(badge)badge.textContent="ENGINE: jsQR (Safari)";
-  qrSetStat("● กำลังสแกน (jsQR)...","#22d3c8");
   const vid=G("qrVideo");
   const cap=G("qrCapCanvas");
+  if(!cap)return;
   const ctx=cap.getContext("2d",{willReadFrequently:true});
+  if(!ctx)return;
+  /* Choose engine */
+  const hasBarcode=typeof BarcodeDetector!=="undefined";
+  if(hasBarcode){
+    setEngineBadge("ENGINE: BarcodeDetector");
+    qrSetStat("● กำลังสแกน...","#22d3c8");
+    let bd;
+    try{bd=new BarcodeDetector({formats:["qr_code"]});}catch(e){bd=null;}
+    if(bd){
+      _qrTmr=setInterval(async()=>{
+        if(!_qrRun||_qrLk)return;
+        try{const cs=await bd.detect(vid);if(cs&&cs.length>0)onQRData(cs[0].rawValue);}catch(e){}
+      },200);
+      return;
+    }
+  }
+  /* Fallback: jsQR via canvas capture */
+  setEngineBadge("ENGINE: jsQR (Safari)");
+  qrSetStat("● กำลังสแกน (jsQR)...","#22d3c8");
+  if(!window.jsQR){
+    qrSetStat("⚠ jsQR error — กรอก Manual แทน","#f87171");
+    return;
+  }
   _qrTmr=setInterval(()=>{
-    if(!_qrRun||_qrLk)return;
-    if(vid.readyState<2||vid.videoWidth===0)return;
+    if(!_qrRun||_qrLk||!vid||vid.readyState<2||vid.videoWidth===0)return;
     const W=vid.videoWidth,H=vid.videoHeight;
-    cap.width=W;cap.height=H;
-    ctx.drawImage(vid,0,0,W,H);
+    if(cap.width!==W)cap.width=W;
+    if(cap.height!==H)cap.height=H;
     try{
+      ctx.drawImage(vid,0,0,W,H);
       const imgData=ctx.getImageData(0,0,W,H);
       const result=window.jsQR(imgData.data,imgData.width,imgData.height,{inversionAttempts:"dontInvert"});
-      if(result&&result.data){onQRData(result.data);}
+      if(result&&result.data)onQRData(result.data);
     }catch(e){}
   },200);
-}
-
-/* ── BarcodeDetector loop ── */
-function startBarcodeDetectorLoop(){
-  _useJsQR=false;
-  const badge=G("qrEngineBadge");
-  if(badge)badge.textContent="ENGINE: BarcodeDetector";
-  qrSetStat("● กำลังสแกน...","#22d3c8");
-  try{
-    const bd=new BarcodeDetector({formats:["qr_code"]});
-    _qrTmr=setInterval(async()=>{
-      if(!_qrRun||_qrLk)return;
-      try{
-        const cs=await bd.detect(G("qrVideo"));
-        if(cs&&cs.length>0)onQRData(cs[0].rawValue);
-      }catch(e){}
-    },200);
-  }catch(e){
-    console.warn("BarcodeDetector failed, switching to jsQR:",e);
-    startJsQRLoop();
-  }
 }
 
 function drawVF(){
@@ -679,62 +642,27 @@ window.openQR=async function(){
   G("qrModal").classList.add("show");
   G("qrRawBox").classList.remove("show");
   G("qrNotFound").classList.remove("show");
-  const badge=G("qrEngineBadge");if(badge)badge.textContent="กำลังโหลด...";
+  setEngineBadge("LOADING...");
   qrSetStat("● กำลังเปิดกล้อง...","#22d3c8");
   _lastRaw="";
   try{
-    /* Request camera — rear camera preferred */
-    _qrStream=await navigator.mediaDevices.getUserMedia({
-      video:{
-        facingMode:{ideal:"environment"},
-        width:{ideal:1280},
-        height:{ideal:720}
-      }
-    });
+    _qrStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"},width:{ideal:1280},height:{ideal:720}}});
     const vid=G("qrVideo");
     vid.srcObject=_qrStream;
     vid.setAttribute("playsinline","");
-    vid.setAttribute("autoplay","");
     vid.muted=true;
     await vid.play().catch(()=>{});
-    /* Wait until video has data */
     if(vid.readyState<2){
       await new Promise(resolve=>{
-        const onReady=()=>{vid.removeEventListener("canplay",onReady);resolve();};
-        vid.addEventListener("canplay",onReady,{once:true});
-        setTimeout(resolve,3000); // fallback timeout
+        const h=()=>{vid.removeEventListener("canplay",h);resolve();};
+        vid.addEventListener("canplay",h,{once:true});
+        setTimeout(resolve,3000);
       });
     }
-    /* Try autofocus if available */
-    try{
-      const tk=_qrStream.getVideoTracks()[0];
-      if(tk&&tk.getCapabilities){
-        const cp=tk.getCapabilities();
-        if(cp.focusMode&&cp.focusMode.includes("continuous")){
-          await tk.applyConstraints({advanced:[{focusMode:"continuous"}]});
-        }
-      }
-    }catch(e){}
-
+    try{const tk=_qrStream.getVideoTracks()[0];if(tk&&tk.getCapabilities){const cp=tk.getCapabilities();if(cp.focusMode&&cp.focusMode.includes("continuous"))await tk.applyConstraints({advanced:[{focusMode:"continuous"}]}).catch(()=>{});}}catch(e){}
     _qrRun=true;_qrLk=false;
     _qrRaf=requestAnimationFrame(rafLoop);
-
-    /* Choose engine based on browser support */
-    if(typeof BarcodeDetector!=="undefined"&&BarcodeDetector.getSupportedFormats){
-      try{
-        const fmts=await BarcodeDetector.getSupportedFormats();
-        if(fmts.includes("qr_code")){
-          startBarcodeDetectorLoop();
-        }else{
-          startJsQRLoop();
-        }
-      }catch(e){
-        startJsQRLoop();
-      }
-    }else{
-      /* Safari, older browsers → jsQR */
-      startJsQRLoop();
-    }
+    startJsQRLoop();
   }catch(e){
     G("qrModal").classList.remove("show");
     _qrRun=false;
@@ -749,19 +677,13 @@ function stopQR(){
   if(_qrRaf){cancelAnimationFrame(_qrRaf);_qrRaf=null;}
   if(_qrStream){_qrStream.getTracks().forEach(t=>t.stop());_qrStream=null;}
   const v=G("qrVideo");if(v){v.pause();v.srcObject=null;}
-  const cap=G("qrCapCanvas");if(cap){cap.width=1;cap.height=1;}
-  _useJsQR=false;
 }
 window.addEventListener("resize",()=>{if(_qrRun)drawVF();});
 
-/* ── Manual entry ── */
 window.manualEntry=function(){
-  const val=G("manualId").value.trim();
-  if(!val){toast("กรุณากรอก ID","err");return;}
-  const radio=parseQRtoRadio(val);
-  if(!radio){toast("ไม่พบวิทยุ: "+val,"err");return;}
-  setScannedRadio(radio,'manual');
-  G("manualId").value="";
+  const val=G("manualId").value.trim();if(!val){toast("กรุณากรอก ID","err");return;}
+  const radio=parseQRtoRadio(val);if(!radio){toast("ไม่พบวิทยุ: "+val,"err");return;}
+  setScannedRadio(radio,'manual');G("manualId").value="";
 };
 
 function setScannedRadio(radio,method){
@@ -777,14 +699,38 @@ function setScannedRadio(radio,method){
 window.rescan=function(){scannedRadioId=null;G("qrBeforeScan").style.display="block";G("qrAfterScan").style.display="none";G("qrCard").classList.remove("scanned");G("urlParamBanner")?.classList.remove("show");};
 
 function buildList(){chk={};ITEMS.forEach(i=>chk[i.id]=null);G("checkList").innerHTML=ITEMS.map(it=>`<div class="check-row" id="row-${it.id}" onclick="tog(${it.id})"><div class="row-num">${it.id}.</div><div style="flex:1"><div class="row-text">${it.th}${it.en?' <span style="font-weight:400;color:var(--text3);font-size:11px">('+it.en+')</span>':''}</div></div><div class="toggle-pill" id="pill-${it.id}"><div class="pill-dot"></div><div class="pill-label" id="plbl-${it.id}">—</div></div></div>`).join("");G("sTotal").textContent=ITEMS.length;G("clProg").textContent="0/"+ITEMS.length;}
-window.tog=function(id){const c=chk[id];chk[id]=c===null?"pass":c==="pass"?"fail":null;updRow(id);updUI();if(navigator.vibrate)navigator.vibrate(chk[id]==="fail"?[8,4,8]:8);};
+window.tog=function(id){const c=chk[id];chk[id]=c===null?"pass":c==="pass"?"fail":null;updRow(id);updUI();if(navigator.vibrate)navigator.vibrate(8);};
 function updRow(id){const st=chk[id],r=G("row-"+id),p=G("pill-"+id),l=G("plbl-"+id);if(!r||!p||!l)return;r.classList.remove("pass-row","fail-row");p.classList.remove("pass-pill","fail-pill");if(st==="pass"){r.classList.add("pass-row");p.classList.add("pass-pill");l.textContent="Pass";}else if(st==="fail"){r.classList.add("fail-row");p.classList.add("fail-pill");l.textContent="Fail";}else l.textContent="—";}
 function updUI(){const pass=Object.values(chk).filter(v=>v==="pass").length,fail=Object.values(chk).filter(v=>v==="fail").length;G("sPass").textContent=pass;G("sFail").textContent=fail;G("profPass").textContent=pass;G("clProg").textContent=(pass+fail)+"/"+ITEMS.length;G("progFill").style.width=Math.round(pass/ITEMS.length*100)+"%";}
-window.setAllPass=function(){ITEMS.forEach(i=>{chk[i.id]="pass";updRow(i.id);});updUI();toast("ตั้งค่า All Pass แล้ว");};
+window.setAllPass=function(){ITEMS.forEach(i=>{chk[i.id]="pass";updRow(i.id);});updUI();toast("All Pass");};
 window.resetAll=function(){ITEMS.forEach(i=>{chk[i.id]=null;updRow(i.id);});updUI();};
 
-window.doSubmit=async function(){if(!selectedShift){toast("กรุณาเลือกผลัดก่อน","err");return;}await fetchCfg();if(!isAllowed(selectedShift)){showLock(selectedShift,false);return;}if(!scannedRadioId){toast("กรุณาสแกน QR Code ก่อน","err");return;}const pend=Object.values(chk).filter(v=>v===null).length;if(pend>0&&!confirm("ยังมี "+pend+" รายการที่ยังไม่ได้ตรวจ\nบันทึกต่อไหม?"))return;const btn=G("saveBtn");btn.disabled=true;const radio=RADIOS.find(r=>r.id===scannedRadioId);const now=new Date();const pass=Object.values(chk).filter(v=>v==="pass").length,fail=Object.values(chk).filter(v=>v==="fail").length;const failItems=ITEMS.filter(i=>chk[i.id]==="fail").map(i=>i.th);const checkResults={};ITEMS.forEach(i=>checkResults["item_"+i.id]=chk[i.id]||"pending");const names={day:"ผลัดกลางวัน",night:"ผลัดกลางคืน"};const data={userId:user.userId,userName:user.name,empId:user.empId||user.userId,dept:user.dept||"Security",position:user.position||"Inspector",shift:selectedShift,shiftName:names[selectedShift],radioId:scannedRadioId,radioLabel:"WD"+scannedRadioId,area:radio?.area||"",sn:radio?.sn||"",passCount:pass,failCount:fail,totalItems:ITEMS.length,passRate:Math.round(pass/ITEMS.length*100),failItems,checkResults,overallStatus:fail===0?"PASS":"FAIL",scanMethod:"qr",emergencyUnlock:emergencyActive,date:now.toISOString().slice(0,10),time:now.toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"}),timestamp:serverTimestamp(),formType:"21items_v7"};
-try{if(db)await addDoc(collection(db,"submissions"),data);const hf=fail>0;G("resIcon").innerHTML=hf?`<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`:`<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;G("resIcon").style.cssText=`width:88px;height:88px;border-radius:28px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;background:${hf?"rgba(239,68,68,.12)":"rgba(34,197,94,.1)"};border:2px solid ${hf?"rgba(239,68,68,.3)":"rgba(34,197,94,.3)"};animation:pop .4s cubic-bezier(.175,.885,.32,1.275)`;G("resTitle").textContent=hf?"มีรายการ Fail":"ผ่านทุกรายการ!";G("resTitle").style.color=hf?"#ef4444":"#22c55e";G("resSub").textContent=hf?"พบ "+fail+" รายการ Fail\nข้อมูลบันทึกแล้ว":"ผ่านครบ "+pass+" รายการ\nข้อมูลบันทึกแล้ว";G("resInfo").innerHTML=`<div class="res-row"><span class="res-key">ผู้ตรวจ</span><span class="res-val">${user.name}</span></div><div class="res-row"><span class="res-key">ผลัด</span><span class="res-val">${names[selectedShift]}</span></div><div class="res-row"><span class="res-key">ช่วงตรวจ</span><span class="res-val">${winLbl(selectedShift)}</span></div><div class="res-row"><span class="res-key">วิทยุ</span><span class="res-val">WD${scannedRadioId}</span></div><div class="res-row"><span class="res-key">พื้นที่</span><span class="res-val">${radio?.area||"—"}</span></div><div class="res-row"><span class="res-key">Pass</span><span class="res-val" style="color:#22c55e">${pass}</span></div><div class="res-row"><span class="res-key">Fail</span><span class="res-val" style="color:${fail>0?"#ef4444":"#22c55e"}">${fail}</span></div><div class="res-row"><span class="res-key">เวลา</span><span class="res-val">${data.time} น.</span></div>${emergencyActive?'<div class="res-row"><span class="res-key">โหมด</span><span class="res-val" style="color:#fbbf24">ปลดล็อคฉุกเฉิน</span></div>':""}${failItems.length?`<div class="res-row" style="flex-direction:column;align-items:flex-start;gap:6px"><span class="res-key">รายการ Fail</span><div style="margin-top:6px">${failItems.map(f=>`<span style="display:inline-block;font-size:11px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#fca5a5;padding:2px 9px;border-radius:12px;margin:2px">${f}</span>`).join("")}</div></div>`:""}`;showSc("s-result");}catch(e){toast("บันทึกไม่สำเร็จ: "+e.message,"err");}btn.disabled=false;};
+window.doSubmit=async function(){
+  if(!selectedShift){toast("กรุณาเลือกผลัดก่อน","err");return;}
+  await fetchCfg();if(!isAllowed(selectedShift)){showLock(selectedShift,false);return;}
+  if(!scannedRadioId){toast("กรุณาสแกน QR Code ก่อน","err");return;}
+  const pend=Object.values(chk).filter(v=>v===null).length;
+  if(pend>0&&!confirm("ยังมี "+pend+" รายการที่ยังไม่ได้ตรวจ\nบันทึกต่อไหม?"))return;
+  const btn=G("saveBtn");btn.disabled=true;
+  const radio=RADIOS.find(r=>r.id===scannedRadioId);
+  const now=new Date();
+  const pass=Object.values(chk).filter(v=>v==="pass").length,fail=Object.values(chk).filter(v=>v==="fail").length;
+  const failItems=ITEMS.filter(i=>chk[i.id]==="fail").map(i=>i.th);
+  const checkResults={};ITEMS.forEach(i=>checkResults["item_"+i.id]=chk[i.id]||"pending");
+  const names={day:"ผลัดกลางวัน",night:"ผลัดกลางคืน"};
+  const data={userId:user.userId,userName:user.name,empId:user.empId||user.userId,dept:user.dept||"Security",position:user.position||"Inspector",shift:selectedShift,shiftName:names[selectedShift],radioId:scannedRadioId,radioLabel:"WD"+scannedRadioId,area:radio?.area||"",sn:radio?.sn||"",passCount:pass,failCount:fail,totalItems:ITEMS.length,passRate:Math.round(pass/ITEMS.length*100),failItems,checkResults,overallStatus:fail===0?"PASS":"FAIL",scanMethod:"qr",emergencyUnlock:emergencyActive,date:now.toISOString().slice(0,10),time:now.toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"}),timestamp:serverTimestamp(),formType:"21items_v7"};
+  try{
+    if(db)await addDoc(collection(db,"submissions"),data);
+    const hf=fail>0;
+    G("resIcon").innerHTML=hf?`<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`:`<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+    G("resIcon").style.cssText=`width:88px;height:88px;border-radius:28px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;background:${hf?"rgba(239,68,68,.12)":"rgba(34,197,94,.1)"};border:2px solid ${hf?"rgba(239,68,68,.3)":"rgba(34,197,94,.3)"};animation:pop .4s cubic-bezier(.175,.885,.32,1.275)`;
+    G("resTitle").textContent=hf?"มีรายการ Fail":"ผ่านทุกรายการ!";G("resTitle").style.color=hf?"#ef4444":"#22c55e";
+    G("resSub").textContent=hf?"พบ "+fail+" รายการ Fail":"ผ่านครบ "+pass+" รายการ บันทึกแล้ว";
+    G("resInfo").innerHTML=`<div class="res-row"><span class="res-key">ผู้ตรวจ</span><span class="res-val">${user.name}</span></div><div class="res-row"><span class="res-key">ผลัด</span><span class="res-val">${names[selectedShift]}</span></div><div class="res-row"><span class="res-key">วิทยุ</span><span class="res-val">WD${scannedRadioId}</span></div><div class="res-row"><span class="res-key">พื้นที่</span><span class="res-val">${radio?.area||"—"}</span></div><div class="res-row"><span class="res-key">Pass</span><span class="res-val" style="color:#22c55e">${pass}</span></div><div class="res-row"><span class="res-key">Fail</span><span class="res-val" style="color:${fail>0?"#ef4444":"#22c55e"}">${fail}</span></div><div class="res-row"><span class="res-key">เวลา</span><span class="res-val">${data.time} น.</span></div>${failItems.length?`<div class="res-row" style="flex-direction:column;align-items:flex-start;gap:6px"><span class="res-key">รายการ Fail</span><div style="margin-top:6px">${failItems.map(f=>`<span style="display:inline-block;font-size:11px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#fca5a5;padding:2px 9px;border-radius:12px;margin:2px">${f}</span>`).join("")}</div></div>`:""}`;
+    showSc("s-result");
+  }catch(e){toast("บันทึกไม่สำเร็จ: "+e.message,"err");}
+  btn.disabled=false;
+};
 
 window.startNew=function(){ITEMS.forEach(i=>{chk[i.id]=null;updRow(i.id);});selectedShift=null;scannedRadioId=null;G("shiftDay").classList.remove("active-day");G("shiftNight").classList.remove("active-night");G("profShiftTag").style.display="none";G("urlParamBanner")?.classList.remove("show");rescan();updUI();showSc("s-main");window.scrollTo(0,0);};
 function toast(m,t="ok"){const e=G("toast");e.textContent=m;e.className="toast"+(t==="err"?" terr":t==="info"?" tinfo":"");e.classList.add("show");setTimeout(()=>e.classList.remove("show"),3200);}
