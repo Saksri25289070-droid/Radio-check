@@ -3,430 +3,559 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>ตรวจสอบวิทยุสื่อสาร</title>
-<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800;900&family=Manrope:wght@700;800;900&display=swap" rel="stylesheet">
-
-<!-- ZXing QR decoder — works on Safari iOS -->
+<title>Radio Inspection — WD Security</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&family=Manrope:wght@700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/zxing-js/0.18.6/umd/index.min.js"></script>
-
 <style>
 :root{
-  --bg:#0d1117;--border-dim:rgba(255,255,255,.07);
-  --pass-bg:#1a3d2b;--pass-border:#22c55e;--pass-text:#4ade80;
-  --fail-bg:#3d1a1a;--fail-border:#ef4444;--fail-text:#f87171;
-  --text:#f0f6fc;--text2:#8b949e;--text3:#484f58;
-  --grad-btn:linear-gradient(135deg,#1a6b5a 0%,#0ea5a0 40%,#22d3c8 100%);
+  --bg:#000000;--bg-card:#131314;--card:#1F1F1F;--card-hi:#1a1a1b;
+  --border:#2a2a2a;--border-hi:#3A3A3A;--fg:#FAFAFA;--muted:#AFB5BE;--dim:#737373;
+  --green:#4ADE80;--blue:#2168FD;--blue-light:#93C5FD;--teal:#3AE4C9;
+  --amber:#F59E0B;--red:#EF4444;
+  --grad:linear-gradient(90deg,#2168FD 0%,#1E71FA 22%,#37B1D3 55%,#39D6CB 78%,#3AE4C9 100%);
+  --grad-d:linear-gradient(135deg,#2168FD 0%,#37B1D3 50%,#3AE4C9 100%);
+  --pass-bg:rgba(74,222,128,.07);--pass-border:rgba(74,222,128,.25);--pass-text:#4ADE80;
+  --fail-bg:rgba(239,68,68,.07);--fail-border:rgba(239,68,68,.25);--fail-text:#F87171;
 }
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{scroll-behavior:smooth}
-body{font-family:'Sarabun',sans-serif;color:var(--text);background:#0a0e13;min-height:100vh;
-  background-image:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(0,160,130,.08) 0%,transparent 60%),
-  radial-gradient(ellipse 60% 40% at 80% 80%,rgba(0,80,200,.06) 0%,transparent 50%)}
-.screen{display:none;min-height:100vh;flex-direction:column;position:relative;z-index:1}
-.screen.active{display:flex}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--fg);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:2px;}
+.gt{background:var(--grad-d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 
-/* LOGIN */
-.login-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:24px}
-.login-card{background:rgba(22,27,34,.95);border:1px solid rgba(0,200,160,.2);border-radius:24px;padding:40px 28px;width:100%;max-width:360px;box-shadow:0 0 40px rgba(0,200,160,.1),0 24px 64px rgba(0,0,0,.7);backdrop-filter:blur(12px)}
-.login-icon{width:72px;height:72px;border-radius:20px;background:linear-gradient(135deg,#0d4f3c,#0ea5a0);display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
-.login-title{font-family:'Manrope',sans-serif;font-size:22px;font-weight:900;text-align:center;margin-bottom:4px;background:linear-gradient(135deg,#4ade80,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.login-sub{font-size:12px;color:var(--text2);text-align:center;margin-bottom:24px}
-.sys-ok{display:flex;align-items:center;justify-content:center;gap:5px;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:20px;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);color:#22c55e;margin-bottom:20px}
-.ldot{width:5px;height:5px;border-radius:50%;background:#22c55e;animation:ldp 2s infinite;display:inline-block}
-@keyframes ldp{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(34,197,94,.4)}70%{opacity:.7;box-shadow:0 0 0 5px rgba(34,197,94,0)}}
-.lbl{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:6px;display:block}
-.inp{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:13px 14px;font-size:15px;font-family:'Sarabun',sans-serif;color:var(--text);outline:none;transition:all .2s;margin-bottom:14px}
-.inp:focus{border-color:rgba(0,200,160,.4);background:rgba(0,200,160,.04)}
-.inp::placeholder{color:var(--text3)}
-.btn-login{width:100%;padding:14px;background:var(--grad-btn);border:none;border-radius:12px;font-family:'Sarabun',sans-serif;font-size:16px;font-weight:700;color:#fff;cursor:pointer}
-.btn-login:active{transform:scale(.98)}
-.err{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:10px 14px;font-size:12px;font-weight:600;color:#f87171;margin-bottom:14px;display:none;text-align:center}
+/* ── BG EFFECTS ── */
+.bg-glow{position:fixed;inset:0;pointer-events:none;z-index:0;}
+.bg-glow::before{content:'';position:absolute;width:600px;height:300px;
+  background:radial-gradient(ellipse,rgba(33,104,253,.07) 0%,rgba(58,228,201,.035) 55%,transparent 100%);
+  top:0;left:50%;transform:translateX(-50%);}
 
-/* LOCK OVERLAY */
-.lock-overlay{position:fixed;inset:0;z-index:9999;background:rgba(8,12,20,.97);display:none;flex-direction:column;align-items:center;justify-content:center;padding:32px;backdrop-filter:blur(8px);overflow-y:auto}
-.lock-overlay.show{display:flex}
-.lock-icon{width:80px;height:80px;border-radius:24px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;flex-shrink:0}
-.lock-icon.locked{background:rgba(239,68,68,.12);border:2px solid rgba(239,68,68,.35);animation:pulse-lock 2s infinite}
-.lock-icon.emergency{background:rgba(251,191,36,.12);border:2px solid rgba(251,191,36,.35);animation:pulse-warn 2s infinite}
-@keyframes pulse-lock{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.3)}70%{box-shadow:0 0 0 12px rgba(239,68,68,0)}}
-@keyframes pulse-warn{0%,100%{box-shadow:0 0 0 0 rgba(251,191,36,.3)}70%{box-shadow:0 0 0 12px rgba(251,191,36,0)}}
-.lock-title{font-family:'Manrope',sans-serif;font-size:22px;font-weight:900;margin-bottom:10px;text-align:center}
-.lock-title.t-red{color:#f87171}.lock-title.t-yellow{color:#fbbf24}
-.lock-body{font-size:13px;color:var(--text2);text-align:center;line-height:1.7;margin-bottom:14px;max-width:300px}
-.lock-time-info{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:16px 20px;margin-bottom:12px;width:100%;max-width:300px}
-.lock-time-row{display:flex;justify-content:space-between;font-size:13px;padding:4px 0}
-.lock-time-key{color:var(--text3);font-weight:600}.lock-time-val{color:var(--text);font-weight:700}
-.lock-current{font-family:'Manrope',sans-serif;font-size:36px;font-weight:900;color:#22d3c8;letter-spacing:-1px;margin-bottom:4px;text-align:center}
-.lock-date{font-size:12px;color:var(--text3);text-align:center}
-.lock-window-badge{display:inline-flex;align-items:center;gap:6px;border-radius:10px;padding:8px 16px;font-size:12px;font-weight:700;margin-bottom:12px}
-.badge-red{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);color:#f87171}
-.badge-yellow{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);color:#fbbf24}
-.unlock-allow-btn{background:linear-gradient(135deg,#1a6b5a,#0ea5a0);border:none;border-radius:12px;padding:13px 28px;font-family:'Sarabun',sans-serif;font-size:15px;font-weight:700;color:#fff;cursor:pointer;margin-bottom:10px;width:100%;max-width:300px}
-.btn-contact{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);border-radius:12px;padding:12px 28px;font-family:'Sarabun',sans-serif;font-size:14px;font-weight:700;color:#f87171;cursor:pointer;width:100%;max-width:300px}
-.emergency-countdown{font-family:'Manrope',sans-serif;font-size:28px;font-weight:900;color:#fbbf24;letter-spacing:-1px;margin:4px 0}
+/* ══════════════════════════
+   SCREENS
+══════════════════════════ */
+.screen{display:none;min-height:100vh;flex-direction:column;position:relative;z-index:1;}
+.screen.active{display:flex;}
 
-/* STATUS BAR */
-.status-bar{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0}
-.sb-time{font-family:'Manrope',sans-serif;font-size:15px;font-weight:800;color:var(--text)}
-.sb-right{display:flex;align-items:center;gap:8px}
-
-/* PROFILE */
-.profile-section{padding:6px 16px 10px;flex-shrink:0}
-.profile-card{background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:14px 16px;display:flex;align-items:center;gap:14px;position:relative;overflow:hidden}
-.profile-av{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#0d4f3c,#0ea5a0);border:2px solid rgba(0,200,160,.4);display:flex;align-items:center;justify-content:center;font-family:'Manrope',sans-serif;font-size:22px;font-weight:900;color:#fff;flex-shrink:0;position:relative}
-.av-ring{position:absolute;inset:-4px;border-radius:50%;border:1.5px solid rgba(0,200,160,.3);animation:ring 3s infinite}
-@keyframes ring{0%,100%{opacity:.8;transform:scale(1)}50%{opacity:.2;transform:scale(1.08)}}
-.prof-info{flex:1}
-.prof-name{font-family:'Manrope',sans-serif;font-size:16px;font-weight:800;color:var(--text)}
-.prof-id{font-size:11px;color:var(--text2);margin-top:2px;font-weight:600}
-.prof-dept{font-size:10px;color:var(--text3);margin-top:2px}
-.prof-tags{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap}
-.prof-tag{font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:2px 8px;border-radius:20px}
-.tag-role{background:rgba(33,104,253,.1);border:1px solid rgba(33,104,253,.2);color:#93c5fd}
-.tag-shift{background:rgba(0,200,160,.08);border:1px solid rgba(0,200,160,.2);color:#22d3c8}
-.tag-shift.night{background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.2);color:#a78bfa}
-
-/* SHIFT */
-.shift-section{padding:0 16px 10px;flex-shrink:0}
-.shift-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
-.shift-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.shift-card{background:rgba(255,255,255,.04);border:1px solid var(--border-dim);border-radius:14px;padding:12px 10px;cursor:pointer;transition:all .2s;text-align:center;position:relative;overflow:hidden}
-.shift-card.active-day{background:rgba(251,191,36,.06);border-color:rgba(251,191,36,.35)}
-.shift-card.active-night{background:rgba(124,58,237,.08);border-color:rgba(124,58,237,.35)}
-.shift-icon{font-size:20px;margin-bottom:4px}
-.shift-name{font-family:'Manrope',sans-serif;font-size:13px;font-weight:800;color:var(--text);margin-bottom:2px}
-.shift-card.active-day .shift-name{color:#fbbf24}
-.shift-card.active-night .shift-name{color:#a78bfa}
-.shift-time{font-size:10px;color:var(--text3)}
-.shift-window{font-size:9px;color:#22d3c8;margin-top:3px;font-weight:700}
-.shift-badge{position:absolute;top:6px;right:6px;font-size:8px;font-weight:700;padding:1px 6px;border-radius:10px;text-transform:uppercase}
-.badge-ok{background:rgba(34,197,94,.15);color:#4ade80}
-.badge-locked{background:rgba(239,68,68,.15);color:#f87171}
-.badge-emergency{background:rgba(251,191,36,.15);color:#fbbf24;animation:blinkBadge 1s infinite}
-@keyframes blinkBadge{0%,100%{opacity:1}50%{opacity:.4}}
-.cfg-loading{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--text3);padding:6px 12px;background:rgba(255,255,255,.03);border-radius:8px;margin-bottom:8px}
-.spin{width:12px;height:12px;border:2px solid rgba(0,200,160,.2);border-top-color:#22d3c8;border-radius:50%;animation:spin .8s linear infinite}
+/* ══════════════════════════
+   LOGIN
+══════════════════════════ */
+#s-login{align-items:center;justify-content:center;padding:24px;}
+.login-card{background:var(--bg-card);border:1px solid var(--border);border-radius:24px;padding:36px 28px;width:100%;max-width:360px;position:relative;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.6);}
+.login-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad);}
+.login-logo{display:flex;align-items:center;gap:12px;margin-bottom:26px;}
+.login-logo-icon{width:48px;height:48px;border-radius:14px;background:var(--grad-d);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(33,104,253,.35);flex-shrink:0;}
+.login-logo-title{font-family:'Manrope',sans-serif;font-size:15px;font-weight:800;color:var(--fg);letter-spacing:-.2px;line-height:1.2;}
+.login-logo-sub{font-size:10px;color:var(--dim);margin-top:2px;letter-spacing:.3px;}
+.login-eyebrow{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--blue-light);margin-bottom:8px;font-family:'Manrope',sans-serif;}
+.login-title{font-size:22px;font-weight:800;color:var(--fg);letter-spacing:-.4px;margin-bottom:5px;font-family:'Manrope',sans-serif;}
+.login-desc{font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.6;}
+.form-lbl{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-bottom:6px;display:block;font-family:'Manrope',sans-serif;}
+.form-inp{width:100%;padding:13px 14px;background:rgba(255,255,255,.04);border:1.5px solid var(--border);border-radius:11px;color:var(--fg);font-size:14px;font-family:'Sarabun',sans-serif;outline:none;transition:border-color .2s,box-shadow .2s;margin-bottom:13px;}
+.form-inp:focus{border-color:rgba(33,104,253,.55);box-shadow:0 0 0 3px rgba(33,104,253,.1);}
+.form-inp::placeholder{color:var(--dim);}
+.login-btn{width:100%;padding:14px;border-radius:11px;background:var(--grad);color:#fff;font-size:15px;font-weight:700;font-family:'Sarabun',sans-serif;border:none;cursor:pointer;transition:opacity .2s,transform .2s;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 16px rgba(33,104,253,.3);margin-top:4px;}
+.login-btn:hover{opacity:.9;transform:translateY(-1px);}
+.login-btn:active{transform:scale(.98);}
+.login-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.login-err{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:#FCA5A5;border-radius:10px;padding:10px 13px;font-size:12px;font-weight:600;margin-bottom:13px;display:none;text-align:center;}
+.login-err.show{display:block;}
+.spin-ring{width:15px;height:15px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none;}
+.spin-ring.show{display:block;}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* QR SECTION */
-.qr-section{padding:0 16px 10px;flex-shrink:0}
-.qr-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
-.qr-card{background:rgba(255,255,255,.03);border:1px solid var(--border-dim);border-radius:14px;padding:12px}
-.qr-card.scanned{background:rgba(0,200,160,.06);border-color:rgba(0,200,160,.35)}
-.qr-prompt{display:flex;align-items:center;gap:12px}
-.qr-scan-btn{display:flex;align-items:center;gap:8px;background:var(--grad-btn);border:none;border-radius:10px;padding:11px 18px;font-family:'Sarabun',sans-serif;font-size:13px;font-weight:700;color:#fff;cursor:pointer;white-space:nowrap;flex-shrink:0}
-.qr-or-text{font-size:11px;color:var(--text3);font-weight:600}
-.qr-manual-row{display:flex;gap:8px;align-items:center;margin-top:5px}
-.qr-manual-inp{flex:1;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:9px 12px;font-size:12px;font-family:'Sarabun',sans-serif;color:var(--text);outline:none}
-.qr-manual-inp:focus{border-color:rgba(0,200,160,.4)}
-.qr-manual-inp::placeholder{color:var(--text3)}
-.btn-manual-ok{background:rgba(0,200,160,.1);border:1px solid rgba(0,200,160,.25);border-radius:8px;padding:9px 14px;font-family:'Sarabun',sans-serif;font-size:12px;font-weight:700;color:#22d3c8;cursor:pointer;white-space:nowrap}
-.qr-result{display:flex;align-items:center;gap:10px}
-.qr-result-icon{width:40px;height:40px;border-radius:10px;background:rgba(0,200,160,.12);border:1px solid rgba(0,200,160,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.qr-result-info{flex:1}
-.qr-result-id{font-family:'Manrope',sans-serif;font-size:15px;font-weight:900;color:var(--text)}
-.qr-result-area{font-size:11px;color:var(--text2);margin-top:1px}
-.qr-result-sn{font-size:9px;color:var(--text3);margin-top:1px}
-.btn-rescan{background:transparent;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:6px 12px;font-size:11px;font-weight:700;color:var(--text2);cursor:pointer;font-family:'Sarabun',sans-serif;flex-shrink:0}
-.url-param-banner{background:rgba(0,200,160,.08);border:1px solid rgba(0,200,160,.25);border-radius:10px;padding:8px 12px;margin-bottom:8px;font-size:11px;color:#22d3c8;font-weight:600;display:none;align-items:center;gap:7px}
-.url-param-banner.show{display:flex}
+/* ══════════════════════════
+   MAIN FORM LAYOUT
+══════════════════════════ */
+#s-main{flex-direction:column;}
+.top-bar{height:52px;background:rgba(0,0,0,.88);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 18px;flex-shrink:0;position:sticky;top:0;z-index:40;}
+.top-bar-left{display:flex;align-items:center;gap:10px;}
+.top-bar-brand{font-family:'Manrope',sans-serif;font-size:13px;font-weight:800;color:var(--fg);letter-spacing:-.2px;}
+.top-bar-right{display:flex;align-items:center;gap:8px;}
+.live-chip{display:inline-flex;align-items:center;gap:5px;font-size:9px;font-weight:700;color:var(--green);background:rgba(74,222,128,.07);border:1px solid rgba(74,222,128,.18);padding:3px 9px;border-radius:20px;text-transform:uppercase;letter-spacing:.5px;}
+.live-dot{width:4px;height:4px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(74,222,128,.4);}70%{opacity:.7;box-shadow:0 0 0 4px rgba(74,222,128,0);}}
+.emg-badge{display:none;align-items:center;gap:4px;font-size:9px;font-weight:700;color:#FBBF24;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.18);padding:3px 9px;border-radius:20px;animation:emgPulse 1.5s infinite;}
+@keyframes emgPulse{0%,100%{opacity:1;}50%{opacity:.5;}}
+.emg-badge.show{display:inline-flex;}
+.tb-btn{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:8px;padding:5px 10px;font-size:11px;font-weight:700;color:var(--muted);cursor:pointer;font-family:'Sarabun',sans-serif;transition:all .18s;}
+.tb-btn:hover{background:rgba(255,255,255,.09);}
+.tb-btn.danger{color:#FCA5A5;border-color:rgba(239,68,68,.18);}
+.tb-btn.danger:hover{background:rgba(239,68,68,.08);}
 
-/* QR MODAL */
-.qr-modal{position:fixed;inset:0;z-index:5000;background:#000;display:none;flex-direction:column}
-.qr-modal.show{display:flex}
-#qrVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-#qrOvCv{position:absolute;inset:0;width:100%;height:100%;z-index:6;pointer-events:none}
-#qrFlash{position:absolute;inset:0;z-index:9;background:rgba(34,211,200,.45);opacity:0;pointer-events:none;transition:opacity .15s}
-#qrFlash.on{opacity:1}
-.qr-top{position:absolute;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:linear-gradient(to bottom,rgba(0,0,0,.85),transparent)}
-.qr-top-ttl{font-family:'Manrope',sans-serif;font-size:15px;font-weight:800;color:#fff}
-.qr-top-cls{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);border-radius:10px;padding:8px 20px;font-family:'Sarabun',sans-serif;font-size:13px;font-weight:700;color:#fff;cursor:pointer}
-.qr-bot{position:absolute;bottom:0;left:0;right:0;z-index:10;padding:20px 20px 48px;background:linear-gradient(to top,rgba(0,0,0,.9),transparent);text-align:center}
-.qr-stat{font-size:15px;font-weight:700;margin-bottom:4px}
-.qr-engine-badge{display:inline-flex;align-items:center;gap:5px;font-size:9px;font-weight:700;padding:2px 9px;border-radius:20px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);margin-bottom:6px;letter-spacing:.8px;text-transform:uppercase}
-.qr-hint{font-size:11px;color:rgba(255,255,255,.45);margin-bottom:10px}
-.qr-notfound{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:10px;padding:10px 14px;margin-bottom:8px;display:none;text-align:center}
-.qr-notfound.show{display:block}
-.qr-notfound-msg{font-size:12px;color:#f87171;font-weight:700;margin-bottom:4px}
-.qr-notfound-hint{font-size:11px;color:rgba(248,113,113,.7)}
+.form-body{flex:1;overflow-y:auto;padding:16px 16px 24px;}
 
-/* CHECKLIST */
-.checklist-wrap{flex:1;padding:0 16px;overflow:hidden;display:flex;flex-direction:column;min-height:0}
-.checklist-card{background:rgba(22,27,34,.8);border:1px solid rgba(0,200,160,.25);border-radius:20px;overflow:hidden;flex:1;display:flex;flex-direction:column;position:relative;min-height:0}
-.checklist-inner{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0}
-.cl-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px 8px;border-bottom:1px solid rgba(255,255,255,.05);flex-shrink:0}
-.cl-title{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text2)}
-.cl-prog{font-size:11px;font-weight:800;color:#22d3c8}
-.cl-btns{display:flex;gap:6px}
-.cl-btn{font-size:10px;font-weight:700;padding:4px 10px;border-radius:8px;cursor:pointer;font-family:'Sarabun',sans-serif;border:none}
-.cl-btn-pass{background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.25);color:#4ade80}
-.cl-btn-reset{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:var(--text3)}
-.cl-scroll{overflow-y:auto;flex:1;padding:4px 0;min-height:0}
-.cl-scroll::-webkit-scrollbar{width:2px}
-.cl-scroll::-webkit-scrollbar-thumb{background:rgba(0,200,160,.2);border-radius:2px}
-.progress-strip{height:3px;background:rgba(255,255,255,.04);flex-shrink:0}
-.progress-fill{height:100%;background:linear-gradient(90deg,#22c55e,#16a34a);transition:width .4s ease}
-.check-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.04)}
-.check-row:last-child{border-bottom:none}
-.check-row.pass-row{background:rgba(34,197,94,.04)}
-.check-row.fail-row{background:rgba(239,68,68,.05)}
-.row-num{font-family:'Manrope',sans-serif;font-size:11px;font-weight:800;color:var(--text3);min-width:20px;flex-shrink:0}
-.row-text{flex:1;font-size:13.5px;font-weight:600;color:var(--text);line-height:1.2}
-.check-row.fail-row .row-text{color:#fca5a5}
-.toggle-pill{display:flex;align-items:center;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.1);flex-shrink:0;cursor:pointer;min-width:68px;height:26px;background:rgba(255,255,255,.05)}
-.toggle-pill.pass-pill{background:var(--pass-bg);border-color:var(--pass-border);flex-direction:row-reverse}
-.toggle-pill.fail-pill{background:var(--fail-bg);border-color:var(--fail-border)}
-.pill-dot{width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.15);margin:2px;flex-shrink:0}
-.toggle-pill.pass-pill .pill-dot{background:var(--pass-border)}
-.toggle-pill.fail-pill .pill-dot{background:var(--fail-border)}
-.pill-label{font-family:'Manrope',sans-serif;font-size:10px;font-weight:800;padding:0 6px;flex:1;text-align:center;color:var(--text3);user-select:none}
-.toggle-pill.pass-pill .pill-label{color:var(--pass-text)}
-.toggle-pill.fail-pill .pill-label{color:var(--fail-text)}
+/* ── STEP INDICATOR ── */
+.steps{display:flex;align-items:center;gap:4px;padding:0 4px;margin-bottom:18px;}
+.step-item{display:flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:var(--dim);transition:color .2s;}
+.step-item.active{color:var(--blue-light);}
+.step-item.done{color:var(--green);}
+.step-dot{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;font-family:'Manrope',sans-serif;transition:all .2s;flex-shrink:0;}
+.step-item.active .step-dot{border-color:var(--blue-light);background:rgba(33,104,253,.12);color:var(--blue-light);}
+.step-item.done .step-dot{border-color:var(--green);background:rgba(74,222,128,.1);color:var(--green);}
+.step-sep{flex:1;height:1px;background:var(--border);}
 
-/* SUBMIT */
-.submit-section{padding:10px 16px 28px;flex-shrink:0}
-.stats-mini{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px}
-.stat-mini-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);border-radius:12px;padding:9px;text-align:center}
-.stat-mini-val{font-family:'Manrope',sans-serif;font-size:20px;font-weight:900;margin-bottom:2px}
-.stat-mini-lbl{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text3)}
-.s-pass .stat-mini-val{color:#4ade80}.s-fail .stat-mini-val{color:#f87171}.s-total .stat-mini-val{color:#22d3c8}
-.s-pass{background:rgba(34,197,94,.06);border-color:rgba(34,197,94,.15)}
-.s-fail{background:rgba(239,68,68,.06);border-color:rgba(239,68,68,.15)}
-.btn-save{width:100%;padding:17px;background:var(--grad-btn);border:none;border-radius:50px;font-family:'Sarabun',sans-serif;font-size:17px;font-weight:800;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
-.btn-save:active{transform:scale(.97)}
-.btn-save:disabled{opacity:.4;cursor:not-allowed}
+/* ── PROFILE CARD ── */
+.profile-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:13px;margin-bottom:14px;position:relative;overflow:hidden;}
+.profile-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad);opacity:.6;}
+.prof-av{width:44px;height:44px;border-radius:50%;background:var(--grad-d);display:flex;align-items:center;justify-content:center;font-family:'Manrope',sans-serif;font-size:17px;font-weight:900;color:#fff;flex-shrink:0;}
+.prof-name{font-family:'Manrope',sans-serif;font-size:15px;font-weight:800;color:var(--fg);letter-spacing:-.2px;}
+.prof-meta{font-size:11px;color:var(--dim);margin-top:2px;}
+.prof-score{text-align:right;flex-shrink:0;}
+.prof-score-num{font-family:'Manrope',sans-serif;font-size:28px;font-weight:900;color:var(--teal);line-height:1;}
+.prof-score-lbl{font-size:9px;color:var(--dim);font-weight:700;letter-spacing:1px;text-transform:uppercase;}
 
-/* RESULT */
-.result-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 20px;text-align:center}
-.res-icon{width:88px;height:88px;border-radius:28px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;animation:pop .4s cubic-bezier(.175,.885,.32,1.275)}
-@keyframes pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
-.res-title{font-family:'Manrope',sans-serif;font-size:26px;font-weight:900;margin-bottom:8px}
-.res-sub{font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:20px}
-.res-info{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:18px;margin-bottom:22px;width:100%;max-width:320px}
-.res-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:12.5px}
-.res-row:last-child{border-bottom:none}
-.res-key{color:var(--text2)}.res-val{font-weight:700;color:var(--text)}
-.btn-next{background:var(--grad-btn);color:#fff;border:none;border-radius:14px;padding:13px 32px;font-family:'Sarabun',sans-serif;font-size:15px;font-weight:700;cursor:pointer}
+/* ── SHIFT SECTION ── */
+.section-lbl{font-size:9px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--dim);margin-bottom:9px;font-family:'Manrope',sans-serif;display:flex;align-items:center;gap:7px;}
+.section-lbl::after{content:'';flex:1;height:1px;background:var(--border);}
+.shift-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:16px;}
+.shift-card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:14px;padding:13px 12px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;}
+.shift-card:active{transform:scale(.97);}
+.shift-card.active-day{background:rgba(245,158,11,.06);border-color:rgba(245,158,11,.3);}
+.shift-card.active-night{background:rgba(124,58,237,.07);border-color:rgba(124,58,237,.3);}
+.shift-card-icon{font-size:20px;margin-bottom:5px;}
+.shift-card-name{font-family:'Manrope',sans-serif;font-size:13px;font-weight:800;color:var(--fg);margin-bottom:2px;}
+.shift-card.active-day .shift-card-name{color:#FBBF24;}
+.shift-card.active-night .shift-card-name{color:#A78BFA;}
+.shift-card-time{font-size:10px;color:var(--dim);}
+.shift-card-window{font-size:9px;color:var(--teal);font-weight:700;margin-top:3px;}
+.shift-status-badge{position:absolute;top:8px;right:8px;font-size:8px;font-weight:700;padding:2px 7px;border-radius:20px;text-transform:uppercase;letter-spacing:.5px;}
+.sbadge-open{background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.2);color:var(--green);}
+.sbadge-locked{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#F87171;}
+.sbadge-emg{background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.2);color:#FBBF24;animation:emgPulse 1.2s infinite;}
 
-/* TOAST */
-.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(22,27,34,.97);border:1px solid rgba(0,200,160,.3);border-radius:14px;padding:11px 20px;font-size:12px;font-weight:700;color:#22d3c8;z-index:9999;transition:transform .3s;white-space:nowrap;backdrop-filter:blur(12px)}
-.toast.terr{border-color:rgba(239,68,68,.3);color:#f87171}
-.toast.tinfo{border-color:rgba(251,191,36,.3);color:#fbbf24}
-.toast.show{transform:translateX(-50%) translateY(0)}
+/* ── QR SECTION ── */
+.qr-section{margin-bottom:16px;}
+.url-banner{background:rgba(58,228,201,.07);border:1px solid rgba(58,228,201,.2);border-radius:10px;padding:9px 12px;margin-bottom:9px;font-size:12px;font-weight:600;color:var(--teal);display:none;align-items:center;gap:8px;}
+.url-banner.show{display:flex;}
+.qr-box{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:14px;transition:all .2s;}
+.qr-box.scanned{background:rgba(74,222,128,.04);border-color:rgba(74,222,128,.25);}
+.qr-prompt{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+.qr-scan-btn{display:flex;align-items:center;gap:7px;background:var(--grad);border:none;border-radius:10px;padding:10px 16px;font-family:'Sarabun',sans-serif;font-size:13px;font-weight:700;color:#fff;cursor:pointer;white-space:nowrap;box-shadow:0 3px 12px rgba(33,104,253,.25);transition:all .2s;}
+.qr-scan-btn:active{transform:scale(.97);}
+.qr-scan-btn:hover{opacity:.9;}
+.qr-or{font-size:11px;color:var(--dim);font-weight:600;}
+.qr-manual{display:flex;gap:7px;align-items:center;margin-top:8px;}
+.qr-manual-inp{flex:1;background:rgba(255,255,255,.04);border:1.5px solid var(--border);border-radius:9px;padding:9px 12px;font-size:13px;font-family:'Sarabun',sans-serif;color:var(--fg);outline:none;transition:border-color .2s;}
+.qr-manual-inp:focus{border-color:rgba(33,104,253,.45);}
+.qr-manual-inp::placeholder{color:var(--dim);}
+.qr-manual-btn{background:rgba(33,104,253,.1);border:1px solid rgba(33,104,253,.22);border-radius:9px;padding:9px 13px;font-family:'Sarabun',sans-serif;font-size:13px;font-weight:700;color:var(--blue-light);cursor:pointer;transition:all .18s;white-space:nowrap;}
+.qr-manual-btn:hover{background:rgba(33,104,253,.18);}
+
+/* RADIO RESULT CARD */
+.radio-result{display:flex;align-items:center;gap:12px;}
+.radio-result-icon{width:44px;height:44px;border-radius:12px;background:rgba(58,228,201,.1);border:1px solid rgba(58,228,201,.22);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.radio-result-wd{font-family:'Manrope',sans-serif;font-size:22px;font-weight:900;color:var(--fg);line-height:1;letter-spacing:-1px;}
+.radio-result-area{font-size:12px;color:var(--muted);margin-top:3px;}
+.radio-result-sn{font-size:10px;color:var(--dim);margin-top:2px;font-family:monospace;}
+.rescan-btn{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:11px;font-weight:700;color:var(--muted);cursor:pointer;font-family:'Sarabun',sans-serif;transition:all .18s;flex-shrink:0;margin-left:auto;}
+.rescan-btn:hover{background:rgba(255,255,255,.08);border-color:var(--border-hi);}
+
+/* ── CHECKLIST ── */
+.cl-wrap{background:var(--bg-card);border:1px solid rgba(33,104,253,.2);border-radius:16px;overflow:hidden;margin-bottom:14px;display:flex;flex-direction:column;}
+.cl-header{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-bottom:1px solid var(--border);background:rgba(33,104,253,.04);flex-shrink:0;}
+.cl-header-left{display:flex;align-items:center;gap:10px;}
+.cl-title{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--blue-light);font-family:'Manrope',sans-serif;}
+.cl-progress-text{font-size:11px;font-weight:800;color:var(--teal);font-family:'Manrope',sans-serif;}
+.cl-header-btns{display:flex;gap:5px;}
+.cl-btn{font-size:10px;font-weight:700;padding:4px 10px;border-radius:7px;cursor:pointer;font-family:'Sarabun',sans-serif;border:none;transition:all .18s;}
+.cl-btn-allpass{background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.22);color:var(--green);}
+.cl-btn-allpass:hover{background:rgba(74,222,128,.16);}
+.cl-btn-reset{background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--dim);}
+.cl-btn-reset:hover{background:rgba(255,255,255,.09);}
+.prog-bar{height:3px;background:rgba(255,255,255,.06);}
+.prog-fill{height:100%;background:linear-gradient(90deg,#22c55e,#16a34a);transition:width .3s ease;}
+.cl-list{overflow-y:auto;max-height:340px;}
+.cl-list::-webkit-scrollbar{width:2px;}
+.cl-list::-webkit-scrollbar-thumb{background:rgba(33,104,253,.25);border-radius:1px;}
+.cl-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.04);transition:background .15s;cursor:pointer;user-select:none;}
+.cl-row:last-child{border-bottom:none;}
+.cl-row:active{background:rgba(255,255,255,.03);}
+.cl-row.pass-row{background:rgba(74,222,128,.04);}
+.cl-row.fail-row{background:rgba(239,68,68,.04);}
+.cl-num{font-family:'Manrope',sans-serif;font-size:10px;font-weight:800;color:var(--dim);min-width:20px;flex-shrink:0;}
+.cl-text{flex:1;font-size:13px;font-weight:600;color:var(--fg);line-height:1.25;}
+.cl-row.fail-row .cl-text{color:#FCA5A5;}
+.cl-toggle{display:flex;align-items:center;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.1);flex-shrink:0;min-width:64px;height:26px;background:rgba(255,255,255,.05);cursor:pointer;transition:all .2s;}
+.cl-toggle.pass-tog{background:var(--pass-bg);border-color:var(--pass-border);flex-direction:row-reverse;}
+.cl-toggle.fail-tog{background:var(--fail-bg);border-color:var(--fail-border);}
+.tog-knob{width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.15);margin:2px;flex-shrink:0;transition:background .2s;}
+.cl-toggle.pass-tog .tog-knob{background:var(--pass-text);}
+.cl-toggle.fail-tog .tog-knob{background:var(--fail-text);}
+.tog-lbl{font-family:'Manrope',sans-serif;font-size:10px;font-weight:800;padding:0 6px;flex:1;text-align:center;color:var(--dim);user-select:none;}
+.cl-toggle.pass-tog .tog-lbl{color:var(--pass-text);}
+.cl-toggle.fail-tog .tog-lbl{color:var(--fail-text);}
+
+/* ── SUBMIT AREA ── */
+.submit-area{flex-shrink:0;padding:0 16px 28px;}
+.stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:11px;}
+.stat-mini{background:var(--bg-card);border:1px solid var(--border);border-radius:11px;padding:10px;text-align:center;}
+.stat-mini-num{font-family:'Manrope',sans-serif;font-size:22px;font-weight:900;line-height:1;margin-bottom:3px;}
+.stat-mini-lbl{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--dim);}
+.s-total .stat-mini-num{color:var(--teal);}
+.s-pass .stat-mini-num{color:var(--green);}
+.s-fail .stat-mini-num{color:#F87171;}
+.s-total{background:rgba(58,228,201,.04);border-color:rgba(58,228,201,.14);}
+.s-pass{background:rgba(74,222,128,.04);border-color:rgba(74,222,128,.14);}
+.s-fail{background:rgba(239,68,68,.04);border-color:rgba(239,68,68,.12);}
+.submit-btn{width:100%;padding:16px;background:var(--grad);border:none;border-radius:50px;font-family:'Sarabun',sans-serif;font-size:16px;font-weight:800;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;box-shadow:0 4px 18px rgba(33,104,253,.3);transition:all .2s;}
+.submit-btn:active{transform:scale(.97);}
+.submit-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+
+/* ══════════════════════════
+   QR CAMERA MODAL
+══════════════════════════ */
+.qr-modal{position:fixed;inset:0;z-index:9000;background:#000;display:none;flex-direction:column;}
+.qr-modal.show{display:flex;}
+#qrVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+#qrOvCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:5;pointer-events:none;}
+#qrFlash{position:absolute;inset:0;z-index:8;background:rgba(58,228,201,.4);opacity:0;pointer-events:none;transition:opacity .12s;}
+#qrFlash.on{opacity:1;}
+.qr-modal-top{position:absolute;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:16px 18px;background:linear-gradient(to bottom,rgba(0,0,0,.85),transparent);}
+.qr-modal-title{font-family:'Manrope',sans-serif;font-size:15px;font-weight:800;color:#fff;}
+.qr-close-btn{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);border-radius:9px;padding:7px 18px;font-family:'Sarabun',sans-serif;font-size:13px;font-weight:700;color:#fff;cursor:pointer;}
+.qr-modal-bot{position:absolute;bottom:0;left:0;right:0;z-index:10;padding:18px 18px 44px;background:linear-gradient(to top,rgba(0,0,0,.88),transparent);text-align:center;}
+.qr-status{font-size:14px;font-weight:700;margin-bottom:5px;}
+.qr-engine-tag{display:inline-flex;align-items:center;gap:5px;font-size:9px;font-weight:700;padding:2px 9px;border-radius:20px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.65);margin-bottom:6px;letter-spacing:.8px;text-transform:uppercase;}
+.qr-hint{font-size:11px;color:rgba(255,255,255,.45);}
+.qr-notfound{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.28);border-radius:10px;padding:10px 14px;margin-top:8px;display:none;text-align:left;}
+.qr-notfound.show{display:block;}
+.qr-notfound-title{font-size:12px;color:#F87171;font-weight:700;margin-bottom:3px;}
+.qr-notfound-desc{font-size:11px;color:rgba(248,113,113,.7);}
+
+/* ══════════════════════════
+   LOCK OVERLAY
+══════════════════════════ */
+.lock-overlay{position:fixed;inset:0;z-index:8000;background:rgba(0,0,0,.95);display:none;flex-direction:column;align-items:center;justify-content:center;padding:28px;backdrop-filter:blur(8px);overflow-y:auto;}
+.lock-overlay.show{display:flex;}
+.lock-icon-wrap{width:72px;height:72px;border-radius:22px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;flex-shrink:0;}
+.lock-icon-wrap.locked{background:rgba(239,68,68,.1);border:2px solid rgba(239,68,68,.3);animation:lockPulse 2s infinite;}
+.lock-icon-wrap.emergency{background:rgba(251,191,36,.1);border:2px solid rgba(251,191,36,.3);animation:emgP 2s infinite;}
+@keyframes lockPulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.25);}70%{box-shadow:0 0 0 10px rgba(239,68,68,0);}}
+@keyframes emgP{0%,100%{box-shadow:0 0 0 0 rgba(251,191,36,.25);}70%{box-shadow:0 0 0 10px rgba(251,191,36,0);}}
+.lock-title{font-family:'Manrope',sans-serif;font-size:20px;font-weight:900;text-align:center;margin-bottom:8px;}
+.lock-title.t-red{color:#F87171;}
+.lock-title.t-yellow{color:#FBBF24;}
+.lock-info-box{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:13px;width:100%;max-width:300px;}
+.lock-clock{font-family:'Manrope',sans-serif;font-size:38px;font-weight:900;color:var(--teal);letter-spacing:-2px;text-align:center;margin-bottom:4px;}
+.lock-date{font-size:11px;color:var(--dim);text-align:center;}
+.lock-row{display:flex;justify-content:space-between;font-size:12px;padding:4px 0;}
+.lock-row-key{color:var(--dim);font-weight:600;}
+.lock-row-val{color:var(--fg);font-weight:700;}
+.lock-badge{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:10px;font-size:12px;font-weight:700;margin-bottom:12px;}
+.lock-badge.red{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#F87171;}
+.lock-badge.yellow{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);color:#FBBF24;}
+.lock-desc{font-size:13px;color:var(--muted);text-align:center;line-height:1.6;margin-bottom:14px;max-width:280px;}
+.emg-countdown-box{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.2);border-radius:12px;padding:12px;text-align:center;margin-bottom:12px;width:100%;max-width:280px;display:none;}
+.emg-countdown-lbl{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#FBBF24;margin-bottom:4px;font-family:'Manrope',sans-serif;}
+.emg-countdown-num{font-family:'Manrope',sans-serif;font-size:30px;font-weight:900;color:#FBBF24;letter-spacing:-1px;}
+.lock-proceed-btn{background:var(--grad);border:none;border-radius:12px;padding:13px 28px;font-family:'Sarabun',sans-serif;font-size:15px;font-weight:700;color:#fff;cursor:pointer;margin-bottom:9px;width:100%;max-width:280px;display:none;}
+.lock-contact-btn{background:rgba(239,68,68,.09);border:1px solid rgba(239,68,68,.22);border-radius:12px;padding:12px 28px;font-family:'Sarabun',sans-serif;font-size:14px;font-weight:700;color:#FCA5A5;cursor:pointer;width:100%;max-width:280px;}
+.lock-sync-note{font-size:10px;color:var(--dim);margin-top:12px;text-align:center;}
+
+/* ══════════════════════════
+   RESULT SCREEN
+══════════════════════════ */
+#s-result{align-items:center;justify-content:center;padding:28px 20px;}
+.result-wrap{width:100%;max-width:360px;display:flex;flex-direction:column;align-items:center;text-align:center;}
+.result-icon{width:84px;height:84px;border-radius:26px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;animation:popIn .4s cubic-bezier(.175,.885,.32,1.275);}
+@keyframes popIn{from{transform:scale(.35);opacity:0;}to{transform:scale(1);opacity:1;}}
+.result-title{font-family:'Manrope',sans-serif;font-size:24px;font-weight:900;margin-bottom:7px;}
+.result-sub{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:20px;}
+.result-info-box{background:var(--bg-card);border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:22px;width:100%;text-align:left;}
+.result-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;}
+.result-row:last-child{border-bottom:none;}
+.result-row-key{color:var(--muted);}
+.result-row-val{font-weight:700;color:var(--fg);}
+.result-next-btn{background:var(--grad);color:#fff;border:none;border-radius:14px;padding:13px 32px;font-family:'Sarabun',sans-serif;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(33,104,253,.25);transition:all .2s;}
+.result-next-btn:active{transform:scale(.97);}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--bg-card);border:1px solid rgba(74,222,128,.3);border-radius:13px;padding:10px 20px;font-size:13px;font-weight:700;color:var(--green);z-index:9999;transition:transform .3s cubic-bezier(.4,0,.2,1),opacity .3s;opacity:0;white-space:nowrap;backdrop-filter:blur(12px);box-shadow:0 16px 48px rgba(0,0,0,.5);}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+.toast.terror{border-color:rgba(239,68,68,.3);color:#F87171;}
+.toast.twarn{border-color:rgba(251,191,36,.3);color:#FBBF24;}
+
+/* SKELETON */
+.skel{background:linear-gradient(90deg,#1a1a1b 25%,#222 50%,#1a1a1b 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:8px;height:48px;margin-bottom:6px;}
+@keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
 </style>
 </head>
 <body>
+<div class="bg-glow"></div>
 
-<!-- LOCK OVERLAY -->
-<div id="lockOverlay" class="lock-overlay">
-  <div class="lock-icon locked" id="lockIconEl">
-    <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="lockIconSvg"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-  </div>
-  <div class="lock-title t-red" id="lockTitle">ไม่อยู่ในช่วงเวลาที่กำหนด</div>
-  <div class="lock-time-info">
-    <div class="lock-current" id="lockClock">--:--</div>
-    <div class="lock-date" id="lockDate"></div>
-  </div>
-  <div class="lock-body" id="lockBody">ขณะนี้ไม่อยู่ในช่วงเวลาที่อนุญาต</div>
-  <div class="lock-time-info">
-    <div class="lock-time-row"><span class="lock-time-key">ผลัดที่เลือก</span><span class="lock-time-val" id="lockShiftName">—</span></div>
-    <div class="lock-time-row"><span class="lock-time-key">ช่วงเวลาอนุญาต</span><span class="lock-time-val" id="lockAllowTime">—</span></div>
-    <div class="lock-time-row"><span class="lock-time-key">เวลาปัจจุบัน</span><span class="lock-time-val" id="lockNowTime" style="color:#f87171">—</span></div>
-  </div>
-  <div class="lock-window-badge badge-red" id="lockWindowBadge">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-    <span id="lockWindowText">กรุณาเริ่มตรวจสอบในช่วงเวลาที่กำหนด</span>
-  </div>
-  <div id="emergencyCountdownBox" style="display:none;text-align:center;margin-bottom:12px;width:100%;max-width:300px">
-    <div style="background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);border-radius:14px;padding:14px">
-      <div style="font-size:10px;font-weight:700;letter-spacing:1px;color:#fbbf24;margin-bottom:4px;text-transform:uppercase">ปลดล็อคฉุกเฉิน — หมดเวลาใน</div>
-      <div class="emergency-countdown" id="emergencyCountdownText">--:--</div>
-    </div>
-  </div>
-  <button class="unlock-allow-btn" id="emergencyProceedBtn" style="display:none" onclick="proceedEmergency()">ดำเนินการตรวจสอบต่อ</button>
-  <button class="btn-contact" onclick="reqUnlock()">ติดต่อผู้ดูแลระบบ เพื่อปลดล็อค</button>
-  <div style="font-size:10px;color:var(--text3);margin-top:12px;text-align:center" id="cfgSyncSt">กำลังซิงค์...</div>
-</div>
-
-<!-- QR MODAL -->
-<div id="qrModal" class="qr-modal">
+<!-- ══ QR CAMERA MODAL ══ -->
+<div class="qr-modal" id="qrModal">
   <video id="qrVideo" playsinline muted autoplay></video>
-  <canvas id="qrOvCv"></canvas>
+  <canvas id="qrOvCanvas"></canvas>
   <div id="qrFlash"></div>
-  <div class="qr-top">
-    <div class="qr-top-ttl">สแกน QR Code วิทยุสื่อสาร</div>
-    <button class="qr-top-cls" onclick="closeQR()">ยกเลิก</button>
+  <div class="qr-modal-top">
+    <div class="qr-modal-title">สแกน QR Code วิทยุ</div>
+    <button class="qr-close-btn" onclick="closeQR()">ยกเลิก</button>
   </div>
-  <div class="qr-bot">
-    <div class="qr-stat" id="qrStat" style="color:#22d3c8">● กำลังเปิดกล้อง...</div>
-    <div class="qr-engine-badge" id="qrEngineBadge">STARTING...</div>
+  <div class="qr-modal-bot">
+    <div class="qr-status" id="qrStatus" style="color:#3AE4C9;">● กำลังเปิดกล้อง...</div>
+    <div class="qr-engine-tag" id="qrEngineTag">STARTING</div>
     <div class="qr-hint">จ่อกล้องไปที่ QR Code · ระยะ 10–20 ซม.</div>
     <div class="qr-notfound" id="qrNotFound">
-      <div class="qr-notfound-msg" id="qrNotFoundMsg">ไม่พบวิทยุ</div>
-      <div class="qr-notfound-hint">กรุณาจ่อที่ QR Code บนการ์ดวิทยุเท่านั้น</div>
+      <div class="qr-notfound-title" id="qrNotFoundMsg">ไม่พบวิทยุในระบบ</div>
+      <div class="qr-notfound-desc">กรุณาสแกน QR Code บนการ์ดวิทยุสื่อสารเท่านั้น</div>
     </div>
   </div>
 </div>
 
-<!-- LOGIN -->
+<!-- ══ LOCK OVERLAY ══ -->
+<div class="lock-overlay" id="lockOverlay">
+  <div class="lock-icon-wrap locked" id="lockIconWrap">
+    <svg id="lockIconSvg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+  </div>
+  <div class="lock-title t-red" id="lockTitle">ไม่อยู่ในช่วงเวลาที่กำหนด</div>
+  <div class="lock-info-box">
+    <div class="lock-clock" id="lockClock">--:--</div>
+    <div class="lock-date" id="lockDate"></div>
+  </div>
+  <div class="lock-desc" id="lockDesc">ขณะนี้ไม่อยู่ในช่วงเวลาที่อนุญาตให้ตรวจสอบ</div>
+  <div class="lock-info-box" style="margin-bottom:12px;">
+    <div class="lock-row"><span class="lock-row-key">ผลัดที่เลือก</span><span class="lock-row-val" id="lockShiftName">—</span></div>
+    <div class="lock-row"><span class="lock-row-key">ช่วงเวลาอนุญาต</span><span class="lock-row-val" id="lockAllowTime">—</span></div>
+    <div class="lock-row"><span class="lock-row-key">เวลาปัจจุบัน</span><span class="lock-row-val" id="lockNowTime" style="color:#F87171;">—</span></div>
+  </div>
+  <div class="lock-badge red" id="lockBadge">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    <span id="lockBadgeText">กรุณาเริ่มตรวจสอบในช่วงเวลาที่กำหนด</span>
+  </div>
+  <div class="emg-countdown-box" id="emgCountBox">
+    <div class="emg-countdown-lbl">ปลดล็อคฉุกเฉิน — หมดเวลาใน</div>
+    <div class="emg-countdown-num" id="emgCountNum">--:--</div>
+  </div>
+  <button class="lock-proceed-btn" id="lockProceedBtn" onclick="proceedEmergency()">ดำเนินการตรวจสอบต่อ</button>
+  <button class="lock-contact-btn" onclick="contactAdmin()">ติดต่อผู้ดูแลระบบ เพื่อปลดล็อค</button>
+  <div class="lock-sync-note" id="lockSyncNote">กำลังซิงค์การตั้งค่า...</div>
+</div>
+
+<!-- ══ LOGIN ══ -->
 <div id="s-login" class="screen active">
-  <div class="login-wrap">
-    <div class="login-card">
-      <div class="login-icon">
-        <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-logo-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg>
       </div>
-      <div class="login-title">Radio Inspection</div>
-      <div class="login-sub">WD Security · ระบบตรวจสอบวิทยุสื่อสาร</div>
-      <div class="sys-ok"><span class="ldot"></span> เชื่อมต่อแล้ว</div>
-      <div id="loginErr" class="err"></div>
-      <label class="lbl">รหัสพนักงาน</label>
-      <input id="lId" class="inp" type="text" placeholder="เช่น U001" autocomplete="off">
-      <label class="lbl">รหัสผ่าน</label>
-      <input id="lPw" class="inp" type="password" placeholder="••••••••">
-      <button class="btn-login" onclick="doLogin()">เข้าสู่ระบบ</button>
+      <div>
+        <div class="login-logo-title">Radio Inspection</div>
+        <div class="login-logo-sub">WD Security · ระบบตรวจสอบวิทยุสื่อสาร</div>
+      </div>
     </div>
+    <div class="login-eyebrow">Western Digital · REO Security (Mfg)</div>
+    <div class="login-title">เข้าสู่ระบบ</div>
+    <div class="login-desc">กรอก User ID และ Password เพื่อเข้าใช้งาน</div>
+    <div id="loginErr" class="login-err"></div>
+    <label class="form-lbl">รหัสพนักงาน</label>
+    <input id="lId" class="form-inp" type="text" placeholder="เช่น U001" autocomplete="off">
+    <label class="form-lbl">รหัสผ่าน</label>
+    <input id="lPw" class="form-inp" type="password" placeholder="••••••••">
+    <button class="login-btn" id="loginBtn" onclick="doLogin()">
+      <div class="spin-ring" id="loginRing"></div>
+      <span id="loginBtnTxt">เข้าสู่ระบบ</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+    </button>
   </div>
 </div>
 
-<!-- MAIN FORM -->
+<!-- ══ MAIN FORM ══ -->
 <div id="s-main" class="screen">
-  <div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
-    <div class="status-bar">
-      <div class="sb-time" id="sbTime">--:--</div>
-      <div class="sb-right">
-        <div id="emgBadge" style="display:none;align-items:center;gap:5px;font-size:9px;font-weight:700;color:#fbbf24;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.18);padding:3px 9px;border-radius:20px;animation:blinkBadge 1s infinite">🔓 ปลดล็อค</div>
-        <div style="display:inline-flex;align-items:center;gap:5px;font-size:9px;font-weight:700;color:#22c55e;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.18);padding:3px 9px;border-radius:20px;text-transform:uppercase">
-          <span class="ldot" style="width:4px;height:4px"></span> LIVE
-        </div>
-        <button onclick="doLogout()" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);border-radius:7px;padding:4px 10px;font-size:10px;font-weight:700;color:var(--text2);cursor:pointer;font-family:Sarabun,sans-serif">ออก</button>
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div class="top-bar-left">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#93C5FD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg>
+      <div class="top-bar-brand">Radio Inspection</div>
+    </div>
+    <div class="top-bar-right">
+      <div class="emg-badge" id="emgBadge">🔓 ปลดล็อค</div>
+      <div class="live-chip"><div class="live-dot"></div>LIVE</div>
+      <span class="tb-btn" id="topClock">--:--</span>
+      <button class="tb-btn danger" onclick="doLogout()">ออก</button>
+    </div>
+  </div>
+
+  <!-- FORM BODY -->
+  <div class="form-body" id="formBody">
+
+    <!-- STEP INDICATORS -->
+    <div class="steps" id="stepBar">
+      <div class="step-item active" id="step1"><div class="step-dot">1</div>ผลัด</div>
+      <div class="step-sep"></div>
+      <div class="step-item" id="step2"><div class="step-dot">2</div>สแกน</div>
+      <div class="step-sep"></div>
+      <div class="step-item" id="step3"><div class="step-dot">3</div>ตรวจสอบ</div>
+      <div class="step-sep"></div>
+      <div class="step-item" id="step4"><div class="step-dot">4</div>บันทึก</div>
+    </div>
+
+    <!-- PROFILE CARD -->
+    <div class="profile-card">
+      <div class="prof-av" id="profAv">U</div>
+      <div style="flex:1;min-width:0;">
+        <div class="prof-name" id="profName">—</div>
+        <div class="prof-meta" id="profMeta">—</div>
+        <div style="margin-top:6px;display:flex;gap:5px;flex-wrap:wrap;" id="profTags"></div>
+      </div>
+      <div class="prof-score">
+        <div class="prof-score-num" id="profPassCount">0</div>
+        <div class="prof-score-lbl">Pass</div>
       </div>
     </div>
-    <div class="profile-section">
-      <div class="profile-card">
-        <div style="position:relative;flex-shrink:0"><div class="av-ring"></div><div class="profile-av" id="profAv">U</div></div>
-        <div class="prof-info">
-          <div class="prof-name" id="profName">พนักงาน</div>
-          <div class="prof-id" id="profId">ID: ---</div>
-          <div class="prof-dept" id="profDept">WD Security</div>
-          <div class="prof-tags">
-            <span class="prof-tag tag-role">Security Inspector</span>
-            <span class="prof-tag tag-shift" id="profShiftTag" style="display:none">—</span>
-          </div>
-        </div>
-        <div style="flex-shrink:0;text-align:right">
-          <div style="font-family:'Manrope',sans-serif;font-size:28px;font-weight:900;color:#22d3c8" id="profPass">0</div>
-          <div style="font-size:9px;color:var(--text3);font-weight:700;letter-spacing:1px;text-transform:uppercase">Pass</div>
-        </div>
+
+    <!-- CFG LOADING -->
+    <div id="cfgLoadRow" style="display:flex;align-items:center;gap:7px;font-size:11px;color:var(--dim);padding:6px 10px;background:rgba(255,255,255,.03);border-radius:8px;margin-bottom:10px;">
+      <div class="spin-ring show" style="width:12px;height:12px;border-width:2px;border-color:rgba(58,228,201,.3);border-top-color:var(--teal);"></div>
+      <span>กำลังโหลดการตั้งค่าเวลาผลัด...</span>
+    </div>
+
+    <!-- SHIFT SELECTION -->
+    <div class="section-lbl">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      เลือกผลัดการทำงาน
+    </div>
+    <div class="shift-grid">
+      <div class="shift-card" id="shiftDay" onclick="selShift('day')">
+        <div class="shift-status-badge" id="badgeDay">—</div>
+        <div class="shift-card-icon">☀️</div>
+        <div class="shift-card-name">ผลัดกลางวัน</div>
+        <div class="shift-card-time" id="shiftDayTime">07:30–19:30 น.</div>
+        <div class="shift-card-window" id="shiftDayWin">⏱ กำลังโหลด...</div>
+      </div>
+      <div class="shift-card" id="shiftNight" onclick="selShift('night')">
+        <div class="shift-status-badge" id="badgeNight">—</div>
+        <div class="shift-card-icon">🌙</div>
+        <div class="shift-card-name">ผลัดกลางคืน</div>
+        <div class="shift-card-time" id="shiftNightTime">19:30–07:30 น.</div>
+        <div class="shift-card-window" id="shiftNightWin">⏱ กำลังโหลด...</div>
       </div>
     </div>
-    <div class="shift-section">
-      <div class="shift-label">เลือกผลัดการทำงาน</div>
-      <div id="cfgLoadRow" class="cfg-loading"><div class="spin"></div><span>กำลังโหลดข้อมูลเวลา...</span></div>
-      <div class="shift-grid">
-        <div class="shift-card" id="shiftDay" onclick="selShift('day')">
-          <div class="shift-badge" id="badgeDay">—</div>
-          <div class="shift-icon">☀️</div>
-          <div class="shift-name">ผลัดกลางวัน</div>
-          <div class="shift-time" id="shiftDayTime">07:30–19:30 น.</div>
-          <div class="shift-window" id="shiftDayWin">⏱ กำลังโหลด...</div>
-        </div>
-        <div class="shift-card" id="shiftNight" onclick="selShift('night')">
-          <div class="shift-badge" id="badgeNight">—</div>
-          <div class="shift-icon">🌙</div>
-          <div class="shift-name">ผลัดกลางคืน</div>
-          <div class="shift-time" id="shiftNightTime">19:30–07:30 น.</div>
-          <div class="shift-window" id="shiftNightWin">⏱ กำลังโหลด...</div>
-        </div>
-      </div>
+
+    <!-- QR CODE SECTION -->
+    <div class="section-lbl">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h.01M14 17h.01M17 14h.01M17 17h4"/></svg>
+      สแกน QR Code เครื่องวิทยุ
+    </div>
+    <div class="url-banner" id="urlBanner">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      <span id="urlBannerText">โหลดวิทยุจาก URL อัตโนมัติ</span>
     </div>
     <div class="qr-section">
-      <div class="qr-label">สแกน QR Code เครื่องวิทยุ</div>
-      <div class="url-param-banner" id="urlParamBanner">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22d3c8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-        <span id="urlParamText">QR Code ถูกอ่านจาก URL แล้ว</span>
-      </div>
-      <div class="qr-card" id="qrCard">
+      <div class="qr-box" id="qrBox">
+        <!-- BEFORE SCAN -->
         <div id="qrBeforeScan">
           <div class="qr-prompt">
             <button class="qr-scan-btn" onclick="openQR()">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h.01M14 17h.01M17 14h.01M17 17h4"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h.01M14 17h.01M17 14h.01M17 17h4"/></svg>
               สแกน QR Code
             </button>
-            <div style="flex:1">
-              <div class="qr-or-text">หรือกรอก ID ด้วยตนเอง</div>
-              <div class="qr-manual-row">
+            <div style="flex:1;min-width:0;">
+              <div class="qr-or">หรือกรอกหมายเลขวิทยุเอง</div>
+              <div class="qr-manual">
                 <input id="manualId" class="qr-manual-inp" placeholder="เช่น WD1 หรือ 1" maxlength="6">
-                <button class="btn-manual-ok" onclick="manualEntry()">ยืนยัน</button>
+                <button class="qr-manual-btn" onclick="manualEntry()">ยืนยัน</button>
               </div>
             </div>
           </div>
         </div>
-        <div id="qrAfterScan" style="display:none">
-          <div class="qr-result">
-            <div class="qr-result-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22d3c8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg></div>
-            <div class="qr-result-info">
-              <div class="qr-result-id" id="qrResultId">WD—</div>
-              <div class="qr-result-area" id="qrResultArea">—</div>
-              <div class="qr-result-sn" id="qrResultSn">—</div>
+        <!-- AFTER SCAN -->
+        <div id="qrAfterScan" style="display:none;">
+          <div class="radio-result">
+            <div class="radio-result-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3AE4C9" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg>
             </div>
-            <button class="btn-rescan" onclick="rescan()">สแกนใหม่</button>
+            <div style="flex:1;min-width:0;">
+              <div class="radio-result-wd" id="radioResultWD">WD—</div>
+              <div class="radio-result-area" id="radioResultArea">—</div>
+              <div class="radio-result-sn" id="radioResultSN">—</div>
+            </div>
+            <button class="rescan-btn" onclick="rescan()">สแกนใหม่</button>
           </div>
         </div>
       </div>
     </div>
-    <div class="progress-strip" style="margin:0 16px;border-radius:2px"><div class="progress-fill" id="progFill" style="width:0%"></div></div>
-    <div class="checklist-wrap">
-      <div class="checklist-card">
-        <div class="checklist-inner">
-          <div class="cl-header">
-            <div style="display:flex;align-items:center;gap:8px">
-              <div class="cl-title">รายการตรวจสอบ</div>
-              <div class="cl-prog" id="clProg">0/21</div>
-            </div>
-            <div class="cl-btns">
-              <button class="cl-btn cl-btn-pass" onclick="setAllPass()">All Pass</button>
-              <button class="cl-btn cl-btn-reset" onclick="resetAll()">Reset</button>
-            </div>
-          </div>
-          <div class="cl-scroll"><div id="checkList"></div></div>
+
+    <!-- PROGRESS BAR (above checklist) -->
+    <div style="margin:0 0 10px;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+        <span style="font-size:10px;font-weight:700;color:var(--dim);font-family:'Manrope',sans-serif;letter-spacing:1px;text-transform:uppercase;">ความคืบหน้า</span>
+        <span style="font-size:10px;font-weight:800;color:var(--teal);font-family:'Manrope',sans-serif;" id="progText">0%</span>
+      </div>
+      <div style="height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;">
+        <div id="progBar" style="height:100%;background:linear-gradient(90deg,#22c55e,#3AE4C9);border-radius:3px;width:0%;transition:width .3s ease;"></div>
+      </div>
+    </div>
+
+    <!-- CHECKLIST -->
+    <div class="section-lbl">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      รายการตรวจสอบ
+    </div>
+    <div class="cl-wrap">
+      <div class="cl-header">
+        <div class="cl-header-left">
+          <div class="cl-title">Checklist</div>
+          <div class="cl-progress-text" id="clProg">0/21</div>
+        </div>
+        <div class="cl-header-btns">
+          <button class="cl-btn cl-btn-allpass" onclick="setAllPass()">All Pass</button>
+          <button class="cl-btn cl-btn-reset" onclick="resetAll()">Reset</button>
         </div>
       </div>
-    </div>
-    <div class="submit-section">
-      <div class="stats-mini">
-        <div class="stat-mini-card s-total"><div class="stat-mini-val" id="sTotal">21</div><div class="stat-mini-lbl">รายการ</div></div>
-        <div class="stat-mini-card s-pass"><div class="stat-mini-val" id="sPass">0</div><div class="stat-mini-lbl">Pass</div></div>
-        <div class="stat-mini-card s-fail"><div class="stat-mini-val" id="sFail">0</div><div class="stat-mini-lbl">Fail</div></div>
+      <div class="prog-bar"><div class="prog-fill" id="clProgFill" style="width:0%;"></div></div>
+      <div class="cl-list" id="clList">
+        <div style="padding:16px;"><div class="skel"></div><div class="skel"></div><div class="skel" style="opacity:.5;"></div></div>
       </div>
-      <button class="btn-save" id="saveBtn" onclick="doSubmit()">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-        บันทึกข้อมูล
-      </button>
     </div>
+
+  </div><!-- end form-body -->
+
+  <!-- SUBMIT -->
+  <div class="submit-area">
+    <div class="stats-row">
+      <div class="stat-mini s-total"><div class="stat-mini-num" id="sTotal">21</div><div class="stat-mini-lbl">รายการ</div></div>
+      <div class="stat-mini s-pass"><div class="stat-mini-num" id="sPass">0</div><div class="stat-mini-lbl">Pass</div></div>
+      <div class="stat-mini s-fail"><div class="stat-mini-num" id="sFail">0</div><div class="stat-mini-lbl">Fail</div></div>
+    </div>
+    <button class="submit-btn" id="submitBtn" onclick="doSubmit()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+      บันทึกข้อมูล
+    </button>
   </div>
 </div>
 
-<!-- RESULT -->
+<!-- ══ RESULT ══ -->
 <div id="s-result" class="screen">
   <div class="result-wrap">
-    <div class="res-icon" id="resIcon"></div>
-    <div class="res-title" id="resTitle"></div>
-    <div class="res-sub" id="resSub"></div>
-    <div class="res-info" id="resInfo"></div>
-    <button class="btn-next" onclick="startNew()">ตรวจสอบเครื่องถัดไป</button>
+    <div class="result-icon" id="resIcon"></div>
+    <div class="result-title" id="resTitle"></div>
+    <div class="result-sub" id="resSub"></div>
+    <div class="result-info-box" id="resInfo"></div>
+    <button class="result-next-btn" onclick="startNew()">ตรวจสอบเครื่องถัดไป</button>
   </div>
 </div>
 
-<div id="toast" class="toast"></div>
+<div class="toast" id="toast"></div>
 
-<!-- ═══════════════════════════════════════════════
-     PLAIN SCRIPT — Firebase (no module conflict)
-═══════════════════════════════════════════════ -->
+<!-- ══ FIREBASE + LOGIC ══ -->
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, addDoc, doc, getDoc, getDocs, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getFirestore, collection, doc, addDoc, getDoc, getDocs, onSnapshot, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
-const RADIOS_DEFAULT=[
+/* ── CONFIG (same project as admin) ── */
+const fbCfg = {
+  apiKey:"AIzaSyCBSvlRDbhibsNIgqNRd9UB5fdnm8g-G2A",
+  authDomain:"building-access-control.firebaseapp.com",
+  projectId:"building-access-control",
+  storageBucket:"building-access-control.firebasestorage.app",
+  messagingSenderId:"492098937762",
+  appId:"1:492098937762:web:53c52cbbfd4cb030ad08fb"
+};
+const fbApp = initializeApp(fbCfg);
+const db = getFirestore(fbApp);
+
+/* ── DEFAULTS ── */
+const DEFAULT_RADIOS = [
   {id:1,area:"จุดตรวจโลหะที่ 1",sn:"S/N 278TBPG297"},{id:2,area:"Support 5 Ph1",sn:"S/N 278TBPG307"},
   {id:3,area:"Main Entrance Ph1",sn:"S/N 278TBPG308"},{id:4,area:"จุดตรวจโลหะที่ 4",sn:"S/N 278TBPG324"},
   {id:5,area:"Support P6",sn:"S/N 278TBPG327"},{id:6,area:"Support P7",sn:"S/N 278TBPG330"},
@@ -446,394 +575,574 @@ const RADIOS_DEFAULT=[
   {id:36,area:"Gate 4",sn:"S/N 278TBPG567"},{id:37,area:"Patrol North",sn:"S/N 278TBPG570"},
   {id:38,area:"Patrol South",sn:"S/N 278TBPG572"},
 ];
-let RADIOS=[...RADIOS_DEFAULT];
-
-const DEFAULT_ITEMS=[
-  {id:1,th:"เสาอากาศ",en:"Antenna"},{id:2,th:"แบตเตอรี่",en:"Battery"},{id:3,th:"ปุ่มกดพูด",en:"PTT Button"},
+const DEFAULT_ITEMS = [
+  {id:1,th:"เสาอากาศ",en:"Antenna"},{id:2,th:"แบตเตอรี่",en:"Battery"},{id:3,th:"ปุ่มกดพูด (PTT)",en:"PTT Button"},
   {id:4,th:"ลำโพง",en:"Speaker"},{id:5,th:"ไมโครโฟน",en:"Microphone"},{id:6,th:"ปุ่มเลือกช่องสัญญาณ",en:"Channel Selector"},
   {id:7,th:"ปุ่มปรับระดับเสียง",en:"Volume Knob"},{id:8,th:"จอแสดงผล",en:"Display"},{id:9,th:"ปุ่มฉุกเฉิน",en:"Emergency Button"},
-  {id:10,th:"สลักล็อกแบตเตอรี่",en:"Battery Latch"},{id:11,th:"ตัวเครื่อง",en:"Body Condition"},{id:12,th:"ขั้วต่ออุปกรณ์เสริม",en:"Accessory Connector"},
-  {id:13,th:"คลิปหนีบเข็มขัด",en:"Belt Clip"},{id:14,th:"การกันน้ำ/ฝุ่น",en:"Seal Integrity"},{id:15,th:"ฟังก์ชันการสแกน",en:"Scan Function"},
-  {id:16,th:"ฟังก์ชัน VOX",en:"VOX Function"},{id:17,th:"การแจ้งเตือนแบตเตอรี่ต่ำ",en:"Low Battery Alert"},{id:18,th:"สัญญาณไฟแสดงสถานะ",en:"LED Indicator"},
-  {id:19,th:"ซอฟต์แวร์เวอร์ชัน",en:"Software Version"},{id:20,th:"การทำงานทั่วไป",en:"General Operation"},{id:21,th:"เอกสารประกอบ",en:"Documentation"},
+  {id:10,th:"สลักล็อกแบตเตอรี่",en:"Battery Latch"},{id:11,th:"ตัวเครื่อง",en:"Body Condition"},
+  {id:12,th:"ขั้วต่ออุปกรณ์เสริม",en:"Accessory Connector"},{id:13,th:"คลิปหนีบเข็มขัด",en:"Belt Clip"},
+  {id:14,th:"การกันน้ำ/ฝุ่น",en:"Seal Integrity"},{id:15,th:"ฟังก์ชันการสแกน",en:"Scan Function"},
+  {id:16,th:"ฟังก์ชัน VOX",en:"VOX Function"},{id:17,th:"การแจ้งเตือนแบตเตอรี่ต่ำ",en:"Low Battery Alert"},
+  {id:18,th:"สัญญาณไฟแสดงสถานะ",en:"LED Indicator"},{id:19,th:"ซอฟต์แวร์เวอร์ชัน",en:"Software Version"},
+  {id:20,th:"การทำงานทั่วไป",en:"General Operation"},{id:21,th:"เอกสารประกอบ",en:"Documentation"},
 ];
 
-const fbCfg={apiKey:"AIzaSyCBSvlRDbhibsNIgqNRd9UB5fdnm8g-G2A",authDomain:"building-access-control.firebaseapp.com",projectId:"building-access-control",storageBucket:"building-access-control.firebasestorage.app",messagingSenderId:"492098937762",appId:"1:492098937762:web:53c52cbbfd4cb030ad08fb"};
-let db;try{const app=initializeApp(fbCfg);db=getFirestore(app);}catch(e){console.warn(e);}
-
-let user=null,chk={},selectedShift=null,scannedRadioId=null;
-let lockActive=false,emergencyActive=false,emergencyUntilMs=null;
-let ITEMS=[...DEFAULT_ITEMS];
-let shiftCfg={
-  day:{inspStart:"07:30",inspEnd:"10:00",shiftStart:"07:30",shiftEnd:"19:30",emergencyUnlock:false,emergencyUntil:null},
-  night:{inspStart:"19:30",inspEnd:"22:00",shiftStart:"19:30",shiftEnd:"07:30",emergencyUnlock:false,emergencyUntil:null}
+/* ── STATE ── */
+let user = null;
+let RADIOS = [...DEFAULT_RADIOS];
+let ITEMS = DEFAULT_ITEMS.map(x=>({...x}));
+let chk = {};
+let selectedShift = null;
+let scannedRadio = null;
+let scanMethod = 'manual';
+let lockActive = false;
+let emergencyActive = false;
+let emergencyUntilMs = null;
+let cfgLoaded = false;
+let shiftCfg = {
+  day:{inspStart:'07:30',inspEnd:'10:00',shiftStart:'07:30',shiftEnd:'19:30',emergencyUnlock:false,emergencyUntil:null},
+  night:{inspStart:'19:30',inspEnd:'22:00',shiftStart:'19:30',shiftEnd:'07:30',emergencyUnlock:false,emergencyUntil:null}
 };
+let _cfgUnsub = null;
 
-const G=id=>document.getElementById(id);
-
-/* ── Radio lookup helpers ── */
-function findRadioByLabel(label){
-  if(!label)return null;
-  const s=String(label).trim();
-  let r=RADIOS.find(x=>(x.label||('WD'+x.id))===s);if(r)return r;
-  const m=s.match(/^WD[\s\-_]?(\d+)$/i);
-  if(m){const id=parseInt(m[1]);return RADIOS.find(x=>x.id===id)||null;}
-  if(/^\d+$/.test(s)){const id=parseInt(s);return RADIOS.find(x=>x.id===id)||null;}
-  return null;
+/* ── HELPERS ── */
+const G = id => document.getElementById(id);
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>{s.classList.remove('active');s.style.display='none';});
+  const s=G(id);if(s){s.classList.add('active');s.style.display='flex';}
 }
-function parseQRtoRadio(raw){
-  const s=(raw||'').trim();if(!s)return null;
-  if(s.startsWith('http')||s.includes('?')){
-    try{
-      const u=new URL(s.includes('://')?s:'https://x.com/'+s);
-      const label=u.searchParams.get('radio')||u.searchParams.get('id')||u.searchParams.get('code')||u.searchParams.get('wdcode');
-      if(label){
-        const r=findRadioByLabel(label);if(r)return r;
-        const m2=String(label).match(/WD[\s\-_]?(\d+)/i);if(m2)return RADIOS.find(x=>x.id===parseInt(m2[1]))||null;
-        if(/^\d+$/.test(label))return RADIOS.find(x=>x.id===parseInt(label))||null;
-      }
-    }catch(e){}
-  }
-  if(s.startsWith('{')){try{const p=JSON.parse(s);const id=parseInt(p.id||p.radioId||0);if(id>0)return RADIOS.find(x=>x.id===id)||null;}catch(e){}}
-  return findRadioByLabel(s);
+function showToast(msg,type='ok'){
+  const t=G('toast');t.textContent=msg;
+  t.className='toast'+(type==='err'?' terror':type==='warn'?' twarn':'');
+  t.classList.add('show');clearTimeout(t._t);
+  t._t=setTimeout(()=>t.classList.remove('show'),3200);
 }
-function checkUrlParam(){
-  try{
-    const params=new URLSearchParams(window.location.search);
-    const label=params.get('radio')||params.get('id')||params.get('code')||params.get('wdcode');
-    if(!label)return null;
-    return findRadioByLabel(label)||findRadioByLabel('WD'+label);
-  }catch(e){return null;}
-}
-
-/* ── Shift/time logic ── */
-function resolveMs(v){if(!v)return null;if(typeof v==='object'&&v.toDate)return v.toDate().getTime();const m=new Date(v).getTime();return isNaN(m)?null:m;}
-function applyFSD(d){
-  ['day','night'].forEach(sh=>{
-    const s=d[sh];if(s&&typeof s==='object'){
-      if(s.inspStart)shiftCfg[sh].inspStart=s.inspStart;if(s.inspEnd)shiftCfg[sh].inspEnd=s.inspEnd;
-      if(s.shiftStart)shiftCfg[sh].shiftStart=s.shiftStart;if(s.shiftEnd)shiftCfg[sh].shiftEnd=s.shiftEnd;
-      shiftCfg[sh].emergencyUnlock=!!s.emergencyUnlock;shiftCfg[sh].emergencyUntil=s.emergencyUntil||null;
-    }
-  });resolveEmg();
-}
-function resolveEmg(){
-  const now=Date.now();let any=false,lat=null;
-  ['day','night'].forEach(sh=>{const ms=resolveMs(shiftCfg[sh].emergencyUntil);if(shiftCfg[sh].emergencyUnlock&&ms&&now<ms){any=true;if(!lat||ms>lat)lat=ms;}});
-  const was=emergencyActive;emergencyActive=any;emergencyUntilMs=lat;
-  if(!was&&any&&lockActive){updLockUI();toast("🔓 Admin ปลดล็อคแล้ว!","info");}
-  if(lockActive&&selectedShift&&isAllowed(selectedShift)&&!any){hideLock();toast("เข้าสู่ช่วงเวลาตรวจสอบแล้ว");}
-}
-function toMin(s){if(!s)return 0;const p=s.split(":");return parseInt(p[0])*60+parseInt(p[1]||0);}
+function pad2(n){return String(n).padStart(2,'0');}
+function toMin(s){if(!s)return 0;const[h,m]=(s||'0:0').split(':');return +h*60+ +m;}
 function nowMin(){const n=new Date();return n.getHours()*60+n.getMinutes();}
-function fmtCd(ms){if(ms<=0)return"00:00";const s=Math.floor(ms/1000),m=Math.floor(s/60);return String(m).padStart(2,"0")+":"+String(s%60).padStart(2,"0");}
+function fmtMs(ms){if(ms<=0)return'00:00';const s=Math.floor(ms/1000),m=Math.floor(s/60);return pad2(m)+':'+pad2(s%60);}
+function resolveMs(v){if(!v)return null;if(typeof v==='object'&&v.toDate)return v.toDate().getTime();const m=new Date(v).getTime();return isNaN(m)?null:m;}
+
 function isAllowed(sh){
-  const c=shiftCfg[sh];const ms=resolveMs(c.emergencyUntil);
+  const c=shiftCfg[sh];
+  const ms=resolveMs(c.emergencyUntil);
   if(c.emergencyUnlock&&ms&&Date.now()<ms)return true;
   const t=nowMin(),s=toMin(c.inspStart),e=toMin(c.inspEnd);
   return s<=e?(t>=s&&t<e):(t>=s||t<e);
 }
-function winLbl(sh){const c=shiftCfg[sh];return c?c.inspStart+"–"+c.inspEnd+" น.":"—";}
-function shTLbl(sh){const c=shiftCfg[sh];return c?c.shiftStart+"–"+c.shiftEnd+" น.":"—";}
-async function fetchCfg(){if(!db){updShiftUI();return;}try{const s=await getDoc(doc(db,"shiftConfig","main"));if(s.exists()){applyFSD(s.data());}}catch(e){}updShiftUI();}
-function startCfgL(){if(!db)return;try{onSnapshot(doc(db,"shiftConfig","main"),s=>{if(!s.exists())return;applyFSD(s.data());updShiftUI();if(lockActive)updLockUI();});}catch(e){}}
-async function fetchRadios(){if(!db)return;try{const snap=await getDocs(collection(db,"radioItems"));if(!snap.empty){const loaded=[];snap.forEach(d=>{const x=d.data();if(x.id)loaded.push({id:parseInt(x.id),area:x.area||'',sn:x.sn||'',label:x.label||('WD'+x.id),type:x.type||'active'});});if(loaded.length>0)RADIOS=loaded;}}catch(e){}}
-async function fetchCL(){if(!db){buildList();return;}try{const s=await getDocs(collection(db,"checklistItems"));if(!s.empty){const it=[];s.forEach(d=>{const x=d.data();it.push({id:x.id||it.length+1,th:x.th||d.id,en:x.en||""});});it.sort((a,b)=>a.id-b.id);if(it.length>0)ITEMS=it;}}catch(e){}chk={};ITEMS.forEach(i=>chk[i.id]=null);buildList();updUI();}
+function winLabel(sh){const c=shiftCfg[sh];return c?c.inspStart+'–'+c.inspEnd+' น.':'—';}
+function shiftLabel(sh){return sh==='day'?'ผลัดกลางวัน':'ผลัดกลางคืน';}
 
-/* ── Clock tick ── */
-function tick(){
-  const n=new Date(),t=n.toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"});
-  if(G("sbTime"))G("sbTime").textContent=t;
-  if(G("lockClock"))G("lockClock").textContent=t;
-  if(G("lockNowTime"))G("lockNowTime").textContent=t+" น.";
-  if(G("lockDate"))G("lockDate").textContent=n.toLocaleDateString("th-TH",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
-  if(lockActive&&emergencyActive&&emergencyUntilMs){const r=emergencyUntilMs-Date.now();if(r>0){if(G("emergencyCountdownText"))G("emergencyCountdownText").textContent=fmtCd(r);}else{emergencyActive=false;emergencyUntilMs=null;updLockUI();}}
-  if(G("emgBadge"))G("emgBadge").style.display=(emergencyActive&&emergencyUntilMs&&Date.now()<emergencyUntilMs)?"inline-flex":"none";
-  if(G("s-main")&&G("s-main").classList.contains("active")){updShiftBadges();if(!lockActive&&selectedShift&&!isAllowed(selectedShift))showLock(selectedShift,true);}
+/* ── RADIO LOOKUP ── */
+function findRadio(label){
+  const s=String(label||'').trim();if(!s)return null;
+  let r=RADIOS.find(x=>(x.label||('WD'+x.id))===s);if(r)return r;
+  const m=s.match(/^WD[\s\-_]?(\d+)$/i);
+  if(m)return RADIOS.find(x=>x.id===+m[1])||null;
+  if(/^\d+$/.test(s))return RADIOS.find(x=>x.id===+s)||null;
+  return null;
 }
-tick();setInterval(tick,1000);setInterval(fetchCfg,30000);
-
-/* ── Shift UI ── */
-function updShiftUI(){if(G("cfgLoadRow"))G("cfgLoadRow").style.display="none";if(G("shiftDayWin"))G("shiftDayWin").textContent="⏱ "+winLbl("day");if(G("shiftNightWin"))G("shiftNightWin").textContent="⏱ "+winLbl("night");if(G("shiftDayTime"))G("shiftDayTime").textContent=shTLbl("day");if(G("shiftNightTime"))G("shiftNightTime").textContent=shTLbl("night");updShiftBadges();if(lockActive)updLockUI();}
-function updShiftBadges(){
-  ["day","night"].forEach(s=>{
-    const b=G("badge"+s.charAt(0).toUpperCase()+s.slice(1));if(!b)return;
-    const c=shiftCfg[s];const ms=resolveMs(c.emergencyUntil);const pe=c.emergencyUnlock&&ms&&Date.now()<ms;
-    if(pe){b.textContent="ปลดล็อค";b.className="shift-badge badge-emergency";}
-    else{const ok=isAllowed(s);b.textContent=ok?"เปิด":"ปิด";b.className="shift-badge "+(ok?"badge-ok":"badge-locked");}
-  });
-}
-function updLockUI(){
-  if(!selectedShift)return;
-  const names={day:"ผลัดกลางวัน",night:"ผลัดกลางคืน"};
-  if(G("lockShiftName"))G("lockShiftName").textContent=names[selectedShift];
-  if(G("lockAllowTime"))G("lockAllowTime").textContent=winLbl(selectedShift);
-  const c=shiftCfg[selectedShift];const ms=resolveMs(c.emergencyUntil);const pe=c.emergencyUnlock&&ms&&Date.now()<ms;
-  if(pe){
-    G("lockIconEl").className="lock-icon emergency";G("lockIconSvg").setAttribute("stroke","#fbbf24");
-    G("lockTitle").textContent="ปลดล็อคฉุกเฉิน";G("lockTitle").className="lock-title t-yellow";
-    G("lockBody").textContent="Admin ปลดล็อคชั่วคราว";G("lockWindowBadge").className="lock-window-badge badge-yellow";
-    G("lockWindowText").textContent="ปลดล็อคฉุกเฉินอยู่";G("emergencyCountdownBox").style.display="block";G("emergencyProceedBtn").style.display="block";
-  }else{
-    G("lockIconEl").className="lock-icon locked";G("lockIconSvg").setAttribute("stroke","#ef4444");
-    G("lockTitle").className="lock-title t-red";G("lockWindowBadge").className="lock-window-badge badge-red";
-    G("lockWindowText").textContent="กรุณาเริ่มตรวจสอบในช่วงเวลาที่กำหนด";G("emergencyCountdownBox").style.display="none";G("emergencyProceedBtn").style.display="none";
+function parseQRUrl(raw){
+  const s=(raw||'').trim();if(!s)return null;
+  if(s.startsWith('http')||s.includes('?')){
+    try{
+      const prefix=s.includes('://')?s:'https://x.com/'+s;
+      const u=new URL(prefix);
+      const label=u.searchParams.get('radio')||u.searchParams.get('id')||u.searchParams.get('code')||u.searchParams.get('wdcode');
+      if(label)return findRadio(label)||findRadio('WD'+label.replace(/\D/g,''));
+    }catch(e){}
   }
+  if(s.startsWith('{')){try{const p=JSON.parse(s);const id=+(p.id||p.radioId||0);if(id>0)return RADIOS.find(x=>x.id===id)||null;}catch(e){}}
+  return findRadio(s);
 }
-function showLock(sh,auto=false){lockActive=true;selectedShift=sh;const names={day:"ผลัดกลางวัน",night:"ผลัดกลางคืน"};G("lockTitle").textContent=auto?"หมดเวลาตรวจสอบ":"ไม่อยู่ในช่วงเวลาที่กำหนด";G("lockBody").textContent=names[sh];updLockUI();G("lockOverlay").classList.add("show");}
-function hideLock(){lockActive=false;G("lockOverlay").classList.remove("show");}
-window.proceedEmergency=function(){if(isAllowed(selectedShift)){hideLock();toast("ดำเนินการตรวจสอบในโหมดฉุกเฉิน","info");}};
-function showSc(id){document.querySelectorAll(".screen").forEach(s=>{s.classList.remove("active");s.style.display="none";});const s=G(id);if(s){s.classList.add("active");s.style.display="flex";}}
-
-/* ── Login / Logout ── */
-window.doLogin=async function(){
-  const id=G("lId").value.trim(),pw=G("lPw").value.trim();
-  G("loginErr").style.display="none";
-  if(!id||!pw){setLE("กรุณากรอกข้อมูลให้ครบ");return;}
+function checkUrlParam(){
   try{
-    const s=await getDocs(collection(db,"radioUsers"));
-    let f=null;s.forEach(d=>{if(d.data().userId===id)f=d.data();});
-    if(!f){setLE("ไม่พบรหัสพนักงานนี้");return;}
-    if(f.password!==pw){setLE("รหัสผ่านไม่ถูกต้อง");return;}
-    if(!f.enabled){setLE("บัญชีถูกระงับ");return;}
-    if(f.role==="admin"){setLE("กรุณาใช้บัญชี User เท่านั้น");return;}
-    user=f;
-    await Promise.all([fetchCfg(),fetchCL(),fetchRadios()]);
-    startCfgL();initMain();
-    const urlRadio=checkUrlParam();
-    if(urlRadio)setTimeout(()=>autoFillFromUrl(urlRadio),400);
-  }catch(e){setLE("เกิดข้อผิดพลาด: "+e.message);}
-};
-function autoFillFromUrl(radio){setScannedRadio(radio,'url');const banner=G('urlParamBanner');if(banner){banner.classList.add('show');G('urlParamText').textContent='QR: '+(radio.label||('WD'+radio.id))+' — '+radio.area;}toast('โหลดวิทยุจาก QR: WD'+radio.id);}
-function setLE(m){const e=G("loginErr");e.textContent=m;e.style.display="block";}
-window.doLogout=function(){user=null;selectedShift=null;scannedRadioId=null;chk={};stopQR();G("lockOverlay").classList.remove("show");lockActive=false;showSc("s-login");G("lId").value="";G("lPw").value="";G('urlParamBanner')&&G('urlParamBanner').classList.remove("show");};
-function initMain(){const n=user.name||user.userId;G("profAv").textContent=n.charAt(0).toUpperCase();G("profName").textContent=n;G("profId").textContent="ID: "+(user.empId||user.userId);G("profDept").textContent=(user.dept||"Security")+" — "+(user.position||"Inspector");updShiftUI();showSc("s-main");}
-window.selShift=function(s){selectedShift=s;G("shiftDay").classList.toggle("active-day",s==="day");G("shiftNight").classList.toggle("active-night",s==="night");const tag=G("profShiftTag");const names={day:"ผลัดกลางวัน",night:"ผลัดกลางคืน"};tag.textContent=names[s];tag.className="prof-tag tag-shift"+(s==="night"?" night":"");tag.style.display="inline";if(!isAllowed(s)){showLock(s,false);}else{hideLock();toast(names[s]+" — "+winLbl(s));}};
-window.reqUnlock=function(){alert("กรุณาติดต่อผู้ดูแลระบบ\nเพื่อปลดล็อคจาก Admin Dashboard");};
+    const p=new URLSearchParams(window.location.search);
+    const l=p.get('radio')||p.get('id')||p.get('code')||p.get('wdcode');
+    if(!l)return null;
+    return findRadio(l)||findRadio('WD'+l);
+  }catch(e){return null;}
+}
 
-/* ── QR Scanner ─────────────────────────────────────
-   Strategy:
-   1. Try BarcodeDetector API (Chrome Android)
-   2. Try ZXing-js from cdnjs (works Safari iOS)
-   3. Fallback: show manual entry hint
-──────────────────────────────────────────────────── */
-let _qrStream=null,_qrTimer=null,_qrRun=false,_qrLock=false,_qrRaf=null;
-let _zxingReader=null;
+/* ── QR SCANNER ── */
+let _qrStream=null,_qrTimer=null,_qrRun=false,_qrLock=false,_qrRaf=null,_zxReader=null;
 
-function qrSetStat(msg,col){const e=G("qrStat");if(e){e.textContent=msg;e.style.color=col||"#22d3c8";}}
-function setEngineBadge(txt){const b=G("qrEngineBadge");if(b)b.textContent=txt;}
+function qrStat(msg,col){const e=G('qrStatus');if(e){e.textContent=msg;e.style.color=col||'#3AE4C9';}}
+function qrEngine(txt){const e=G('qrEngineTag');if(e)e.textContent=txt;}
+
+function drawVF(){
+  const oc=G('qrOvCanvas');if(!oc)return;
+  const W=window.innerWidth,H=window.innerHeight;
+  if(oc.width!==W)oc.width=W;if(oc.height!==H)oc.height=H;
+  const ctx=oc.getContext('2d');ctx.clearRect(0,0,W,H);
+  const sz=Math.min(Math.min(W,H)*.65,260);
+  const x=(W-sz)/2,y=(H-sz)/2;
+  ctx.fillStyle='rgba(0,0,0,.55)';ctx.fillRect(0,0,W,H);ctx.clearRect(x,y,sz,sz);
+  const c=24,lw=3.5;ctx.strokeStyle='#3AE4C9';ctx.lineWidth=lw;ctx.lineCap='round';
+  [[x,y+c,x,y,x+c,y],[x+sz-c,y,x+sz,y,x+sz,y+c],[x,y+sz-c,x,y+sz,x+c,y+sz],[x+sz-c,y+sz,x+sz,y+sz,x+sz,y+sz-c]].forEach(pts=>{
+    ctx.beginPath();ctx.moveTo(pts[0],pts[1]);ctx.lineTo(pts[2],pts[3]);ctx.lineTo(pts[4],pts[5]);ctx.stroke();
+  });
+  const ph=(Date.now()%2000)/2000;const ly=y+(ph<.5?ph*2:(2-ph*2))*sz;
+  const g=ctx.createLinearGradient(x,0,x+sz,0);
+  g.addColorStop(0,'rgba(58,228,201,0)');g.addColorStop(.4,'rgba(58,228,201,.9)');g.addColorStop(.6,'rgba(58,228,201,.9)');g.addColorStop(1,'rgba(58,228,201,0)');
+  ctx.strokeStyle=g;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x,ly);ctx.lineTo(x+sz,ly);ctx.stroke();
+}
+function rafLoop(){if(!_qrRun){_qrRaf=null;return;}drawVF();_qrRaf=requestAnimationFrame(rafLoop);}
 
 function onQRData(raw){
   if(_qrLock)return;
   const s=String(raw||'').trim();if(!s)return;
   _qrLock=true;
-  const radio=parseQRtoRadio(s);
+  const radio=parseQRUrl(s);
   if(!radio){
-    qrSetStat("⚠ ไม่พบวิทยุในระบบ","#fbbf24");
-    const nf=G("qrNotFound");const nm=G("qrNotFoundMsg");
-    if(nf)nf.classList.add("show");
-    if(nm)nm.textContent='ไม่พบ: "'+s.slice(0,30)+'"';
-    setTimeout(()=>{_qrLock=false;if(nf)nf.classList.remove("show");},2500);
+    qrStat('⚠ ไม่พบวิทยุในระบบ','#FBBF24');
+    const nf=G('qrNotFound');const nm=G('qrNotFoundMsg');
+    if(nf)nf.classList.add('show');
+    if(nm)nm.textContent='ไม่พบ: "'+s.slice(0,28)+'"';
+    setTimeout(()=>{_qrLock=false;if(nf)nf.classList.remove('show');},2200);
     return;
   }
-  qrSetStat("✅ พบ WD"+radio.id+" — "+radio.area,"#4ade80");
+  qrStat('✅ พบ WD'+radio.id+' — '+radio.area,'#4ADE80');
   if(navigator.vibrate)navigator.vibrate([60,40,100]);
-  const fl=G("qrFlash");if(fl){fl.classList.add("on");setTimeout(()=>fl.classList.remove("on"),200);}
-  setTimeout(()=>{stopQR();G("qrModal").classList.remove("show");setScannedRadio(radio,'qr');},700);
+  const fl=G('qrFlash');if(fl){fl.classList.add('on');setTimeout(()=>fl.classList.remove('on'),180);}
+  setTimeout(()=>{ stopQR();G('qrModal').classList.remove('show');setScannedRadio(radio,'qr'); },650);
 }
 
-/* Draw viewfinder overlay */
-function drawVF(){
-  const oc=G("qrOvCv");if(!oc)return;
-  const W=window.innerWidth,H=window.innerHeight;
-  if(oc.width!==W)oc.width=W;if(oc.height!==H)oc.height=H;
-  const ctx=oc.getContext("2d");ctx.clearRect(0,0,W,H);
-  const sz=Math.min(Math.min(W,H)*0.65,260);
-  const x=(W-sz)/2,y=(H-sz)/2;
-  ctx.fillStyle="rgba(0,0,0,0.55)";ctx.fillRect(0,0,W,H);ctx.clearRect(x,y,sz,sz);
-  const c=24,lw=3.5;ctx.strokeStyle="#22d3c8";ctx.lineWidth=lw;ctx.lineCap="round";
-  ctx.beginPath();ctx.moveTo(x,y+c);ctx.lineTo(x,y);ctx.lineTo(x+c,y);ctx.stroke();
-  ctx.beginPath();ctx.moveTo(x+sz-c,y);ctx.lineTo(x+sz,y);ctx.lineTo(x+sz,y+c);ctx.stroke();
-  ctx.beginPath();ctx.moveTo(x,y+sz-c);ctx.lineTo(x,y+sz);ctx.lineTo(x+c,y+sz);ctx.stroke();
-  ctx.beginPath();ctx.moveTo(x+sz-c,y+sz);ctx.lineTo(x+sz,y+sz);ctx.lineTo(x+sz,y+sz-c);ctx.stroke();
-  const ph=(Date.now()%2000)/2000;const ly=y+(ph<0.5?ph*2:(2-ph*2))*sz;
-  const g=ctx.createLinearGradient(x,0,x+sz,0);g.addColorStop(0,"rgba(34,211,200,0)");g.addColorStop(.4,"rgba(34,211,200,.9)");g.addColorStop(.6,"rgba(34,211,200,.9)");g.addColorStop(1,"rgba(34,211,200,0)");
-  ctx.strokeStyle=g;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x,ly);ctx.lineTo(x+sz,ly);ctx.stroke();
-}
-function rafLoop(){if(!_qrRun){_qrRaf=null;return;}drawVF();_qrRaf=requestAnimationFrame(rafLoop);}
-
-/* Start ZXing continuous decode */
-function startZXing(videoEl){
-  setEngineBadge("ENGINE: ZXing (Safari)");
-  qrSetStat("● กำลังสแกน...","#22d3c8");
+function startZXing(vid){
+  qrEngine('ENGINE: ZXing (Safari/iOS)');
+  qrStat('● กำลังสแกน...','#3AE4C9');
   try{
-    const ZXing=window.ZXing||window.zxing;
-    if(!ZXing){
-      qrSetStat("⚠ ไม่โหลด ZXing — ใช้ Manual แทน","#f87171");
-      setEngineBadge("ENGINE: FALLBACK");
-      return;
-    }
-    const hints=new Map();
-    hints.set(ZXing.DecodeHintType.TRY_HARDER,true);
-    const reader=new ZXing.BrowserMultiFormatReader(hints);
-    _zxingReader=reader;
-    reader.decodeFromVideoDevice(null,videoEl,(result,err)=>{
-      if(result&&result.getText){onQRData(result.getText());}
-    });
-  }catch(e){
-    qrSetStat("⚠ ZXing error — ใช้ Manual แทน","#f87171");
-    console.warn("ZXing error:",e);
-  }
+    const ZX=window.ZXing||window.zxing;
+    if(!ZX){qrStat('⚠ ไม่โหลด ZXing — ใช้ Manual แทน','#F87171');return;}
+    const hints=new Map();hints.set(ZX.DecodeHintType.TRY_HARDER,true);
+    const reader=new ZX.BrowserMultiFormatReader(hints);_zxReader=reader;
+    reader.decodeFromVideoDevice(null,vid,(result)=>{if(result&&result.getText)onQRData(result.getText());});
+  }catch(e){qrStat('⚠ ZXing error','#F87171');console.warn(e);}
 }
 
-/* Start BarcodeDetector (Chrome/Android) */
-function startBarcodeDetector(videoEl){
-  setEngineBadge("ENGINE: BarcodeDetector");
-  qrSetStat("● กำลังสแกน...","#22d3c8");
-  let bd;
-  try{bd=new BarcodeDetector({formats:["qr_code"]});}catch(e){bd=null;}
-  if(!bd){startZXing(videoEl);return;}
+function startBarcodeDetector(vid){
+  qrEngine('ENGINE: BarcodeDetector (Chrome)');
+  qrStat('● กำลังสแกน...','#3AE4C9');
+  let bd;try{bd=new BarcodeDetector({formats:['qr_code']});}catch(e){bd=null;}
+  if(!bd){startZXing(vid);return;}
   _qrTimer=setInterval(async()=>{
     if(!_qrRun||_qrLock)return;
-    try{const cs=await bd.detect(videoEl);if(cs&&cs.length>0)onQRData(cs[0].rawValue);}catch(e){}
+    try{const cs=await bd.detect(vid);if(cs&&cs.length>0)onQRData(cs[0].rawValue);}catch(e){}
   },200);
 }
 
-window.openQR=async function(){
+window.openQR = async function(){
   if(_qrRun)return;
-  G("qrModal").classList.add("show");
-  G("qrNotFound").classList.remove("show");
-  setEngineBadge("STARTING...");
-  qrSetStat("● กำลังเปิดกล้อง...","#22d3c8");
+  G('qrModal').classList.add('show');
+  G('qrNotFound').classList.remove('show');
+  qrEngine('STARTING...');qrStat('● กำลังเปิดกล้อง...','#3AE4C9');
   try{
-    const constraints={video:{facingMode:{ideal:"environment"},width:{ideal:1280},height:{ideal:720}}};
+    const constraints={video:{facingMode:{ideal:'environment'},width:{ideal:1280},height:{ideal:720}}};
     _qrStream=await navigator.mediaDevices.getUserMedia(constraints);
-    const vid=G("qrVideo");
-    vid.srcObject=_qrStream;
-    vid.setAttribute("playsinline","");
-    vid.setAttribute("autoplay","");
-    vid.muted=true;
-    /* Wait for video to be ready */
+    const vid=G('qrVideo');vid.srcObject=_qrStream;
+    vid.setAttribute('playsinline','');vid.muted=true;
     await new Promise((res,rej)=>{
-      const timeout=setTimeout(()=>res(),4000);
-      vid.onloadedmetadata=()=>{clearTimeout(timeout);res();};
-      vid.onerror=()=>{clearTimeout(timeout);rej(new Error("Video error"));};
+      const t=setTimeout(()=>res(),4000);
+      vid.onloadedmetadata=()=>{clearTimeout(t);res();};
+      vid.onerror=()=>{clearTimeout(t);rej(new Error('video error'));};
     });
     try{await vid.play();}catch(e){}
     _qrRun=true;_qrLock=false;
-    /* Start viewfinder animation */
     _qrRaf=requestAnimationFrame(rafLoop);
-    /* Choose scanner engine */
-    if(typeof BarcodeDetector!=="undefined"){
-      startBarcodeDetector(vid);
-    }else{
-      startZXing(vid);
-    }
+    if(typeof BarcodeDetector!=='undefined')startBarcodeDetector(vid);
+    else startZXing(vid);
   }catch(e){
-    G("qrModal").classList.remove("show");
-    _qrRun=false;
-    if(e.name==="NotAllowedError"){toast("กรุณาอนุญาตการใช้กล้อง","err");}
-    else{toast("ไม่สามารถเปิดกล้อง: "+e.message,"err");}
+    G('qrModal').classList.remove('show');_qrRun=false;
+    if(e.name==='NotAllowedError')showToast('กรุณาอนุญาตการใช้กล้อง','err');
+    else showToast('ไม่สามารถเปิดกล้อง: '+e.message,'err');
   }
 };
-
-window.closeQR=function(){stopQR();G("qrModal").classList.remove("show");};
+window.closeQR = function(){stopQR();G('qrModal').classList.remove('show');};
 function stopQR(){
   _qrRun=false;_qrLock=false;
   if(_qrTimer){clearInterval(_qrTimer);_qrTimer=null;}
   if(_qrRaf){cancelAnimationFrame(_qrRaf);_qrRaf=null;}
-  if(_zxingReader){try{_zxingReader.reset();}catch(e){}  _zxingReader=null;}
+  if(_zxReader){try{_zxReader.reset();}catch(e){}_zxReader=null;}
   if(_qrStream){_qrStream.getTracks().forEach(t=>t.stop());_qrStream=null;}
-  const v=G("qrVideo");if(v){v.pause();v.srcObject=null;}
+  const v=G('qrVideo');if(v){v.pause();v.srcObject=null;}
 }
-window.addEventListener("resize",()=>{if(_qrRun)drawVF();});
+window.addEventListener('resize',()=>{if(_qrRun)drawVF();});
 
-/* ── Manual entry ── */
-window.manualEntry=function(){
-  const val=G("manualId").value.trim();if(!val){toast("กรุณากรอก ID","err");return;}
-  const radio=parseQRtoRadio(val);if(!radio){toast("ไม่พบวิทยุ: "+val,"err");return;}
-  setScannedRadio(radio,'manual');G("manualId").value="";
+/* ── MANUAL ENTRY ── */
+window.manualEntry = function(){
+  const val=G('manualId').value.trim();if(!val){showToast('กรุณากรอก ID','err');return;}
+  const r=parseQRUrl(val);if(!r){showToast('ไม่พบวิทยุ: '+val,'err');return;}
+  setScannedRadio(r,'manual');G('manualId').value='';
 };
 
-function setScannedRadio(radio,method){
-  scannedRadioId=radio.id;
-  G("qrResultId").textContent="WD"+radio.id;
-  G("qrResultArea").textContent=radio.area||'—';
-  G("qrResultSn").textContent=radio.sn||'—';
-  G("qrBeforeScan").style.display="none";
-  G("qrAfterScan").style.display="block";
-  G("qrCard").classList.add("scanned");
-  if(method!=='url')toast("WD"+radio.id+" — "+(radio.area||''));
+function setScannedRadio(radio, method){
+  scannedRadio=radio;scanMethod=method;
+  G('radioResultWD').textContent='WD'+radio.id;
+  G('radioResultArea').textContent=radio.area||'—';
+  G('radioResultSN').textContent=radio.sn||'—';
+  G('qrBeforeScan').style.display='none';
+  G('qrAfterScan').style.display='block';
+  G('qrBox').classList.add('scanned');
+  if(method!=='url')showToast('WD'+radio.id+' — '+(radio.area||''));
+  updateSteps();
 }
-window.rescan=function(){scannedRadioId=null;G("qrBeforeScan").style.display="block";G("qrAfterScan").style.display="none";G("qrCard").classList.remove("scanned");G('urlParamBanner')&&G('urlParamBanner').classList.remove("show");};
 
-/* ── Checklist ── */
-function buildList(){
-  chk={};ITEMS.forEach(i=>chk[i.id]=null);
-  G("checkList").innerHTML=ITEMS.map(it=>`<div class="check-row" id="row-${it.id}" onclick="tog(${it.id})"><div class="row-num">${it.id}.</div><div style="flex:1"><div class="row-text">${it.th}${it.en?' <span style="font-weight:400;color:var(--text3);font-size:11px">('+it.en+')</span>':''}</div></div><div class="toggle-pill" id="pill-${it.id}"><div class="pill-dot"></div><div class="pill-label" id="plbl-${it.id}">—</div></div></div>`).join("");
-  G("sTotal").textContent=ITEMS.length;G("clProg").textContent="0/"+ITEMS.length;
-}
-window.tog=function(id){const c=chk[id];chk[id]=c===null?"pass":c==="pass"?"fail":null;updRow(id);updUI();if(navigator.vibrate)navigator.vibrate(8);};
-function updRow(id){
-  const st=chk[id],r=G("row-"+id),p=G("pill-"+id),l=G("plbl-"+id);
-  if(!r||!p||!l)return;
-  r.classList.remove("pass-row","fail-row");p.classList.remove("pass-pill","fail-pill");
-  if(st==="pass"){r.classList.add("pass-row");p.classList.add("pass-pill");l.textContent="Pass";}
-  else if(st==="fail"){r.classList.add("fail-row");p.classList.add("fail-pill");l.textContent="Fail";}
-  else l.textContent="—";
-}
-function updUI(){
-  const pass=Object.values(chk).filter(v=>v==="pass").length,fail=Object.values(chk).filter(v=>v==="fail").length;
-  G("sPass").textContent=pass;G("sFail").textContent=fail;G("profPass").textContent=pass;
-  G("clProg").textContent=(pass+fail)+"/"+ITEMS.length;
-  G("progFill").style.width=Math.round(pass/ITEMS.length*100)+"%";
-}
-window.setAllPass=function(){ITEMS.forEach(i=>{chk[i.id]="pass";updRow(i.id);});updUI();toast("All Pass");};
-window.resetAll=function(){ITEMS.forEach(i=>{chk[i.id]=null;updRow(i.id);});updUI();};
+window.rescan = function(){
+  scannedRadio=null;
+  G('qrBeforeScan').style.display='block';
+  G('qrAfterScan').style.display='none';
+  G('qrBox').classList.remove('scanned');
+  G('urlBanner').classList.remove('show');
+  updateSteps();
+};
 
-/* ── Submit ── */
-window.doSubmit=async function(){
-  if(!selectedShift){toast("กรุณาเลือกผลัดก่อน","err");return;}
-  await fetchCfg();if(!isAllowed(selectedShift)){showLock(selectedShift,false);return;}
-  if(!scannedRadioId){toast("กรุณาสแกน QR Code ก่อน","err");return;}
-  const pend=Object.values(chk).filter(v=>v===null).length;
-  if(pend>0&&!confirm("ยังมี "+pend+" รายการที่ยังไม่ได้ตรวจ\nบันทึกต่อไหม?"))return;
-  const btn=G("saveBtn");btn.disabled=true;
-  const radio=RADIOS.find(r=>r.id===scannedRadioId);
+/* ── SHIFT ── */
+window.selShift = function(sh){
+  selectedShift=sh;
+  G('shiftDay').className='shift-card'+(sh==='day'?' active-day':'');
+  G('shiftNight').className='shift-card'+(sh==='night'?' active-night':'');
+  const tag=document.createElement('span');
+  const names={day:'ผลัดกลางวัน',night:'ผลัดกลางคืน'};
+  const tags=G('profTags');
+  const existing=tags.querySelector('.shift-tag');if(existing)existing.remove();
+  const s=document.createElement('span');
+  s.className='shift-tag';
+  s.style.cssText='font-size:9px;font-weight:700;padding:2px 8px;border-radius:20px;border:1px solid;'+(sh==='day'?'background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.25);color:#FBBF24;':'background:rgba(124,58,237,.1);border-color:rgba(124,58,237,.25);color:#A78BFA;');
+  s.textContent=names[sh];tags.appendChild(s);
+  if(!isAllowed(sh)){showLock(sh,false);}else{hideLock();showToast(names[sh]+' — '+winLabel(sh));}
+  updateSteps();
+};
+
+/* ── SHIFT CONFIG ── */
+function applyShiftData(d){
+  if(d.day)Object.assign(shiftCfg.day,d.day);
+  if(d.night)Object.assign(shiftCfg.night,d.night);
+  resolveEmergency();updateShiftUI();
+}
+function resolveEmergency(){
+  const now=Date.now();let anyEmg=false,latMs=null;
+  ['day','night'].forEach(sh=>{
+    const ms=resolveMs(shiftCfg[sh].emergencyUntil);
+    if(shiftCfg[sh].emergencyUnlock&&ms&&now<ms){anyEmg=true;if(!latMs||ms>latMs)latMs=ms;}
+  });
+  const wasEmg=emergencyActive;
+  emergencyActive=anyEmg;emergencyUntilMs=latMs;
+  if(!wasEmg&&anyEmg&&lockActive)updateLockUI();
+  if(lockActive&&selectedShift&&isAllowed(selectedShift)&&!anyEmg)hideLock();
+}
+function updateShiftUI(){
+  G('cfgLoadRow').style.display='none';cfgLoaded=true;
+  ['day','night'].forEach(sh=>{
+    const c=shiftCfg[sh];
+    const ms=resolveMs(c.emergencyUntil);
+    const isEmg=c.emergencyUnlock&&ms&&Date.now()<ms;
+    const open=isAllowed(sh);
+    const b=G('badge'+(sh==='day'?'Day':'Night'));
+    if(!b)return;
+    if(isEmg){b.textContent='ปลดล็อค';b.className='shift-status-badge sbadge-emg';}
+    else if(open){b.textContent='เปิด';b.className='shift-status-badge sbadge-open';}
+    else{b.textContent='ปิด';b.className='shift-status-badge sbadge-locked';}
+    G(sh==='day'?'shiftDayTime':'shiftNightTime').textContent=c.shiftStart+'–'+c.shiftEnd+' น.';
+    G(sh==='day'?'shiftDayWin':'shiftNightWin').textContent='⏱ '+c.inspStart+'–'+c.inspEnd+' น.';
+  });
+}
+
+/* ── LOCK ── */
+function showLock(sh,auto=false){
+  lockActive=true;selectedShift=sh;
+  G('lockTitle').textContent=auto?'หมดเวลาตรวจสอบ':'ไม่อยู่ในช่วงเวลาที่กำหนด';
+  updateLockUI();G('lockOverlay').classList.add('show');
+}
+function hideLock(){lockActive=false;G('lockOverlay').classList.remove('show');}
+function updateLockUI(){
+  if(!selectedShift)return;
+  G('lockShiftName').textContent=shiftLabel(selectedShift);
+  G('lockAllowTime').textContent=winLabel(selectedShift);
+  const c=shiftCfg[selectedShift];
+  const ms=resolveMs(c.emergencyUntil);
+  const isEmg=c.emergencyUnlock&&ms&&Date.now()<ms;
+  if(isEmg){
+    G('lockIconWrap').className='lock-icon-wrap emergency';
+    G('lockIconSvg').setAttribute('stroke','#FBBF24');
+    G('lockTitle').textContent='ปลดล็อคฉุกเฉิน';G('lockTitle').className='lock-title t-yellow';
+    G('lockDesc').textContent='Admin ปลดล็อคชั่วคราว สามารถดำเนินการตรวจสอบได้';
+    G('lockBadge').className='lock-badge yellow';G('lockBadgeText').textContent='ปลดล็อคฉุกเฉินอยู่';
+    G('emgCountBox').style.display='block';G('lockProceedBtn').style.display='block';
+  }else{
+    G('lockIconWrap').className='lock-icon-wrap locked';
+    G('lockIconSvg').setAttribute('stroke','#EF4444');
+    G('lockTitle').className='lock-title t-red';
+    G('lockDesc').textContent='ขณะนี้ไม่อยู่ในช่วงเวลาที่อนุญาตให้ตรวจสอบ';
+    G('lockBadge').className='lock-badge red';G('lockBadgeText').textContent='กรุณาเริ่มตรวจสอบในช่วงเวลาที่กำหนด';
+    G('emgCountBox').style.display='none';G('lockProceedBtn').style.display='none';
+  }
+}
+window.proceedEmergency = function(){if(isAllowed(selectedShift))hideLock();};
+window.contactAdmin = function(){alert('กรุณาติดต่อผู้ดูแลระบบ\nเพื่อปลดล็อคจาก Admin Dashboard');};
+
+/* ── CLOCK TICK ── */
+function tick(){
   const now=new Date();
-  const pass=Object.values(chk).filter(v=>v==="pass").length,fail=Object.values(chk).filter(v=>v==="fail").length;
-  const failItems=ITEMS.filter(i=>chk[i.id]==="fail").map(i=>i.th);
-  const checkResults={};ITEMS.forEach(i=>checkResults["item_"+i.id]=chk[i.id]||"pending");
-  const names={day:"ผลัดกลางวัน",night:"ผลัดกลางคืน"};
-  const data={userId:user.userId,userName:user.name,empId:user.empId||user.userId,dept:user.dept||"Security",position:user.position||"Inspector",shift:selectedShift,shiftName:names[selectedShift],radioId:scannedRadioId,radioLabel:"WD"+scannedRadioId,area:radio?.area||"",sn:radio?.sn||"",passCount:pass,failCount:fail,totalItems:ITEMS.length,passRate:Math.round(pass/ITEMS.length*100),failItems,checkResults,overallStatus:fail===0?"PASS":"FAIL",scanMethod:"qr",emergencyUnlock:emergencyActive,date:now.toISOString().slice(0,10),time:now.toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"}),timestamp:serverTimestamp(),formType:"21items_v8"};
+  const ts=now.toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'});
+  const tc=G('topClock');if(tc)tc.textContent=ts;
+  const lc=G('lockClock');if(lc)lc.textContent=ts;
+  const ln=G('lockNowTime');if(ln)ln.textContent=ts+' น.';
+  const ld=G('lockDate');if(ld)ld.textContent=now.toLocaleDateString('th-TH',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  if(lockActive&&emergencyActive&&emergencyUntilMs){
+    const r=emergencyUntilMs-Date.now();
+    if(r>0){const cn=G('emgCountNum');if(cn)cn.textContent=fmtMs(r);}
+    else{emergencyActive=false;emergencyUntilMs=null;updateLockUI();}
+  }
+  const eb=G('emgBadge');if(eb)eb.className='emg-badge'+(emergencyActive&&emergencyUntilMs&&Date.now()<emergencyUntilMs?' show':'');
+  if(G('s-main')&&G('s-main').classList.contains('active')){
+    updateShiftBadges();
+    if(!lockActive&&selectedShift&&!isAllowed(selectedShift))showLock(selectedShift,true);
+  }
+}
+tick();setInterval(tick,1000);
+
+function updateShiftBadges(){
+  ['day','night'].forEach(sh=>{
+    const c=shiftCfg[sh];const ms=resolveMs(c.emergencyUntil);
+    const isEmg=c.emergencyUnlock&&ms&&Date.now()<ms;
+    const open=isAllowed(sh);
+    const b=G('badge'+(sh==='day'?'Day':'Night'));if(!b)return;
+    if(isEmg){b.textContent='ปลดล็อค';b.className='shift-status-badge sbadge-emg';}
+    else if(open){b.textContent='เปิด';b.className='shift-status-badge sbadge-open';}
+    else{b.textContent='ปิด';b.className='shift-status-badge sbadge-locked';}
+  });
+}
+
+/* ── FETCH DATA ── */
+async function fetchShiftCfg(){
+  try{const s=await getDoc(doc(db,'shiftConfig','main'));if(s.exists())applyShiftData(s.data());}
+  catch(e){}
+  G('cfgLoadRow').style.display='none';cfgLoaded=true;updateShiftUI();
+  if(!_cfgUnsub){
+    try{_cfgUnsub=onSnapshot(doc(db,'shiftConfig','main'),s=>{if(s.exists()){applyShiftData(s.data());updateShiftUI();if(lockActive)updateLockUI();}});}catch(e){}
+  }
+  G('lockSyncNote').textContent='ซิงค์การตั้งค่าแล้ว';
+}
+async function fetchRadios(){
   try{
-    if(db)await addDoc(collection(db,"submissions"),data);
-    const hf=fail>0;
-    G("resIcon").innerHTML=hf?`<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`:`<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
-    G("resIcon").style.cssText=`width:88px;height:88px;border-radius:28px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;background:${hf?"rgba(239,68,68,.12)":"rgba(34,197,94,.1)"};border:2px solid ${hf?"rgba(239,68,68,.3)":"rgba(34,197,94,.3)"};animation:pop .4s cubic-bezier(.175,.885,.32,1.275)`;
-    G("resTitle").textContent=hf?"มีรายการ Fail":"ผ่านทุกรายการ!";G("resTitle").style.color=hf?"#ef4444":"#22c55e";
-    G("resSub").textContent=hf?"พบ "+fail+" รายการ Fail":"ผ่านครบ "+pass+" รายการ บันทึกแล้ว";
-    G("resInfo").innerHTML=`<div class="res-row"><span class="res-key">ผู้ตรวจ</span><span class="res-val">${user.name}</span></div><div class="res-row"><span class="res-key">ผลัด</span><span class="res-val">${names[selectedShift]}</span></div><div class="res-row"><span class="res-key">วิทยุ</span><span class="res-val">WD${scannedRadioId}</span></div><div class="res-row"><span class="res-key">พื้นที่</span><span class="res-val">${radio?.area||"—"}</span></div><div class="res-row"><span class="res-key">Pass</span><span class="res-val" style="color:#22c55e">${pass}</span></div><div class="res-row"><span class="res-key">Fail</span><span class="res-val" style="color:${fail>0?"#ef4444":"#22c55e"}">${fail}</span></div><div class="res-row"><span class="res-key">เวลา</span><span class="res-val">${data.time} น.</span></div>${failItems.length?`<div class="res-row" style="flex-direction:column;align-items:flex-start;gap:6px"><span class="res-key">รายการ Fail</span><div style="margin-top:6px">${failItems.map(f=>`<span style="display:inline-block;font-size:11px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#fca5a5;padding:2px 9px;border-radius:12px;margin:2px">${f}</span>`).join("")}</div></div>`:""}`;
-    showSc("s-result");
-  }catch(e){toast("บันทึกไม่สำเร็จ: "+e.message,"err");}
+    const snap=await getDocs(collection(db,'radioItems'));
+    if(!snap.empty){
+      const loaded=[];
+      snap.forEach(d=>{const x=d.data();if(x.id)loaded.push({id:+x.id,area:x.area||'',sn:x.sn||'',label:x.label||('WD'+x.id),type:x.type||'active'});});
+      if(loaded.length>0)RADIOS=loaded;
+    }
+  }catch(e){}
+}
+async function fetchChecklist(){
+  try{
+    const snap=await getDocs(collection(db,'checklistItems'));
+    if(!snap.empty){
+      const its=[];
+      snap.forEach(d=>{const x=d.data();if(x.enabled!==false)its.push({id:x.id||its.length+1,th:x.th||'',en:x.en||''});});
+      its.sort((a,b)=>a.id-b.id);
+      if(its.length>0)ITEMS=its;
+    }
+  }catch(e){}
+  buildChecklist();
+}
+
+/* ── CHECKLIST ── */
+function buildChecklist(){
+  chk={};ITEMS.forEach(i=>chk[i.id]=null);
+  G('clList').innerHTML=ITEMS.map(item=>`
+    <div class="cl-row" id="cr-${item.id}" onclick="tog(${item.id})">
+      <div class="cl-num">${item.id}.</div>
+      <div style="flex:1;">
+        <div class="cl-text">${item.th}</div>
+        ${item.en?`<div style="font-size:10px;color:var(--dim);margin-top:1px;">${item.en}</div>`:''}
+      </div>
+      <div class="cl-toggle" id="ct-${item.id}">
+        <div class="tog-knob"></div>
+        <div class="tog-lbl" id="ctl-${item.id}">—</div>
+      </div>
+    </div>`).join('');
+  G('sTotal').textContent=ITEMS.length;
+  G('clProg').textContent='0/'+ITEMS.length;
+  updateClStats();
+}
+
+window.tog = function(id){
+  const c=chk[id];
+  chk[id]=c===null?'pass':c==='pass'?'fail':null;
+  updateRow(id);updateClStats();
+  if(navigator.vibrate)navigator.vibrate(8);
+};
+
+function updateRow(id){
+  const st=chk[id];
+  const row=G('cr-'+id);const tog=G('ct-'+id);const lbl=G('ctl-'+id);
+  if(!row||!tog||!lbl)return;
+  row.classList.remove('pass-row','fail-row');
+  tog.classList.remove('pass-tog','fail-tog');
+  if(st==='pass'){row.classList.add('pass-row');tog.classList.add('pass-tog');lbl.textContent='Pass';}
+  else if(st==='fail'){row.classList.add('fail-row');tog.classList.add('fail-tog');lbl.textContent='Fail';}
+  else lbl.textContent='—';
+}
+
+function updateClStats(){
+  const pass=Object.values(chk).filter(v=>v==='pass').length;
+  const fail=Object.values(chk).filter(v=>v==='fail').length;
+  const total=ITEMS.length;
+  const done=pass+fail;
+  const pct=Math.round(pass/total*100);
+  G('sPass').textContent=pass;G('sFail').textContent=fail;G('sTotal').textContent=total;
+  G('profPassCount').textContent=pass;
+  G('clProg').textContent=done+'/'+total;
+  G('clProgFill').style.width=Math.round(done/total*100)+'%';
+  G('progBar').style.width=pct+'%';
+  G('progText').textContent=pct+'%';
+  updateSteps();
+}
+
+window.setAllPass = function(){ITEMS.forEach(i=>{chk[i.id]='pass';updateRow(i.id);});updateClStats();showToast('All Pass');};
+window.resetAll = function(){ITEMS.forEach(i=>{chk[i.id]=null;updateRow(i.id);});updateClStats();};
+
+/* ── STEP INDICATOR ── */
+function updateSteps(){
+  const s1=selectedShift!==null;
+  const s2=scannedRadio!==null;
+  const s3=Object.values(chk).filter(v=>v!==null).length===ITEMS.length&&ITEMS.length>0;
+  function setStep(id,done,active){
+    const el=G(id);if(!el)return;
+    el.classList.remove('done','active');
+    if(done)el.classList.add('done');
+    else if(active)el.classList.add('active');
+  }
+  setStep('step1',s1,!s1);
+  setStep('step2',s2,s1&&!s2);
+  setStep('step3',s3,s2&&!s3);
+  setStep('step4',false,s3);
+}
+
+/* ── LOGIN ── */
+window.doLogin = async function(){
+  const id=G('lId').value.trim(),pw=G('lPw').value.trim();
+  G('loginErr').classList.remove('show');
+  if(!id||!pw){setLE('กรุณากรอกข้อมูลให้ครบ');return;}
+  const btn=G('loginBtn');const ring=G('loginRing');const txt=G('loginBtnTxt');
+  btn.disabled=true;ring.classList.add('show');txt.textContent='กำลังเข้าสู่ระบบ...';
+  try{
+    const snap=await getDocs(collection(db,'radioUsers'));
+    let found=null;
+    snap.forEach(d=>{if(d.data().userId===id)found=d.data();});
+    if(!found){setLE('ไม่พบรหัสพนักงานนี้');return;}
+    if(found.password!==pw){setLE('รหัสผ่านไม่ถูกต้อง');return;}
+    if(!found.enabled){setLE('บัญชีถูกระงับ กรุณาติดต่อ Admin');return;}
+    if(found.role==='admin'){setLE('กรุณาใช้บัญชี User เท่านั้น');return;}
+    user=found;
+    await Promise.all([fetchShiftCfg(),fetchChecklist(),fetchRadios()]);
+    initMain();
+    const urlR=checkUrlParam();
+    if(urlR)setTimeout(()=>autoFillUrl(urlR),400);
+  }catch(e){setLE('เกิดข้อผิดพลาด: '+e.message);}
+  btn.disabled=false;ring.classList.remove('show');txt.textContent='เข้าสู่ระบบ';
+};
+
+function setLE(m){const e=G('loginErr');e.textContent=m;e.classList.add('show');}
+
+function autoFillUrl(radio){
+  setScannedRadio(radio,'url');
+  G('urlBanner').classList.add('show');
+  G('urlBannerText').textContent='โหลดวิทยุจาก QR อัตโนมัติ: WD'+radio.id+' — '+radio.area;
+  showToast('โหลดวิทยุจาก URL: WD'+radio.id);
+}
+
+function initMain(){
+  const name=user.name||user.userId;
+  G('profAv').textContent=name.charAt(0).toUpperCase();
+  G('profName').textContent=name;
+  G('profMeta').textContent='ID: '+(user.empId||user.userId)+' · '+(user.dept||'Security');
+  const tagWrap=G('profTags');
+  tagWrap.innerHTML='';
+  const roleTag=document.createElement('span');
+  roleTag.style.cssText='font-size:9px;font-weight:700;padding:2px 8px;border-radius:20px;background:rgba(33,104,253,.1);border:1px solid rgba(33,104,253,.2);color:#93C5FD;';
+  roleTag.textContent=user.position||'Security Inspector';
+  tagWrap.appendChild(roleTag);
+  showScreen('s-main');
+  updateSteps();
+}
+
+window.doLogout = function(){
+  user=null;selectedShift=null;scannedRadio=null;chk={};lockActive=false;
+  if(_cfgUnsub){_cfgUnsub();_cfgUnsub=null;}
+  stopQR();G('lockOverlay').classList.remove('show');
+  G('lId').value='';G('lPw').value='';
+  showScreen('s-login');
+};
+
+/* ── SUBMIT ── */
+window.doSubmit = async function(){
+  if(!selectedShift){showToast('กรุณาเลือกผลัดก่อน','err');return;}
+  await fetchShiftCfg();
+  if(!isAllowed(selectedShift)){showLock(selectedShift,false);return;}
+  if(!scannedRadio){showToast('กรุณาสแกน QR Code ก่อน','err');return;}
+  const pending=Object.values(chk).filter(v=>v===null).length;
+  if(pending>0&&!confirm('ยังมี '+pending+' รายการที่ยังไม่ได้ตรวจ\nบันทึกต่อไหม?'))return;
+  const btn=G('submitBtn');btn.disabled=true;
+  const now=new Date();
+  const pass=Object.values(chk).filter(v=>v==='pass').length;
+  const fail=Object.values(chk).filter(v=>v==='fail').length;
+  const failItems=ITEMS.filter(i=>chk[i.id]==='fail').map(i=>i.th);
+  const checkResults={};ITEMS.forEach(i=>checkResults['item_'+i.id]=chk[i.id]||'pending');
+  const data={
+    userId:user.userId,userName:user.name||user.userId,
+    empId:user.empId||user.userId,dept:user.dept||'Security',position:user.position||'Inspector',
+    shift:selectedShift,shiftName:shiftLabel(selectedShift),
+    radioId:scannedRadio.id,radioLabel:'WD'+scannedRadio.id,
+    area:scannedRadio.area||'',sn:scannedRadio.sn||'',
+    passCount:pass,failCount:fail,totalItems:ITEMS.length,
+    passRate:Math.round(pass/ITEMS.length*100),
+    failItems,checkResults,
+    overallStatus:fail===0?'PASS':'FAIL',
+    scanMethod,emergencyUnlock:emergencyActive,
+    date:now.toISOString().slice(0,10),
+    time:now.toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'}),
+    timestamp:serverTimestamp(),
+    formType:'21items_v3'
+  };
+  try{
+    await addDoc(collection(db,'submissions'),data);
+    const hFail=fail>0;
+    G('resIcon').style.cssText='width:84px;height:84px;border-radius:26px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;'+(hFail?'background:rgba(239,68,68,.1);border:2px solid rgba(239,68,68,.25);':'background:rgba(74,222,128,.08);border:2px solid rgba(74,222,128,.2);')+'animation:popIn .4s cubic-bezier(.175,.885,.32,1.275);';
+    G('resIcon').innerHTML=hFail?'<svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>':'<svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+    G('resTitle').textContent=hFail?'มีรายการ Fail':'ผ่านทุกรายการ!';
+    G('resTitle').style.color=hFail?'#EF4444':'#4ADE80';
+    G('resSub').textContent=hFail?'พบ '+fail+' รายการ Fail กรุณาตรวจสอบและแจ้ง Supervisor':'บันทึกเรียบร้อย ผ่านครบ '+pass+' รายการ';
+    G('resInfo').innerHTML=`
+      <div class="result-row"><span class="result-row-key">ผู้ตรวจ</span><span class="result-row-val">${user.name||user.userId}</span></div>
+      <div class="result-row"><span class="result-row-key">ผลัด</span><span class="result-row-val">${shiftLabel(selectedShift)}</span></div>
+      <div class="result-row"><span class="result-row-key">วิทยุ</span><span class="result-row-val">WD${scannedRadio.id}</span></div>
+      <div class="result-row"><span class="result-row-key">พื้นที่</span><span class="result-row-val">${scannedRadio.area||'—'}</span></div>
+      <div class="result-row"><span class="result-row-key">Pass / Fail</span><span class="result-row-val" style="color:${fail>0?'#F87171':'#4ADE80'}">${pass} / ${fail}</span></div>
+      <div class="result-row"><span class="result-row-key">เวลา</span><span class="result-row-val">${data.time} น.</span></div>
+      ${failItems.length?`<div class="result-row" style="flex-direction:column;gap:6px;"><span class="result-row-key">รายการ Fail</span><div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:2px;">${failItems.map(f=>`<span style="font-size:11px;background:rgba(239,68,68,.09);border:1px solid rgba(239,68,68,.2);color:#FCA5A5;padding:2px 8px;border-radius:12px;">${f}</span>`).join('')}</div></div>`:''}
+    `;
+    showScreen('s-result');
+  }catch(e){showToast('บันทึกไม่สำเร็จ: '+e.message,'err');}
   btn.disabled=false;
 };
 
-window.startNew=function(){
-  ITEMS.forEach(i=>{chk[i.id]=null;updRow(i.id);});
-  selectedShift=null;scannedRadioId=null;
-  G("shiftDay").classList.remove("active-day");G("shiftNight").classList.remove("active-night");
-  G("profShiftTag").style.display="none";
-  G('urlParamBanner')&&G('urlParamBanner').classList.remove("show");
-  rescan();updUI();showSc("s-main");window.scrollTo(0,0);
+window.startNew = function(){
+  ITEMS.forEach(i=>{chk[i.id]=null;updateRow(i.id);});
+  selectedShift=null;scannedRadio=null;
+  G('shiftDay').className='shift-card';
+  G('shiftNight').className='shift-card';
+  const tags=G('profTags');const st=tags.querySelector('.shift-tag');if(st)st.remove();
+  G('urlBanner').classList.remove('show');
+  window.rescan();updateClStats();
+  showScreen('s-main');window.scrollTo(0,0);
 };
 
-/* ── Toast ── */
-function toast(m,t="ok"){const e=G("toast");e.textContent=m;e.className="toast"+(t==="err"?" terr":t==="info"?" tinfo":"");e.classList.add("show");setTimeout(()=>e.classList.remove("show"),3200);}
-
-/* ── Keyboard shortcuts ── */
-G("lPw").addEventListener("keydown",e=>{if(e.key==="Enter")doLogin();});
-G("lId").addEventListener("keydown",e=>{if(e.key==="Enter")G("lPw").focus();});
+/* ── KEYBOARD ── */
+G('lPw').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+G('lId').addEventListener('keydown',e=>{if(e.key==='Enter')G('lPw').focus();});
+G('manualId').addEventListener('keydown',e=>{if(e.key==='Enter')manualEntry();});
+setInterval(()=>{if(cfgLoaded)updateShiftBadges();},30000);
 </script>
 </body>
 </html>
