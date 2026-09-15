@@ -16,8 +16,11 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth}
-body{font-family:'Sarabun',sans-serif;color:var(--text);background:#0a0e13;min-height:100vh;background-image:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(0,160,130,.08) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 80% 80%,rgba(0,80,200,.06) 0%,transparent 50%)}
-body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.012'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+body{font-family:'Sarabun',sans-serif;color:var(--text);background:#0a0e13;min-height:100vh;
+  background-image:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(0,160,130,.08) 0%,transparent 60%),
+  radial-gradient(ellipse 60% 40% at 80% 80%,rgba(0,80,200,.06) 0%,transparent 50%)}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.012'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
 .screen{display:none;min-height:100vh;flex-direction:column;position:relative;z-index:1}
 .screen.active{display:flex}
 .login-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:24px}
@@ -120,30 +123,29 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 .qr-result-sn{font-size:9px;color:var(--text3);margin-top:1px;letter-spacing:.5px}
 .btn-rescan{background:transparent;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:6px 12px;font-size:11px;font-weight:700;color:var(--text2);cursor:pointer;font-family:'Sarabun',sans-serif;transition:all .2s;flex-shrink:0}
 
-/* ══ QR MODAL — REDESIGNED ══ */
-.qr-modal{position:fixed;inset:0;z-index:5000;background:#000;display:none;flex-direction:column;align-items:center;justify-content:flex-start;overflow:hidden}
+/* ══ QR MODAL ══ */
+.qr-modal{position:fixed;inset:0;z-index:5000;background:#000;display:none;flex-direction:column}
 .qr-modal.show{display:flex}
-.qr-modal-header{width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;flex-shrink:0;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);position:absolute;top:0;z-index:10}
-.qr-modal-title{font-family:'Manrope',sans-serif;font-size:15px;font-weight:800;color:#fff;letter-spacing:-.3px}
-.btn-close-qr{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:7px 18px;font-family:'Sarabun',sans-serif;font-size:13px;font-weight:700;color:#fff;cursor:pointer}
-/* Full-screen video */
+
+/* Video fills the entire screen */
 #qrVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-#qrCanvas{display:none}
-/* Overlay mask — darkens everything outside the scan box */
-.qr-mask{position:absolute;inset:0;pointer-events:none;z-index:5}
-.qr-mask-svg{width:100%;height:100%}
-/* Scan box corners */
-.qr-corners{position:absolute;z-index:6;pointer-events:none}
-.qr-corner-line{position:absolute;background:#22d3c8}
-/* Scan line inside the box */
-.qr-scan-line{position:absolute;z-index:7;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent 5%,#22d3c8 30%,#22d3c8 70%,transparent 95%);animation:scanAnim 2s ease-in-out infinite;pointer-events:none}
-@keyframes scanAnim{0%,100%{top:0;opacity:1}50%{top:100%;opacity:.8}}
-/* Bottom hint */
-.qr-hint-bar{position:absolute;bottom:0;left:0;right:0;z-index:10;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);padding:16px 20px 32px;text-align:center}
-.qr-hint-text{font-size:12px;color:rgba(255,255,255,.7);line-height:1.6;margin-bottom:6px}
-.qr-scan-status{font-size:11px;font-weight:700;color:#22d3c8;letter-spacing:.5px}
-.qr-success-flash{position:absolute;inset:0;background:rgba(0,200,160,.3);z-index:8;opacity:0;pointer-events:none;transition:opacity .25s}
-.qr-success-flash.flash{opacity:1}
+
+/* Overlay canvas fills the entire screen */
+#qrOverlay{position:absolute;inset:0;width:100%;height:100%;z-index:6;pointer-events:none}
+
+/* Header */
+.qr-header{position:absolute;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:linear-gradient(to bottom,rgba(0,0,0,.75),transparent)}
+.qr-header-title{font-family:'Manrope',sans-serif;font-size:15px;font-weight:800;color:#fff}
+.qr-close-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:7px 18px;font-family:'Sarabun',sans-serif;font-size:13px;font-weight:700;color:#fff;cursor:pointer}
+
+/* Bottom status bar */
+.qr-footer{position:absolute;bottom:0;left:0;right:0;z-index:10;padding:16px 20px 36px;background:linear-gradient(to top,rgba(0,0,0,.8),transparent);text-align:center}
+.qr-status{font-size:13px;font-weight:700;color:#22d3c8;letter-spacing:.5px;margin-bottom:4px}
+.qr-hint{font-size:11px;color:rgba(255,255,255,.6);line-height:1.5}
+
+/* Success flash */
+#qrFlash{position:absolute;inset:0;z-index:9;background:rgba(0,220,170,.35);opacity:0;pointer-events:none;transition:opacity .2s}
+#qrFlash.on{opacity:1}
 
 /* CHECKLIST */
 .checklist-wrap{flex:1;padding:0 16px;overflow:hidden;display:flex;flex-direction:column;min-height:0}
@@ -249,36 +251,22 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
   <div style="font-size:10px;color:var(--text3);margin-top:12px;text-align:center" id="configSyncStatus">กำลังซิงค์...</div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     QR CAMERA MODAL — FULL SCREEN
-══════════════════════════════════════════ -->
+<!-- ══ QR MODAL — FULL SCREEN ══ -->
 <div id="qrModal" class="qr-modal">
-  <!-- Full-screen video -->
   <video id="qrVideo" playsinline autoplay muted></video>
-  <canvas id="qrCanvas" style="display:none"></canvas>
+  <canvas id="qrOverlay"></canvas>
+  <canvas id="qrDecode" style="display:none"></canvas>
 
-  <!-- Header bar -->
-  <div class="qr-modal-header">
-    <div class="qr-modal-title">สแกน QR Code วิทยุสื่อสาร</div>
-    <button class="btn-close-qr" onclick="closeQR()">ยกเลิก</button>
+  <div class="qr-header">
+    <div class="qr-header-title">สแกน QR Code วิทยุสื่อสาร</div>
+    <button class="qr-close-btn" onclick="closeQR()">ยกเลิก</button>
   </div>
 
-  <!-- Dark mask with transparent hole — rendered in JS after layout -->
-  <canvas id="qrMaskCanvas" class="qr-mask" style="position:absolute;inset:0;width:100%;height:100%;z-index:5;pointer-events:none"></canvas>
+  <div id="qrFlash"></div>
 
-  <!-- Corners of scan box -->
-  <div id="qrCornersEl" class="qr-corners"></div>
-
-  <!-- Animated scan line -->
-  <div id="qrScanLine" class="qr-scan-line" style="display:none"></div>
-
-  <!-- Flash on success -->
-  <div class="qr-success-flash" id="qrFlash"></div>
-
-  <!-- Bottom hint -->
-  <div class="qr-hint-bar">
-    <div class="qr-hint-text">วางกล้องให้ QR Code อยู่ภายในกรอบ<br>ระยะห่างประมาณ 15–25 ซม.</div>
-    <div class="qr-scan-status" id="qrScanStatus">● กำลังสแกน...</div>
+  <div class="qr-footer">
+    <div class="qr-status" id="qrStatus">● กำลังสแกน...</div>
+    <div class="qr-hint">วางกล้องให้ QR Code อยู่ภายในกรอบ · ระยะ 15–25 ซม.</div>
   </div>
 </div>
 
@@ -430,9 +418,9 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 <div id="toast" class="toast"></div>
 
 <script type="module">
-import { initializeApp }           from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { initializeApp }       from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, collection, addDoc, doc, setDoc, getDoc, getDocs, onSnapshot, serverTimestamp }
-                                   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+                               from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 /* ── RADIO LIST ── */
 const RADIOS=[
@@ -455,6 +443,7 @@ const RADIOS=[
   {id:36,area:"Gate 4",sn:"WD36 S/N 278TBPG567"},{id:37,area:"Patrol North",sn:"WD37 S/N 278TBPG570"},
   {id:38,area:"Patrol South",sn:"WD38 S/N 278TBPG572"},
 ];
+
 const DEFAULT_ITEMS=[
   {id:1,th:"เสาอากาศ",en:"Antenna"},{id:2,th:"แบตเตอรี่",en:"Battery"},
   {id:3,th:"ปุ่มกดพูด",en:"PTT Button"},{id:4,th:"ลำโพง",en:"Speaker"},
@@ -469,17 +458,20 @@ const DEFAULT_ITEMS=[
   {id:21,th:"เอกสารประกอบ",en:"Documentation"},
 ];
 
-const fbCfg={apiKey:"AIzaSyCBSvlRDbhibsNIgqNRd9UB5fdnm8g-G2A",authDomain:"building-access-control.firebaseapp.com",projectId:"building-access-control",storageBucket:"building-access-control.firebasestorage.app",messagingSenderId:"492098937762",appId:"1:492098937762:web:53c52cbbfd4cb030ad08fb"};
+const fbCfg={
+  apiKey:"AIzaSyCBSvlRDbhibsNIgqNRd9UB5fdnm8g-G2A",
+  authDomain:"building-access-control.firebaseapp.com",
+  projectId:"building-access-control",
+  storageBucket:"building-access-control.firebasestorage.app",
+  messagingSenderId:"492098937762",
+  appId:"1:492098937762:web:53c52cbbfd4cb030ad08fb"
+};
 let db;
 try{const app=initializeApp(fbCfg);db=getFirestore(app);}catch(e){console.warn(e);}
 
 let user=null,chk={},selectedShift=null,scannedRadioId=null;
 let lockActive=false,emergencyActive=false,emergencyUntilMs=null;
 let ITEMS=[...DEFAULT_ITEMS];
-let qrStream=null,qrAnimId=null,qrActive=false;
-
-// ── SCAN BOX geometry (computed when modal opens)
-let scanBox={x:0,y:0,w:0,h:0};
 
 /* ── SHIFT CONFIG ── */
 let shiftCfg={
@@ -493,34 +485,26 @@ function resolveUntilMs(val){
   const ms=new Date(val).getTime();
   return isNaN(ms)?null:ms;
 }
-
-function applyDoc(data){
-  if(data.day&&typeof data.day==='object'){
-    const d=data.day;
-    if(d.inspStart)shiftCfg.day.inspStart=d.inspStart;
-    if(d.inspEnd)shiftCfg.day.inspEnd=d.inspEnd;
-    if(d.shiftStart)shiftCfg.day.shiftStart=d.shiftStart;
-    if(d.shiftEnd)shiftCfg.day.shiftEnd=d.shiftEnd;
-    shiftCfg.day.emergencyUnlock=!!d.emergencyUnlock;
-    shiftCfg.day.emergencyUntil=d.emergencyUntil||null;
-  }
-  if(data.night&&typeof data.night==='object'){
-    const n=data.night;
-    if(n.inspStart)shiftCfg.night.inspStart=n.inspStart;
-    if(n.inspEnd)shiftCfg.night.inspEnd=n.inspEnd;
-    if(n.shiftStart)shiftCfg.night.shiftStart=n.shiftStart;
-    if(n.shiftEnd)shiftCfg.night.shiftEnd=n.shiftEnd;
-    shiftCfg.night.emergencyUnlock=!!n.emergencyUnlock;
-    shiftCfg.night.emergencyUntil=n.emergencyUntil||null;
-  }
-  // flat fallback
+function applyFirestoreDoc(data){
+  /* nested structure: { day:{inspStart,inspEnd,...}, night:{...} } */
+  ['day','night'].forEach(sh=>{
+    const src=data[sh];
+    if(src&&typeof src==='object'){
+      if(src.inspStart)shiftCfg[sh].inspStart=src.inspStart;
+      if(src.inspEnd)shiftCfg[sh].inspEnd=src.inspEnd;
+      if(src.shiftStart)shiftCfg[sh].shiftStart=src.shiftStart;
+      if(src.shiftEnd)shiftCfg[sh].shiftEnd=src.shiftEnd;
+      shiftCfg[sh].emergencyUnlock=!!src.emergencyUnlock;
+      shiftCfg[sh].emergencyUntil=src.emergencyUntil||null;
+    }
+  });
+  /* flat fallback */
   if(data.dayInspStart)shiftCfg.day.inspStart=data.dayInspStart;
   if(data.dayInspEnd)shiftCfg.day.inspEnd=data.dayInspEnd;
   if(data.nightInspStart)shiftCfg.night.inspStart=data.nightInspStart;
   if(data.nightInspEnd)shiftCfg.night.inspEnd=data.nightInspEnd;
   resolveEmergency();
 }
-
 function resolveEmergency(){
   const now=Date.now();let anyE=false,latestUntil=null;
   ['day','night'].forEach(sh=>{
@@ -531,17 +515,13 @@ function resolveEmergency(){
   if(!was&&emergencyActive&&lockActive){updateLockOverlay();toast("🔓 Admin ปลดล็อคแล้ว!","info");}
   if(lockActive&&selectedShift&&isAllowed(selectedShift)&&!emergencyActive){hideLock();toast("เข้าสู่ช่วงเวลาตรวจสอบแล้ว");}
 }
-
 function toMin(s){if(!s)return 0;const p=s.split(":");return parseInt(p[0])*60+parseInt(p[1]||0);}
 function nowMin(){const n=new Date();return n.getHours()*60+n.getMinutes();}
 function fmtCd(ms){if(ms<=0)return"00:00";const s=Math.floor(ms/1000),m=Math.floor(s/60);return String(m).padStart(2,"0")+":"+String(s%60).padStart(2,"0");}
-
 function isAllowed(sh){
   const cfg=shiftCfg[sh];
-  // per-shift emergency
   const ms=resolveUntilMs(cfg.emergencyUntil);
   if(cfg.emergencyUnlock&&ms&&Date.now()<ms)return true;
-  if(!cfg)return false;
   const t=nowMin(),s=toMin(cfg.inspStart),e=toMin(cfg.inspEnd);
   return s<=e?(t>=s&&t<e):(t>=s||t<e);
 }
@@ -552,8 +532,12 @@ async function fetchConfig(){
   if(!db){updateShiftUI();return;}
   try{
     const snap=await getDoc(doc(db,"shiftConfig","main"));
-    if(snap.exists()){applyDoc(snap.data());const el=document.getElementById("configSyncStatus");if(el)el.textContent="ซิงค์แล้ว — "+new Date().toLocaleTimeString("th-TH");}
-  }catch(e){const el=document.getElementById("configSyncStatus");if(el)el.textContent="ใช้ค่าเริ่มต้น ("+e.message+")";}
+    if(snap.exists()){
+      applyFirestoreDoc(snap.data());
+      const el=document.getElementById("configSyncStatus");
+      if(el)el.textContent="ซิงค์แล้ว — "+new Date().toLocaleTimeString("th-TH");
+    }
+  }catch(e){console.warn("fetchConfig:",e);}
   updateShiftUI();
 }
 function startConfigListener(){
@@ -561,7 +545,8 @@ function startConfigListener(){
   try{
     onSnapshot(doc(db,"shiftConfig","main"),snap=>{
       if(!snap.exists())return;
-      applyDoc(snap.data());updateShiftUI();
+      applyFirestoreDoc(snap.data());
+      updateShiftUI();
       const el=document.getElementById("configSyncStatus");
       if(el)el.textContent="ซิงค์แล้ว — "+new Date().toLocaleTimeString("th-TH");
       if(lockActive)updateLockOverlay();
@@ -572,13 +557,28 @@ async function fetchChecklist(){
   if(!db){buildList();return;}
   try{
     const snap=await getDocs(collection(db,"checklistItems"));
-    if(!snap.empty){const items=[];snap.forEach(d=>{const x=d.data();items.push({id:x.id||x.order||items.length+1,th:x.th||x.nameTH||d.id,en:x.en||x.nameEN||""});});items.sort((a,b)=>a.id-b.id);if(items.length>0)ITEMS=items;}
+    if(!snap.empty){
+      const items=[];
+      snap.forEach(d=>{const x=d.data();items.push({id:x.id||x.order||items.length+1,th:x.th||x.nameTH||d.id,en:x.en||x.nameEN||""});});
+      items.sort((a,b)=>a.id-b.id);
+      if(items.length>0)ITEMS=items;
+    }
   }catch(e){console.warn(e);}
   chk={};ITEMS.forEach(i=>chk[i.id]=null);buildList();updateUI();
 }
 async function initDef(){
   if(!db)return;
-  try{const s=await getDocs(collection(db,"radioUsers"));if(s.empty){const d=[{userId:"admin",name:"Administrator",password:"admin1234",role:"admin",enabled:true},{userId:"U001",name:"นายสมชาย ใจดี",password:"1234",role:"user",enabled:true,empId:"IND-5501",dept:"Security",position:"Security Inspector"},{userId:"U002",name:"นางสาวสมหญิง ดีใจ",password:"5678",role:"user",enabled:true,empId:"IND-5502",dept:"Security",position:"Security Inspector"}];for(const u of d)await setDoc(doc(db,"radioUsers",u.userId),u);}}catch(e){}
+  try{
+    const s=await getDocs(collection(db,"radioUsers"));
+    if(s.empty){
+      const d=[
+        {userId:"admin",name:"Administrator",password:"admin1234",role:"admin",enabled:true},
+        {userId:"U001",name:"นายสมชาย ใจดี",password:"1234",role:"user",enabled:true,empId:"IND-5501",dept:"Security",position:"Security Inspector"},
+        {userId:"U002",name:"นางสาวสมหญิง ดีใจ",password:"5678",role:"user",enabled:true,empId:"IND-5502",dept:"Security",position:"Security Inspector"}
+      ];
+      for(const u of d)await setDoc(doc(db,"radioUsers",u.userId),u);
+    }
+  }catch(e){}
 }
 initDef();
 
@@ -592,7 +592,8 @@ function tick(){
   if(lockActive&&emergencyActive&&emergencyUntilMs){
     const rem=emergencyUntilMs-Date.now();
     const cd=document.getElementById("emergencyCountdownText");
-    if(rem>0){if(cd)cd.textContent=fmtCd(rem);}else{emergencyActive=false;emergencyUntilMs=null;updateLockOverlay();}
+    if(rem>0){if(cd)cd.textContent=fmtCd(rem);}
+    else{emergencyActive=false;emergencyUntilMs=null;updateLockOverlay();}
   }
   const eb=document.getElementById("emergencyBadgeSb");
   if(eb)eb.style.display=(emergencyActive&&emergencyUntilMs&&Date.now()<emergencyUntilMs)?"inline-flex":"none";
@@ -609,7 +610,8 @@ function updateShiftUI(){
   const nw=document.getElementById("shiftNightWindow");if(nw)nw.textContent="⏱ ตรวจได้ "+winLabel("night");
   const dt=document.getElementById("shiftDayTime");if(dt)dt.textContent=shiftTimeLabel("day");
   const nt=document.getElementById("shiftNightTime");if(nt)nt.textContent=shiftTimeLabel("night");
-  updateShiftBadges();if(lockActive)updateLockOverlay();
+  updateShiftBadges();
+  if(lockActive)updateLockOverlay();
 }
 function updateShiftBadges(){
   ["day","night"].forEach(s=>{
@@ -676,14 +678,21 @@ window.doLogin=async function(){
     if(found.password!==pw){setErr("รหัสผ่านไม่ถูกต้อง");return;}
     if(!found.enabled){setErr("บัญชีถูกระงับ");return;}
     if(found.role==="admin"){setErr("กรุณาใช้บัญชี User เท่านั้น");return;}
-    user=found;await fetchConfig();await fetchChecklist();startConfigListener();initMain();
+    user=found;
+    await fetchConfig();
+    await fetchChecklist();
+    startConfigListener();
+    initMain();
   }catch(e){setErr("เกิดข้อผิดพลาด: "+e.message);}
 };
 function setErr(m){const e=document.getElementById("loginErr");e.textContent=m;e.style.display="block";}
 window.doLogout=function(){
-  user=null;selectedShift=null;scannedRadioId=null;chk={};ITEMS.forEach(i=>chk[i.id]=null);
-  stopQR();document.getElementById("lockOverlay").classList.remove("show");lockActive=false;
-  show("s-login");document.getElementById("lId").value="";document.getElementById("lPw").value="";
+  user=null;selectedShift=null;scannedRadioId=null;
+  chk={};ITEMS.forEach(i=>chk[i.id]=null);
+  stopQR();
+  document.getElementById("lockOverlay").classList.remove("show");lockActive=false;
+  show("s-login");
+  document.getElementById("lId").value="";document.getElementById("lPw").value="";
 };
 function initMain(){
   const n=user.name||user.userId;
@@ -703,222 +712,220 @@ window.selShift=function(s){
 };
 window.requestUnlock=function(){toast("กรุณาติดต่อผู้ดูแลระบบ","info");alert("กรุณาติดต่อผู้ดูแลระบบ\nเพื่อปลดล็อคจาก Dashboard → ตั้งค่าเวลาผลัด");};
 
-/* ════════════════════════════════════════════
-   QR SCANNER — FULL-SCREEN WITH CROP
-════════════════════════════════════════════ */
+/* ══════════════════════════════════════════
+   QR SCANNER — REBUILT V5
+   Strategy: scan FULL video frame at native
+   resolution every 100ms. No cropping math.
+   Overlay canvas draws UI only.
+══════════════════════════════════════════ */
 
-function drawMask(){
-  const mc=document.getElementById("qrMaskCanvas");
-  if(!mc)return;
-  const W=window.innerWidth,H=window.innerHeight;
-  mc.width=W;mc.height=H;
-  const ctx=mc.getContext("2d");
-  ctx.clearRect(0,0,W,H);
+let qrStream=null;
+let qrTimerId=null;
+let qrRunning=false;
+let qrDebounce=false;
 
-  // Compute scan box: centered square, 70% of narrower dimension
-  const size=Math.min(W,H)*0.70;
-  const cx=W/2,cy=H/2;
-  const bx=cx-size/2,by=cy-size/2;
-  scanBox={x:Math.round(bx),y:Math.round(by),w:Math.round(size),h:Math.round(size)};
+/* Draw the viewfinder overlay (dark mask + bright box + corners + scan line) */
+function drawOverlay(){
+  const oc=document.getElementById("qrOverlay");
+  if(!oc)return;
+  const W=oc.width=window.innerWidth;
+  const H=oc.height=window.innerHeight;
+  const ctx=oc.getContext("2d");
 
-  // Dark overlay everywhere
-  ctx.fillStyle="rgba(0,0,0,0.62)";
+  /* box size: 72% of the smaller dimension, capped at 280px */
+  const boxSize=Math.min(Math.min(W,H)*0.72,280);
+  const bx=(W-boxSize)/2;
+  const by=(H-boxSize)/2;
+
+  /* dark overlay */
+  ctx.fillStyle="rgba(0,0,0,0.55)";
   ctx.fillRect(0,0,W,H);
 
-  // Clear the scan box (transparent hole)
-  ctx.clearRect(bx,by,size,size);
+  /* clear the scan window */
+  ctx.clearRect(bx,by,boxSize,boxSize);
 
-  // Corner decorations (teal)
-  const cl=28,ct=4;
+  /* rounded corner indicators */
+  const cl=32,ct=4,r=8;
   ctx.strokeStyle="#22d3c8";ctx.lineWidth=ct;ctx.lineCap="round";
-  [[bx,by,1,0],[bx+size,by,-1,0],[bx,by+size,1,1],[bx+size,by+size,-1,1]].forEach(([cx2,cy2,sx,sy])=>{
-    ctx.beginPath();ctx.moveTo(cx2+sx*ct/2,cy2);ctx.lineTo(cx2+sx*cl,cy2);ctx.stroke();
-    ctx.beginPath();ctx.moveTo(cx2,cy2+sy*ct/2);ctx.lineTo(cx2,cy2+sy*cl);ctx.stroke();
-  });
 
-  // Animated scan line inside box
-  const sl=document.getElementById("qrScanLine");
-  if(sl){
-    sl.style.display="block";
-    sl.style.left=bx+"px";
-    sl.style.width=size+"px";
-    sl.style.top=by+"px";
-    sl.style.animation="none";
-    // Re-trigger animation
-    sl.style.setProperty("--scan-start",by+"px");
-    sl.style.setProperty("--scan-end",(by+size)+"px");
-    sl.offsetHeight; // reflow
-    sl.style.animation="scanAnimDyn 2s ease-in-out infinite";
-  }
+  /* top-left */
+  ctx.beginPath();ctx.moveTo(bx+r,by);ctx.lineTo(bx+cl,by);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(bx,by+r);ctx.lineTo(bx,by+cl);ctx.stroke();
+  /* top-right */
+  ctx.beginPath();ctx.moveTo(bx+boxSize-cl,by);ctx.lineTo(bx+boxSize-r,by);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(bx+boxSize,by+r);ctx.lineTo(bx+boxSize,by+cl);ctx.stroke();
+  /* bottom-left */
+  ctx.beginPath();ctx.moveTo(bx,by+boxSize-cl);ctx.lineTo(bx,by+boxSize-r);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(bx+r,by+boxSize);ctx.lineTo(bx+cl,by+boxSize);ctx.stroke();
+  /* bottom-right */
+  ctx.beginPath();ctx.moveTo(bx+boxSize-cl,by+boxSize);ctx.lineTo(bx+boxSize-r,by+boxSize);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(bx+boxSize,by+boxSize-cl);ctx.lineTo(bx+boxSize,by+boxSize-r);ctx.stroke();
 }
 
-// Dynamic scan animation using CSS custom properties
-const styleTag=document.createElement("style");
-styleTag.textContent=`@keyframes scanAnimDyn{0%,100%{top:var(--scan-start,20%);opacity:1}50%{top:var(--scan-end,80%);opacity:.8}}`;
-document.head.appendChild(styleTag);
+/* Animated scan line using a separate CSS animation on an absolutely positioned div */
+function startScanLine(){
+  let sl=document.getElementById("qrScanLine");
+  if(!sl){
+    sl=document.createElement("div");sl.id="qrScanLine";
+    Object.assign(sl.style,{
+      position:"absolute",left:"0",right:"0",height:"2px",zIndex:"8",
+      background:"linear-gradient(90deg,transparent 5%,#22d3c8 40%,#22d3c8 60%,transparent 95%)",
+      pointerEvents:"none"
+    });
+    document.getElementById("qrModal").appendChild(sl);
+  }
+
+  const W=window.innerWidth,H=window.innerHeight;
+  const boxSize=Math.min(Math.min(W,H)*0.72,280);
+  const bx=(W-boxSize)/2;
+  const by=(H-boxSize)/2;
+
+  /* Use CSS animation between top:by and top:by+boxSize */
+  sl.style.left=bx+"px";
+  sl.style.width=boxSize+"px";
+  sl.style.top=by+"px";
+  sl.style.animation="none";
+  sl.getBoundingClientRect(); /* force reflow */
+
+  /* inject keyframes if not present */
+  if(!document.getElementById("slStyle")){
+    const s=document.createElement("style");s.id="slStyle";
+    s.textContent="@keyframes slAnim{0%,100%{top:VAR_TOP}50%{top:VAR_BOT}}";
+    document.head.appendChild(s);
+  }
+  const st=document.getElementById("slStyle");
+  st.textContent="@keyframes slAnim{0%,100%{top:"+by+"px}50%{top:"+(by+boxSize)+"px}}";
+  sl.style.animation="slAnim 2s ease-in-out infinite";
+}
 
 window.openQR=async function(){
+  if(qrRunning)return;
   const modal=document.getElementById("qrModal");
   modal.classList.add("show");
-  const video=document.getElementById("qrVideo");
+  document.getElementById("qrStatus").textContent="● เปิดกล้อง...";
+
   try{
-    // Request highest quality for better QR detection
-    const constraints={
-      video:{
-        facingMode:{ideal:"environment"},
-        width:{ideal:1920,min:640},
-        height:{ideal:1080,min:480},
-        focusMode:"continuous",
-        zoom:1
-      }
-    };
-    qrStream=await navigator.mediaDevices.getUserMedia(constraints);
+    /* Request rear camera, no fancy constraints that can fail */
+    qrStream=await navigator.mediaDevices.getUserMedia({
+      video:{facingMode:{ideal:"environment"},width:{ideal:1280},height:{ideal:720}}
+    });
+    const video=document.getElementById("qrVideo");
     video.srcObject=qrStream;
     await video.play();
 
-    // Try to enable continuous autofocus
-    const track=qrStream.getVideoTracks()[0];
-    if(track&&track.getCapabilities){
-      const caps=track.getCapabilities();
-      const constraints2={};
+    /* Try to enable continuous autofocus quietly */
+    try{
+      const track=qrStream.getVideoTracks()[0];
+      const caps=track.getCapabilities?track.getCapabilities():{};
       if(caps.focusMode&&caps.focusMode.includes("continuous")){
-        constraints2.focusMode="continuous";
+        await track.applyConstraints({advanced:[{focusMode:"continuous"}]});
       }
-      if(Object.keys(constraints2).length>0){
-        try{await track.applyConstraints({advanced:[constraints2]});}catch(e){}
-      }
-    }
+    }catch(e2){}
 
-    // Wait for video to be ready then draw mask
-    video.addEventListener("loadedmetadata",()=>{
-      setTimeout(()=>{drawMask();},100);
-    });
-    if(video.readyState>=2)setTimeout(()=>drawMask(),100);
-
-    qrActive=true;
-    document.getElementById("qrScanStatus").textContent="● กำลังสแกน...";
-    requestAnimationFrame(scanLoop);
+    /* Wait until video is playing then start overlay + scan */
+    video.addEventListener("playing",()=>{
+      drawOverlay();
+      startScanLine();
+      qrRunning=true;
+      document.getElementById("qrStatus").textContent="● กำลังสแกน...";
+      /* Poll every 100ms — fast enough to catch QR, slow enough not to lag */
+      qrTimerId=setInterval(scanFrame,100);
+    },{once:true});
 
   }catch(e){
     modal.classList.remove("show");
-    toast("ไม่สามารถเข้าถึงกล้องได้: "+e.message,"err");
+    toast("ไม่สามารถเข้าถึงกล้อง: "+e.message,"err");
   }
 };
 
-// ── IMPROVED SCAN LOOP: crops to scan box, multi-pass attempt
-let _lastScan=0;
-function scanLoop(){
-  if(!qrActive)return;
-  const now=performance.now();
-  // Throttle to ~15fps for performance
-  if(now-_lastScan>66){
-    _lastScan=now;
-    tryDecode();
-  }
-  qrAnimId=requestAnimationFrame(scanLoop);
-}
-
-function tryDecode(){
+function scanFrame(){
+  if(!qrRunning||qrDebounce)return;
   const video=document.getElementById("qrVideo");
-  if(!video||!video.videoWidth||!video.videoHeight)return;
+  if(!video||video.readyState<2||!video.videoWidth)return;
 
+  const dc=document.getElementById("qrDecode");
   const vw=video.videoWidth,vh=video.videoHeight;
-  const sw=window.innerWidth,sh=window.innerHeight;
 
-  // Map screen scan box to video coordinates
-  // video is object-fit:cover — compute scale
-  const scaleX=vw/sw,scaleY=vh/sh;
-  const scale=Math.max(scaleX,scaleY); // cover uses max
-  // Offset to center
-  const offX=(vw-sw*scale)/2;
-  const offY=(vh-sh*scale)/2;
+  /* ─ Attempt 1: full native frame ─ */
+  dc.width=vw;dc.height=vh;
+  const ctx=dc.getContext("2d");
+  ctx.drawImage(video,0,0,vw,vh);
+  let img=ctx.getImageData(0,0,vw,vh);
+  let code=jsQR(img.data,vw,vh,{inversionAttempts:"attemptBoth"});
+  if(code){onQRFound(code.data.trim());return;}
 
-  // Map scanBox corners to video pixels
-  const vbx=scanBox.x*scale+offX;
-  const vby=scanBox.y*scale+offY;
-  const vbw=scanBox.w*scale;
-  const vbh=scanBox.h*scale;
-
-  // Clamp to video bounds
-  const cx=Math.max(0,Math.round(vbx));
-  const cy=Math.max(0,Math.round(vby));
-  const cw=Math.min(vw-cx,Math.round(vbw));
-  const ch=Math.min(vh-cy,Math.round(vbh));
-
-  // Get the offscreen canvas
-  const canvas=document.getElementById("qrCanvas");
-  const ctx=canvas.getContext("2d");
-
-  // ── Attempt 1: Cropped scan box region (most accurate)
-  canvas.width=cw;canvas.height=ch;
-  ctx.drawImage(video,cx,cy,cw,ch,0,0,cw,ch);
-  let imgData=ctx.getImageData(0,0,cw,ch);
-  let code=jsQR(imgData.data,imgData.width,imgData.height,{inversionAttempts:"attemptBoth"});
-  if(code){handleQRResult(code.data.trim());return;}
-
-  // ── Attempt 2: Full frame at reduced resolution (fallback)
-  const scale2=0.5;
-  const fw=Math.round(vw*scale2),fh=Math.round(vh*scale2);
-  canvas.width=fw;canvas.height=fh;
-  ctx.drawImage(video,0,0,vw,vh,0,0,fw,fh);
-  imgData=ctx.getImageData(0,0,fw,fh);
-  code=jsQR(imgData.data,imgData.width,imgData.height,{inversionAttempts:"attemptBoth"});
-  if(code){handleQRResult(code.data.trim());return;}
-
-  // ── Attempt 3: Center 50% of video
-  const c2x=Math.round(vw*0.25),c2y=Math.round(vh*0.25);
-  const c2w=Math.round(vw*0.5),c2h=Math.round(vh*0.5);
-  canvas.width=c2w;canvas.height=c2h;
-  ctx.drawImage(video,c2x,c2y,c2w,c2h,0,0,c2w,c2h);
-  imgData=ctx.getImageData(0,0,c2w,c2h);
-  code=jsQR(imgData.data,imgData.width,imgData.height,{inversionAttempts:"attemptBoth"});
-  if(code)handleQRResult(code.data.trim());
+  /* ─ Attempt 2: downscaled 50% (sometimes helps low-contrast QR) ─ */
+  const sw=Math.round(vw/2),sh=Math.round(vh/2);
+  dc.width=sw;dc.height=sh;
+  ctx.drawImage(video,0,0,vw,vh,0,0,sw,sh);
+  img=ctx.getImageData(0,0,sw,sh);
+  code=jsQR(img.data,sw,sh,{inversionAttempts:"attemptBoth"});
+  if(code)onQRFound(code.data.trim());
 }
 
-function handleQRResult(txt){
-  qrActive=false;
-  if(qrAnimId){cancelAnimationFrame(qrAnimId);qrAnimId=null;}
+function onQRFound(txt){
+  if(qrDebounce)return;
+  qrDebounce=true;
+
+  /* parse */
   let radioId=null;
-  try{const p=JSON.parse(txt);if(p.id)radioId=parseInt(p.id);}
-  catch(e){const m=txt.match(/WD(\d+)/i)||txt.match(/^(\d+)$/);if(m)radioId=parseInt(m[1]);}
+  try{const p=JSON.parse(txt);if(p&&p.id)radioId=parseInt(p.id);}
+  catch(e){
+    const m=txt.match(/WD\s*(\d+)/i)||txt.match(/^(\d+)$/);
+    if(m)radioId=parseInt(m[1]);
+  }
+
   const radio=radioId?RADIOS.find(r=>r.id===radioId):null;
+
   if(!radio){
-    toast("ไม่พบวิทยุจาก QR นี้\n("+txt.slice(0,30)+"...)","err");
-    qrActive=true;
-    document.getElementById("qrScanStatus").textContent="❌ ไม่พบข้อมูล — สแกนใหม่...";
+    document.getElementById("qrStatus").textContent="❌ ไม่พบข้อมูล — สแกนใหม่...";
+    toast("ไม่พบวิทยุ QR นี้","err");
     setTimeout(()=>{
-      if(qrActive){
-        document.getElementById("qrScanStatus").textContent="● กำลังสแกน...";
-        requestAnimationFrame(scanLoop);
-      }
-    },2000);
+      qrDebounce=false;
+      if(qrRunning)document.getElementById("qrStatus").textContent="● กำลังสแกน...";
+    },2200);
     return;
   }
-  const flash=document.getElementById("qrFlash");
-  flash.classList.add("flash");
-  document.getElementById("qrScanStatus").textContent="✅ พบ WD"+radio.id+" — "+radio.area;
-  if(navigator.vibrate)navigator.vibrate([60,40,100]);
-  setTimeout(()=>{flash.classList.remove("flash");},400);
+
+  /* success */
   stopQR();
-  setTimeout(()=>{closeQR();setScannedRadio(radio);},600);
+  const flash=document.getElementById("qrFlash");
+  flash.classList.add("on");
+  document.getElementById("qrStatus").textContent="✅ พบ WD"+radio.id+" — "+radio.area;
+  if(navigator.vibrate)navigator.vibrate([60,40,100]);
+  setTimeout(()=>{flash.classList.remove("on");},300);
+  setTimeout(()=>{
+    closeQR();
+    setScannedRadio(radio);
+  },500);
 }
 
 window.closeQR=function(){stopQR();document.getElementById("qrModal").classList.remove("show");};
+
 function stopQR(){
-  qrActive=false;
-  if(qrAnimId){cancelAnimationFrame(qrAnimId);qrAnimId=null;}
+  qrRunning=false;qrDebounce=false;
+  if(qrTimerId){clearInterval(qrTimerId);qrTimerId=null;}
   if(qrStream){qrStream.getTracks().forEach(t=>t.stop());qrStream=null;}
-  const v=document.getElementById("qrVideo");if(v)v.srcObject=null;
+  const v=document.getElementById("qrVideo");if(v){v.pause();v.srcObject=null;}
+  const sl=document.getElementById("qrScanLine");if(sl)sl.style.animation="none";
 }
 
+window.addEventListener("resize",()=>{
+  if(document.getElementById("qrModal").classList.contains("show")){
+    drawOverlay();startScanLine();
+  }
+});
+
+/* ── Manual entry ── */
 window.manualEntry=function(){
   const val=document.getElementById("manualId").value.trim();
-  const m=val.match(/WD(\d+)/i)||val.match(/^(\d+)$/);
+  const m=val.match(/WD\s*(\d+)/i)||val.match(/^(\d+)$/);
   if(!m){toast("รูปแบบไม่ถูกต้อง","err");return;}
   const radio=RADIOS.find(r=>r.id===parseInt(m[1]));
   if(!radio){toast("ไม่พบ WD"+m[1],"err");return;}
   setScannedRadio(radio);document.getElementById("manualId").value="";
 };
+
 function setScannedRadio(radio){
   scannedRadioId=radio.id;
   document.getElementById("qrResultId").textContent="WD"+radio.id;
@@ -994,7 +1001,7 @@ window.doSubmit=async function(){
     overallStatus:fail===0?"PASS":"FAIL",scanMethod:"qr",emergencyUnlock:emergencyActive,
     date:now.toISOString().slice(0,10),
     time:now.toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"}),
-    timestamp:serverTimestamp(),formType:"21items_v4_qr",
+    timestamp:serverTimestamp(),formType:"21items_v5",
   };
   try{
     if(db)await addDoc(collection(db,"submissions"),data);
@@ -1021,6 +1028,7 @@ window.doSubmit=async function(){
   }catch(e){toast("บันทึกไม่สำเร็จ: "+e.message,"err");}
   btn.disabled=false;
 };
+
 window.startNew=function(){
   ITEMS.forEach(i=>{chk[i.id]=null;updateRow(i.id);});
   selectedShift=null;scannedRadioId=null;
@@ -1029,14 +1037,15 @@ window.startNew=function(){
   document.getElementById("profShiftTag").style.display="none";
   rescan();updateUI();show("s-main");window.scrollTo(0,0);
 };
+
 function toast(m,t="ok"){
   const el=document.getElementById("toast");el.textContent=m;
   el.className="toast"+(t==="err"?" terr":t==="info"?" tinfo":"");
   el.classList.add("show");setTimeout(()=>el.classList.remove("show"),3200);
 }
+
 document.getElementById("lPw").addEventListener("keydown",e=>{if(e.key==="Enter")doLogin();});
 document.getElementById("lId").addEventListener("keydown",e=>{if(e.key==="Enter")document.getElementById("lPw").focus();});
-window.addEventListener("resize",()=>{if(document.getElementById("qrModal").classList.contains("show"))drawMask();});
 </script>
 </body>
 </html>
