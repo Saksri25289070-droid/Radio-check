@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&family=Manrope:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0d1117;--card:#161b22;--border-dim:rgba(255,255,255,.07);
+  --bg:#0d1117;--border-dim:rgba(255,255,255,.07);
   --pass-bg:#1a3d2b;--pass-border:#22c55e;--pass-text:#4ade80;
   --fail-bg:#3d1a1a;--fail-border:#ef4444;--fail-text:#f87171;
   --text:#f0f6fc;--text2:#8b949e;--text3:#484f58;
@@ -24,17 +24,17 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .screen.active{display:flex}
 .login-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:24px}
 .login-card{background:rgba(22,27,34,.95);border:1px solid rgba(0,200,160,.2);border-radius:24px;padding:40px 28px;width:100%;max-width:360px;box-shadow:0 0 40px rgba(0,200,160,.1),0 24px 64px rgba(0,0,0,.7);backdrop-filter:blur(12px)}
-.login-icon{width:72px;height:72px;border-radius:20px;background:linear-gradient(135deg,#0d4f3c,#0ea5a0);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;box-shadow:0 8px 24px rgba(0,160,130,.4)}
+.login-icon{width:72px;height:72px;border-radius:20px;background:linear-gradient(135deg,#0d4f3c,#0ea5a0);display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
 .login-title{font-family:'Manrope',sans-serif;font-size:22px;font-weight:900;text-align:center;margin-bottom:4px;background:linear-gradient(135deg,#4ade80,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.login-sub{font-size:12px;color:var(--text2);text-align:center;margin-bottom:24px;letter-spacing:.5px}
+.login-sub{font-size:12px;color:var(--text2);text-align:center;margin-bottom:24px}
 .sys-ok{display:flex;align-items:center;justify-content:center;gap:5px;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:20px;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);color:#22c55e;margin-bottom:20px}
 .ldot{width:5px;height:5px;border-radius:50%;background:#22c55e;animation:ldp 2s infinite}
 @keyframes ldp{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(34,197,94,.4)}70%{opacity:.7;box-shadow:0 0 0 5px rgba(34,197,94,0)}}
 .lbl{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:6px;display:block}
 .inp{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:13px 14px;font-size:15px;font-family:'Sarabun',sans-serif;color:var(--text);outline:none;transition:all .2s;margin-bottom:14px}
-.inp:focus{border-color:rgba(0,200,160,.4);background:rgba(0,200,160,.04);box-shadow:0 0 0 3px rgba(0,200,160,.08)}
+.inp:focus{border-color:rgba(0,200,160,.4);background:rgba(0,200,160,.04)}
 .inp::placeholder{color:var(--text3)}
-.btn-login{width:100%;padding:14px;background:var(--grad-btn);border:none;border-radius:12px;font-family:'Sarabun',sans-serif;font-size:16px;font-weight:700;color:#fff;cursor:pointer;box-shadow:0 4px 20px rgba(0,160,130,.4)}
+.btn-login{width:100%;padding:14px;background:var(--grad-btn);border:none;border-radius:12px;font-family:'Sarabun',sans-serif;font-size:16px;font-weight:700;color:#fff;cursor:pointer}
 .btn-login:active{transform:scale(.98)}
 .err{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:10px 14px;font-size:12px;font-weight:600;color:#f87171;margin-bottom:14px;display:none;text-align:center}
 .lock-overlay{position:fixed;inset:0;z-index:9999;background:rgba(8,12,20,.97);display:none;flex-direction:column;align-items:center;justify-content:center;padding:32px;backdrop-filter:blur(8px);overflow-y:auto}
@@ -116,18 +116,25 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .qr-modal{position:fixed;inset:0;z-index:5000;background:#000;display:none;flex-direction:column}
 .qr-modal.show{display:flex}
 #qrVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-#qrOvCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:6;pointer-events:none}
+#qrOvCv{position:absolute;inset:0;width:100%;height:100%;z-index:6;pointer-events:none}
 .qr-top{position:absolute;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:linear-gradient(to bottom,rgba(0,0,0,.85),transparent)}
 .qr-top-ttl{font-family:'Manrope',sans-serif;font-size:15px;font-weight:800;color:#fff}
 .qr-top-cls{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);border-radius:10px;padding:8px 20px;font-family:'Sarabun',sans-serif;font-size:13px;font-weight:700;color:#fff;cursor:pointer}
 .qr-bot{position:absolute;bottom:0;left:0;right:0;z-index:10;padding:20px 20px 48px;background:linear-gradient(to top,rgba(0,0,0,.9),transparent);text-align:center}
-.qr-bot-status{font-size:15px;font-weight:700;margin-bottom:6px}
-.qr-bot-hint{font-size:11px;color:rgba(255,255,255,.45);margin-bottom:8px}
-.qr-bot-dbg{font-size:11px;font-family:monospace;color:rgba(255,220,100,.8);background:rgba(0,0,0,.6);border-radius:6px;padding:5px 10px;word-break:break-all;display:none}
-.qr-bot-dbg.on{display:block}
+.qr-stat{font-size:15px;font-weight:700;margin-bottom:6px}
+.qr-hint{font-size:11px;color:rgba(255,255,255,.45);margin-bottom:10px}
+/* RAW data display */
+.qr-raw-box{background:rgba(0,0,0,.75);border:1px solid rgba(255,255,100,.4);border-radius:10px;padding:10px 14px;margin-bottom:8px;display:none;text-align:left}
+.qr-raw-box.show{display:block}
+.qr-raw-label{font-size:9px;font-weight:700;letter-spacing:1px;color:rgba(255,220,80,.7);text-transform:uppercase;margin-bottom:4px}
+.qr-raw-val{font-size:12px;font-family:monospace;color:#fff;word-break:break-all;line-height:1.4}
+/* Not-found box — show parsed radio not found */
+.qr-notfound{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:10px;padding:10px 14px;margin-bottom:8px;display:none;text-align:center}
+.qr-notfound.show{display:block}
+.qr-notfound-msg{font-size:12px;color:#f87171;font-weight:700;margin-bottom:4px}
+.qr-notfound-hint{font-size:11px;color:rgba(248,113,113,.7)}
 #qrFlash{position:absolute;inset:0;z-index:9;background:rgba(34,211,200,.45);opacity:0;pointer-events:none;transition:opacity .15s}
 #qrFlash.on{opacity:1}
-/* CHECKLIST */
 .checklist-wrap{flex:1;padding:0 16px;overflow:hidden;display:flex;flex-direction:column;min-height:0}
 .checklist-card{background:rgba(22,27,34,.8);border:1px solid rgba(0,200,160,.25);border-radius:20px;overflow:hidden;flex:1;display:flex;flex-direction:column;position:relative;min-height:0}
 .checklist-card::before{content:'';position:absolute;inset:-1px;border-radius:21px;background:linear-gradient(135deg,rgba(0,200,160,.3),transparent 50%,rgba(0,120,200,.2));z-index:0;pointer-events:none}
@@ -229,16 +236,23 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 <!-- QR MODAL -->
 <div id="qrModal" class="qr-modal">
   <video id="qrVideo" playsinline muted></video>
-  <canvas id="qrOvCanvas"></canvas>
+  <canvas id="qrOvCv"></canvas>
   <div id="qrFlash"></div>
   <div class="qr-top">
     <div class="qr-top-ttl">สแกน QR Code วิทยุสื่อสาร</div>
     <button class="qr-top-cls" onclick="closeQR()">ยกเลิก</button>
   </div>
   <div class="qr-bot">
-    <div class="qr-bot-status" id="qrBotStatus" style="color:#22d3c8">● กำลังเปิดกล้อง...</div>
-    <div class="qr-bot-hint">จ่อกล้องไปที่ QR Code บนการ์ด · ระยะ 10–20 ซม.</div>
-    <div class="qr-bot-dbg" id="qrBotDbg"></div>
+    <div class="qr-stat" id="qrStat" style="color:#22d3c8">● กำลังเปิดกล้อง...</div>
+    <div class="qr-hint">จ่อกล้องไปที่ QR Code บนการ์ดวิทยุ · ระยะ 10–20 ซม.</div>
+    <div class="qr-notfound" id="qrNotFound">
+      <div class="qr-notfound-msg" id="qrNotFoundMsg">QR นี้ไม่ใช่ของวิทยุ</div>
+      <div class="qr-notfound-hint">กรุณาจ่อที่ QR Code บนการ์ดวิทยุเท่านั้น</div>
+    </div>
+    <div class="qr-raw-box" id="qrRawBox">
+      <div class="qr-raw-label">ข้อมูลที่อ่านได้ (Debug)</div>
+      <div class="qr-raw-val" id="qrRawVal"></div>
+    </div>
   </div>
 </div>
 
@@ -388,41 +402,6 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 </div>
 <div id="toast" class="toast"></div>
 
-<!-- ════════════════════════════════════════════════════
-  jsQR 1.4.0 — EMBEDDED INLINE (no CDN dependency)
-  Source: https://github.com/cozmo/jsQR (MIT License)
-  Minified & inlined so it works on GitHub Pages / offline
-════════════════════════════════════════════════════ -->
-<script>
-// jsQR v1.4.0 — full library inline
-// This is the complete jsQR library embedded to avoid CDN issues
-!function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports.jsQR=t():e.jsQR=t()}(this,function(){return function(e){function t(n){if(r[n])return r[n].exports;var o=r[n]={i:n,l:!1,exports:{}};return e[n].call(o.exports,o,o.exports,t),o.l=!0,o.exports}var r={};return t.m=e,t.c=r,t.d=function(e,r,n){t.o(e,r)||Object.defineProperty(e,r,{configurable:!1,enumerable:!0,get:n})},t.n=function(e){var r=e&&e.__esModule?function(){return e.default}:function(){return e};return t.d(r,"a",r),r},t.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},t.p="",t(t.s=8)}([function(e,t,r){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}Object.defineProperty(t,"__esModule",{value:!0});var o=r(5),i=n(o),a=r(3),s=n(a),l=r(4),u=n(l);function c(e,t,r,n){return{type:"Point",x:(e+r)/2/n,y:(t+n)/2/n}}function f(e){return e}t.default=function(e,t,r){var n=r.inversionAttempts,o="dontInvert"===n||"attemptBoth"===n||"invertFirst"===n&&!1||"onlyInvert"!==n&&!1;if(o){var a=(0,u.default)(e,t,r.grayscaleWeights,!1);if(a){var l=a.location,p=(0,s.default)(t,r,l);if(p){var d=(0,i.default)(e,t,p,l);if(d)return d}}}if("onlyInvert"!==n&&"attemptBoth"!==n&&"invertFirst"!==n||(o=!0),o){var h=(0,u.default)(e,t,r.grayscaleWeights,!0);if(h){var m=h.location,y=(0,s.default)(t,r,m);if(y){var v=(0,i.default)(e,t,y,m);if(v)return v}}}return null}},function(e,t,r){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t.default=function(e,t){if(e<0||t<0||e>=this.width||t>=this.height)throw new RangeError("Coordinates are not within bounds of matrix");return this.data[t*this.width+e]}},function(e,t,r){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t.default=function(e,t,r){var n=this,o=r||1;return{x:n.x*t+e,y:n.y*t+o}}},function(e,t,r){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}Object.defineProperty(t,"__esModule",{value:!0});var o=r(10),i=n(o),a=r(11),s=n(a),l=r(6),u=n(l);t.default=function(e,t,r){if(r.topRight.x<r.topLeft.x)return null;var n=Math.abs(r.topRight.x-r.topLeft.x),o=Math.abs(r.bottomLeft.y-r.topLeft.y),a=Math.abs(r.topRight.y-r.topLeft.y),l=Math.abs(r.bottomLeft.x-r.topLeft.x),c=Math.max(n,o),f=Math.max(a,l);return(0,s.default)(e,t,r,c,f)}},function(e,t,r){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}Object.defineProperty(t,"__esModule",{value:!0});var o=r(12),i=n(o);t.default=function(e,t,r,n){var o=new i.default(t,r);return null==o.matrix?null:o}},function(e,t,r){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}Object.defineProperty(t,"__esModule",{value:!0});var o=r(13),i=n(o),a=r(2),s=n(a);function l(e,t,r,n){return{x:e/r*n,y:t/r*n}}t.default=function(e,t,r,n){var o=r.topLeft,a=r.topRight,c=r.bottomLeft,f=r.alignmentPattern,p=new i.default;if(p.bits.length){var d=p.bits,h=[];h=d;var m=function(e){return function(t){return null!=t&&t.x>=0&&t.x<e&&t.y>=0&&t.y<e}};return{binaryData:h,data:h.join(""),chunks:[],version:1}}return null}},function(e,t,r){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}Object.defineProperty(t,"__esModule",{value:!0});var o=r(1),i=n(o),a=r(14),s=n(a);function l(e,t,r){var n=[];if(0!==e)for(var o=r;o>=-r;o--)for(var i=-r;i<=r;i++)n.push([e+i,t+o]);return n}t.default=function(e,t,r,n,o){var a=r.topLeft,i=r.topRight,s=r.bottomLeft;return{bottomLeft:s,topLeft:a,topRight:i,alignmentPattern:void 0}}},function(e,t,r){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t.default=function(e){var t=new Uint8ClampedArray(e.data.length/4);for(var r=0,n=0;r<e.data.length;r+=4)t[n++]=Math.round(.299*e.data[r]+.587*e.data[r+1]+.114*e.data[r+2]);return t}},function(e,t,r){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}Object.defineProperty(t,"__esModule",{value:!0});var o=r(0);n(o);t.default=function(e,t,r,n){var o=r||{},i=o.inversionAttempts||"attemptBoth",a=o.greyScaleWeights||o.grayscaleWeights||{red:.2126,green:.7152,blue:.0722,useIntValue:!1};return(0,n(o).default)(e,t,{grayscaleWeights:a,inversionAttempts:i})}},function(e,t,r){"use strict";Object.defineProperty(t,"__esModule",{value:!0})},function(e,t,r){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}Object.defineProperty(t,"__esModule",{value:!0})},function(e,t,r){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}Object.defineProperty(t,"__esModule",{value:!0})},function(e,t,r){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}Object.defineProperty(t,"__esModule",{value:!0})},function(e,t,r){"use strict";Object.defineProperty(t,"__esModule",{value:!0})},function(e,t,r){"use strict";Object.defineProperty(t,"__esModule",{value:!0})}])});
-</script>
-<script>
-// ── Since the minified bundle above may be incomplete, use a direct fetch approach
-// Load jsQR properly via dynamic script injection with fallback
-(function(){
-  // Check if jsQR loaded from inline bundle
-  if(typeof jsQR === 'function'){
-    window._jsQRReady = true;
-    return;
-  }
-  // Fetch and eval jsQR from CDN as fallback
-  window._jsQRReady = false;
-  var s = document.createElement('script');
-  s.src = 'https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js';
-  s.onload = function(){ window._jsQRReady = true; };
-  s.onerror = function(){
-    // Try secondary CDN
-    var s2 = document.createElement('script');
-    s2.src = 'https://unpkg.com/jsqr@1.4.0/dist/jsQR.js';
-    s2.onload = function(){ window._jsQRReady = true; };
-    document.head.appendChild(s2);
-  };
-  document.head.appendChild(s);
-})();
-</script>
-
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, collection, addDoc, doc, setDoc, getDoc, getDocs, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
@@ -467,10 +446,10 @@ let shiftCfg={
   day:{inspStart:"07:30",inspEnd:"10:00",shiftStart:"07:30",shiftEnd:"19:30",emergencyUnlock:false,emergencyUntil:null},
   night:{inspStart:"19:30",inspEnd:"22:00",shiftStart:"19:30",shiftEnd:"07:30",emergencyUnlock:false,emergencyUntil:null}
 };
-
 const G=id=>document.getElementById(id);
+
 function resolveMs(v){if(!v)return null;if(typeof v==='object'&&v.toDate)return v.toDate().getTime();const m=new Date(v).getTime();return isNaN(m)?null:m;}
-function applyFSDoc(d){['day','night'].forEach(sh=>{const s=d[sh];if(s&&typeof s==='object'){if(s.inspStart)shiftCfg[sh].inspStart=s.inspStart;if(s.inspEnd)shiftCfg[sh].inspEnd=s.inspEnd;if(s.shiftStart)shiftCfg[sh].shiftStart=s.shiftStart;if(s.shiftEnd)shiftCfg[sh].shiftEnd=s.shiftEnd;shiftCfg[sh].emergencyUnlock=!!s.emergencyUnlock;shiftCfg[sh].emergencyUntil=s.emergencyUntil||null;}});if(d.dayInspStart)shiftCfg.day.inspStart=d.dayInspStart;if(d.dayInspEnd)shiftCfg.day.inspEnd=d.dayInspEnd;if(d.nightInspStart)shiftCfg.night.inspStart=d.nightInspStart;if(d.nightInspEnd)shiftCfg.night.inspEnd=d.nightInspEnd;resolveEmg();}
+function applyFSD(d){['day','night'].forEach(sh=>{const s=d[sh];if(s&&typeof s==='object'){if(s.inspStart)shiftCfg[sh].inspStart=s.inspStart;if(s.inspEnd)shiftCfg[sh].inspEnd=s.inspEnd;if(s.shiftStart)shiftCfg[sh].shiftStart=s.shiftStart;if(s.shiftEnd)shiftCfg[sh].shiftEnd=s.shiftEnd;shiftCfg[sh].emergencyUnlock=!!s.emergencyUnlock;shiftCfg[sh].emergencyUntil=s.emergencyUntil||null;}});if(d.dayInspStart)shiftCfg.day.inspStart=d.dayInspStart;if(d.dayInspEnd)shiftCfg.day.inspEnd=d.dayInspEnd;if(d.nightInspStart)shiftCfg.night.inspStart=d.nightInspStart;if(d.nightInspEnd)shiftCfg.night.inspEnd=d.nightInspEnd;resolveEmg();}
 function resolveEmg(){const now=Date.now();let any=false,lat=null;['day','night'].forEach(sh=>{const ms=resolveMs(shiftCfg[sh].emergencyUntil);if(shiftCfg[sh].emergencyUnlock&&ms&&now<ms){any=true;if(!lat||ms>lat)lat=ms;}});const was=emergencyActive;emergencyActive=any;emergencyUntilMs=lat;if(!was&&any&&lockActive){updLockUI();toast("🔓 Admin ปลดล็อคแล้ว!","info");}if(lockActive&&selectedShift&&isAllowed(selectedShift)&&!any){hideLock();toast("เข้าสู่ช่วงเวลาตรวจสอบแล้ว");}}
 function toMin(s){if(!s)return 0;const p=s.split(":");return parseInt(p[0])*60+parseInt(p[1]||0);}
 function nowMin(){const n=new Date();return n.getHours()*60+n.getMinutes();}
@@ -479,8 +458,8 @@ function isAllowed(sh){const c=shiftCfg[sh];const ms=resolveMs(c.emergencyUntil)
 function winLbl(sh){const c=shiftCfg[sh];return c?c.inspStart+"–"+c.inspEnd+" น.":"—";}
 function shTLbl(sh){const c=shiftCfg[sh];return c?c.shiftStart+"–"+c.shiftEnd+" น.":"—";}
 
-async function fetchCfg(){if(!db){updShiftUI();return;}try{const s=await getDoc(doc(db,"shiftConfig","main"));if(s.exists()){applyFSDoc(s.data());if(G("cfgSyncSt"))G("cfgSyncSt").textContent="ซิงค์ — "+new Date().toLocaleTimeString("th-TH");}}catch(e){}updShiftUI();}
-function startCfgListener(){if(!db)return;try{onSnapshot(doc(db,"shiftConfig","main"),s=>{if(!s.exists())return;applyFSDoc(s.data());updShiftUI();if(G("cfgSyncSt"))G("cfgSyncSt").textContent="ซิงค์ — "+new Date().toLocaleTimeString("th-TH");if(lockActive)updLockUI();});}catch(e){}}
+async function fetchCfg(){if(!db){updShiftUI();return;}try{const s=await getDoc(doc(db,"shiftConfig","main"));if(s.exists()){applyFSD(s.data());if(G("cfgSyncSt"))G("cfgSyncSt").textContent="ซิงค์ — "+new Date().toLocaleTimeString("th-TH");}}catch(e){}updShiftUI();}
+function startCfgL(){if(!db)return;try{onSnapshot(doc(db,"shiftConfig","main"),s=>{if(!s.exists())return;applyFSD(s.data());updShiftUI();if(G("cfgSyncSt"))G("cfgSyncSt").textContent="ซิงค์ — "+new Date().toLocaleTimeString("th-TH");if(lockActive)updLockUI();});}catch(e){}}
 async function fetchCL(){if(!db){buildList();return;}try{const s=await getDocs(collection(db,"checklistItems"));if(!s.empty){const it=[];s.forEach(d=>{const x=d.data();it.push({id:x.id||x.order||it.length+1,th:x.th||x.nameTH||d.id,en:x.en||x.nameEN||""});});it.sort((a,b)=>a.id-b.id);if(it.length>0)ITEMS=it;}}catch(e){}chk={};ITEMS.forEach(i=>chk[i.id]=null);buildList();updUI();}
 async function initDef(){if(!db)return;try{const s=await getDocs(collection(db,"radioUsers"));if(s.empty){const d=[{userId:"admin",name:"Administrator",password:"admin1234",role:"admin",enabled:true},{userId:"U001",name:"นายสมชาย ใจดี",password:"1234",role:"user",enabled:true,empId:"IND-5501",dept:"Security",position:"Security Inspector"},{userId:"U002",name:"นางสาวสมหญิง ดีใจ",password:"5678",role:"user",enabled:true,empId:"IND-5502",dept:"Security",position:"Security Inspector"}];for(const u of d)await setDoc(doc(db,"radioUsers",u.userId),u);}}catch(e){}}
 initDef();
@@ -496,36 +475,51 @@ function hideLock(){lockActive=false;G("lockOverlay").classList.remove("show");}
 window.proceedEmergency=function(){if(isAllowed(selectedShift)){hideLock();toast("ดำเนินการตรวจสอบในโหมดฉุกเฉิน","info");}};
 function showSc(id){document.querySelectorAll(".screen").forEach(s=>{s.classList.remove("active");s.style.display="none";});const s=G(id);if(s){s.classList.add("active");s.style.display="flex";}}
 
-window.doLogin=async function(){const id=G("lId").value.trim(),pw=G("lPw").value.trim();G("loginErr").style.display="none";if(!id||!pw){setLE("กรุณากรอกข้อมูลให้ครบ");return;}try{const s=await getDocs(collection(db,"radioUsers"));let f=null;s.forEach(d=>{if(d.data().userId===id)f=d.data();});if(!f){setLE("ไม่พบรหัสพนักงานนี้");return;}if(f.password!==pw){setLE("รหัสผ่านไม่ถูกต้อง");return;}if(!f.enabled){setLE("บัญชีถูกระงับ");return;}if(f.role==="admin"){setLE("กรุณาใช้บัญชี User เท่านั้น");return;}user=f;await fetchCfg();await fetchCL();startCfgListener();initMain();}catch(e){setLE("เกิดข้อผิดพลาด: "+e.message);}};
+window.doLogin=async function(){const id=G("lId").value.trim(),pw=G("lPw").value.trim();G("loginErr").style.display="none";if(!id||!pw){setLE("กรุณากรอกข้อมูลให้ครบ");return;}try{const s=await getDocs(collection(db,"radioUsers"));let f=null;s.forEach(d=>{if(d.data().userId===id)f=d.data();});if(!f){setLE("ไม่พบรหัสพนักงานนี้");return;}if(f.password!==pw){setLE("รหัสผ่านไม่ถูกต้อง");return;}if(!f.enabled){setLE("บัญชีถูกระงับ");return;}if(f.role==="admin"){setLE("กรุณาใช้บัญชี User เท่านั้น");return;}user=f;await fetchCfg();await fetchCL();startCfgL();initMain();}catch(e){setLE("เกิดข้อผิดพลาด: "+e.message);}};
 function setLE(m){const e=G("loginErr");e.textContent=m;e.style.display="block";}
 window.doLogout=function(){user=null;selectedShift=null;scannedRadioId=null;chk={};ITEMS.forEach(i=>chk[i.id]=null);stopQR();G("lockOverlay").classList.remove("show");lockActive=false;showSc("s-login");G("lId").value="";G("lPw").value="";};
 function initMain(){const n=user.name||user.userId;G("profAv").textContent=n.charAt(0).toUpperCase();G("profName").textContent=n;G("profId").textContent="ID: "+(user.empId||user.userId);G("profDept").textContent=(user.dept||"Security")+" — "+(user.position||"Inspector");updShiftUI();showSc("s-main");}
 window.selShift=function(s){selectedShift=s;G("shiftDay").classList.toggle("active-day",s==="day");G("shiftNight").classList.toggle("active-night",s==="night");const tag=G("profShiftTag");const names={day:"ผลัดกลางวัน",night:"ผลัดกลางคืน"};tag.textContent=names[s];tag.className="prof-tag tag-shift"+(s==="night"?" night":"");tag.style.display="inline";if(!isAllowed(s)){showLock(s,false);}else{hideLock();toast(names[s]+" — "+winLbl(s)+" เปิดแล้ว");}};
 window.reqUnlock=function(){toast("กรุณาติดต่อผู้ดูแลระบบ","info");alert("กรุณาติดต่อผู้ดูแลระบบ\nเพื่อปลดล็อคจาก Dashboard → ตั้งค่าเวลาผลัด");};
 
-/* ════════════════════════════════════════════════════════
-   QR SCANNER — FINAL VERSION
-   ใช้ BarcodeDetector API (native, เร็วที่สุด) ก่อน
-   Fallback: โหลด jsQR จาก CDN แบบ dynamic
-════════════════════════════════════════════════════════ */
+/* ════════════════════════════════════════════════
+   QR SCANNER — BarcodeDetector + debug display
+   แสดง RAW data เสมอ ไม่ว่า QR นั้นจะใช่หรือไม่
+   ให้ผู้ใช้รู้ว่า Admin encode อะไรใน QR วิทยุ
+════════════════════════════════════════════════ */
 
 let _qrSt=null,_qrTmr=null,_qrRun=false,_qrLk=false,_qrRaf=null;
+let _lastRaw=""; // เก็บ raw ล่าสุด ป้องกันแสดงซ้ำ
 
-function qrStat(msg,col){const e=G("qrBotStatus");if(e){e.textContent=msg;e.style.color=col||"#22d3c8";}}
-function qrDbg(v){const e=G("qrBotDbg");if(!e)return;if(v){e.textContent="RAW: "+String(v).slice(0,120);e.classList.add("on");}else{e.textContent="";e.classList.remove("on");}}
+function qrSetStat(msg,col){const e=G("qrStat");if(e){e.textContent=msg;e.style.color=col||"#22d3c8";}}
+function qrShowRaw(raw){
+  const box=G("qrRawBox"),val=G("qrRawVal");
+  if(box&&val){box.classList.add("show");val.textContent=raw.slice(0,200)+(raw.length>200?"…":"");}
+}
+function qrShowNotFound(raw){
+  const box=G("qrNotFound"),msg=G("qrNotFoundMsg");
+  if(box){box.classList.add("show");}
+  if(msg){msg.textContent='QR นี้ไม่ใช่ของวิทยุ: "'+raw.slice(0,40)+'"';}
+}
+function qrHideNotFound(){const box=G("qrNotFound");if(box)box.classList.remove("show");}
 
+/* ── Parse QR: รองรับทุก format ── */
 function parseQR(raw){
   const s=(raw||"").trim();if(!s)return null;
+  /* JSON */
   try{const p=JSON.parse(s);const n=parseInt(p.id||p.radioId||p.radio_id||0);if(n>0)return n;}catch(e){}
+  /* WD1 / WD-1 / WD_1 */
   const m1=s.match(/WD[\s\-_]?(\d+)/i);if(m1)return parseInt(m1[1]);
-  const m2=s.match(/^(\d+)$/);if(m2)return parseInt(m2[1]);
-  try{const u=new URL(s);const p=u.searchParams.get("id")||u.searchParams.get("radioId");if(p)return parseInt(p);}catch(e){}
-  const m3=s.match(/\d+/);if(m3)return parseInt(m3[0]);
+  /* pure number */
+  if(/^\d+$/.test(s))return parseInt(s);
+  /* URL params */
+  try{const u=new URL(s);const p=u.searchParams.get("id")||u.searchParams.get("radioId")||u.searchParams.get("radio");if(p&&/^\d+$/.test(p))return parseInt(p);}catch(e){}
   return null;
+  /* NOTE: ไม่ใช้ fallback "first number in string" เพราะทำให้สแกน QR อื่นผิดพลาด */
 }
 
 function drawVF(){
-  const oc=G("qrOvCanvas");if(!oc)return;
+  const oc=G("qrOvCv");if(!oc)return;
   const W=window.innerWidth,H=window.innerHeight;
   if(oc.width!==W)oc.width=W;if(oc.height!==H)oc.height=H;
   const ctx=oc.getContext("2d");ctx.clearRect(0,0,W,H);
@@ -537,7 +531,7 @@ function drawVF(){
   ctx.beginPath();ctx.moveTo(x+sz-c,y);ctx.lineTo(x+sz,y);ctx.lineTo(x+sz,y+c);ctx.stroke();
   ctx.beginPath();ctx.moveTo(x,y+sz-c);ctx.lineTo(x,y+sz);ctx.lineTo(x+c,y+sz);ctx.stroke();
   ctx.beginPath();ctx.moveTo(x+sz-c,y+sz);ctx.lineTo(x+sz,y+sz);ctx.lineTo(x+sz,y+sz-c);ctx.stroke();
-  const phase=(Date.now()%2000)/2000;const ly=y+(phase<0.5?phase*2:(2-phase*2))*sz;
+  const ph=(Date.now()%2000)/2000;const ly=y+(ph<0.5?ph*2:(2-ph*2))*sz;
   const g=ctx.createLinearGradient(x,0,x+sz,0);g.addColorStop(0,"rgba(34,211,200,0)");g.addColorStop(.4,"rgba(34,211,200,.9)");g.addColorStop(.6,"rgba(34,211,200,.9)");g.addColorStop(1,"rgba(34,211,200,0)");
   ctx.strokeStyle=g;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x,ly);ctx.lineTo(x+sz,ly);ctx.stroke();
 }
@@ -546,12 +540,25 @@ function rafLoop(){if(!_qrRun){_qrRaf=null;return;}drawVF();_qrRaf=requestAnimat
 function onQRData(raw){
   if(_qrLk)return;
   const s=String(raw).trim();
-  qrDbg(s);
+  if(s===_lastRaw)return; // skip duplicate
+  _lastRaw=s;
+
+  /* Show raw data every time */
+  qrShowRaw(s);
+
   const rid=parseQR(s);
   const radio=rid?RADIOS.find(r=>r.id===rid):null;
-  if(!radio){qrStat("⚠ อ่านได้แต่ไม่พบวิทยุ — ลองใหม่","#fbbf24");return;}
+
+  if(!radio){
+    qrSetStat("⚠ QR นี้ไม่ใช่ของวิทยุ — จ่อที่การ์ดวิทยุ","#fbbf24");
+    qrShowNotFound(s);
+    return;
+  }
+
+  /* ✅ FOUND */
   _qrLk=true;
-  qrStat("✅ พบ WD"+radio.id+" — "+radio.area,"#4ade80");
+  qrHideNotFound();
+  qrSetStat("✅ พบ WD"+radio.id+" — "+radio.area,"#4ade80");
   if(navigator.vibrate)navigator.vibrate([60,40,100]);
   const fl=G("qrFlash");fl.classList.add("on");setTimeout(()=>fl.classList.remove("on"),200);
   setTimeout(()=>{stopQR();G("qrModal").classList.remove("show");setScannedRadio(radio);},700);
@@ -560,8 +567,10 @@ function onQRData(raw){
 window.openQR=async function(){
   if(_qrRun)return;
   G("qrModal").classList.add("show");
-  qrStat("● กำลังเปิดกล้อง...","#22d3c8");
-  qrDbg(null);
+  G("qrRawBox").classList.remove("show");
+  G("qrNotFound").classList.remove("show");
+  qrSetStat("● กำลังเปิดกล้อง...","#22d3c8");
+  _lastRaw="";
 
   try{
     _qrSt=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"},width:{ideal:1280},height:{ideal:720}}});
@@ -570,66 +579,29 @@ window.openQR=async function(){
     try{const tk=_qrSt.getVideoTracks()[0];if(tk&&tk.getCapabilities){const cp=tk.getCapabilities();if(cp.focusMode&&cp.focusMode.includes("continuous"))await tk.applyConstraints({advanced:[{focusMode:"continuous"}]});}}catch(e){}
     if(vid.readyState<2)await new Promise(r=>vid.addEventListener("canplay",r,{once:true}));
     _qrRun=true;_qrLk=false;
-    qrStat("● กำลังสแกน...","#22d3c8");
+    qrSetStat("● กำลังสแกน...","#22d3c8");
     _qrRaf=requestAnimationFrame(rafLoop);
 
-    /* ── Try BarcodeDetector first (native, fast, no library needed) ── */
     if(typeof BarcodeDetector!=="undefined"){
-      try{
-        const bd=new BarcodeDetector({formats:["qr_code"]});
-        qrStat("● สแกนด้วย BarcodeDetector...","#22d3c8");
-        _qrTmr=setInterval(async()=>{
-          if(!_qrRun||_qrLk)return;
-          const vid2=G("qrVideo");if(!vid2||vid2.readyState<2)return;
-          try{
-            const codes=await bd.detect(vid2);
-            if(codes&&codes.length>0)onQRData(codes[0].rawValue);
-          }catch(e){}
-        },200);
-        return;
-      }catch(e){}
+      const bd=new BarcodeDetector({formats:["qr_code"]});
+      _qrTmr=setInterval(async()=>{
+        if(!_qrRun||_qrLk)return;
+        try{const cs=await bd.detect(G("qrVideo"));if(cs&&cs.length>0)onQRData(cs[0].rawValue);}catch(e){}
+      },250);
+    } else {
+      qrSetStat("● กำลังสแกน (ไม่มี BarcodeDetector)...","#fbbf24");
+      /* Minimal canvas fallback — only works if jsQR is somehow available */
+      _qrTmr=setInterval(()=>{
+        if(!_qrRun||_qrLk)return;
+        if(typeof window.jsQR!=="function")return;
+        const v=G("qrVideo");if(!v||v.readyState<2||!v.videoWidth)return;
+        const dc=document.createElement("canvas");const dctx=dc.getContext("2d");
+        dc.width=v.videoWidth;dc.height=v.videoHeight;dctx.drawImage(v,0,0);
+        const d=dctx.getImageData(0,0,dc.width,dc.height);
+        const r=window.jsQR(d.data,dc.width,dc.height,{inversionAttempts:"attemptBoth"});
+        if(r)onQRData(r.data);
+      },250);
     }
-
-    /* ── Fallback: jsQR decode loop ── */
-    /* Wait for jsQR to be available (loaded via dynamic script) */
-    let attempts=0;
-    while(typeof window.jsQR!=="function"&&attempts<50){
-      await new Promise(r=>setTimeout(r,100));
-      attempts++;
-    }
-    if(typeof window.jsQR!=="function"){
-      qrStat("❌ ไม่สามารถโหลด jsQR ได้ — ใช้กรอก ID แทน","#f87171");
-      return;
-    }
-
-    qrStat("● กำลังสแกน (jsQR)...","#22d3c8");
-    const dcv=document.createElement("canvas");
-    const dctx=dcv.getContext("2d");
-
-    _qrTmr=setInterval(()=>{
-      if(!_qrRun||_qrLk)return;
-      const vid2=G("qrVideo");if(!vid2||vid2.readyState<2||!vid2.videoWidth)return;
-      const vw=vid2.videoWidth,vh=vid2.videoHeight;
-
-      /* Pass 1: full frame */
-      dcv.width=vw;dcv.height=vh;dctx.drawImage(vid2,0,0,vw,vh);
-      let d=dctx.getImageData(0,0,vw,vh);
-      let r=window.jsQR(d.data,vw,vh,{inversionAttempts:"attemptBoth"});
-      if(r){onQRData(r.data);return;}
-
-      /* Pass 2: 640px wide */
-      const tw=640,th=Math.round(640*vh/vw);
-      dcv.width=tw;dcv.height=th;dctx.drawImage(vid2,0,0,vw,vh,0,0,tw,th);
-      d=dctx.getImageData(0,0,tw,th);r=window.jsQR(d.data,tw,th,{inversionAttempts:"attemptBoth"});
-      if(r){onQRData(r.data);return;}
-
-      /* Pass 3: center 60% crop */
-      const cx=Math.round(vw*.2),cy=Math.round(vh*.2),cw=Math.round(vw*.6),ch=Math.round(vh*.6);
-      dcv.width=cw;dcv.height=ch;dctx.drawImage(vid2,cx,cy,cw,ch,0,0,cw,ch);
-      d=dctx.getImageData(0,0,cw,ch);r=window.jsQR(d.data,cw,ch,{inversionAttempts:"attemptBoth"});
-      if(r)onQRData(r.data);
-    },200);
-
   }catch(e){G("qrModal").classList.remove("show");toast("ไม่สามารถเข้าถึงกล้อง: "+e.message,"err");}
 };
 
