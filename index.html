@@ -6,303 +6,273 @@
 <title>Radio Inspection — WD Security</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&family=Manrope:wght@700;800;900&display=swap" rel="stylesheet">
 
-<!-- ZXing โหลดก่อน module — Safari iOS fix -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/zxing-js/0.18.6/umd/index.min.js"
-  onload="window._zxReady=true;console.log('[ZXing] loaded OK, keys:',Object.keys(window.ZXing||window.ZXingBrowser||{}).slice(0,6))"
-  onerror="window._zxReady=false;console.warn('[ZXing] CDN failed')"></script>
+<!-- jsQR — ไม่พึ่ง ZXing CDN ใดๆ ทำงานได้ทุก browser รวม Safari iOS -->
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"
+  onload="window._jsqrReady=true;console.log('[jsQR] loaded OK')"
+  onerror="window._jsqrReady=false;console.warn('[jsQR] CDN failed')"></script>
 
 <style>
 :root{
-  --bg:#000;--bg2:#0d0d0e;--card:#111113;--card2:#18181b;--border:#222226;--border2:#2e2e34;
+  --bg:#000;--card:#111113;--card2:#18181b;--border:#222226;--border2:#2e2e34;
   --fg:#f5f5f7;--muted:#9898a6;--dim:#55555f;
   --blue:#2168FD;--blue2:#93C5FD;--teal:#3AE4C9;--green:#4ADE80;
-  --amber:#F59E0B;--red:#EF4444;--purple:#A855F7;
+  --amber:#F59E0B;--red:#EF4444;
   --grad:linear-gradient(90deg,#2168FD,#3AE4C9);
   --grad-d:linear-gradient(135deg,#2168FD,#3AE4C9);
   --pass-bg:rgba(74,222,128,.07);--pass-bd:rgba(74,222,128,.22);--pass-fg:#4ADE80;
   --fail-bg:rgba(239,68,68,.07);--fail-bd:rgba(239,68,68,.22);--fail-fg:#F87171;
 }
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-html,body{min-height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--fg);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{min-height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--fg);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:2px}
-.gt{background:var(--grad-d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.gt{background:var(--grad-d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 
-/* ── SCREENS ── */
-.screen{display:none;min-height:100vh;flex-direction:column;}
-.screen.act{display:flex;}
+.screen{display:none;min-height:100vh;flex-direction:column}
+.screen.act{display:flex}
 
-/* ── KEYFRAMES ── */
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(74,222,128,.4)}70%{opacity:.7;box-shadow:0 0 0 5px rgba(74,222,128,0)}}
 @keyframes popIn{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
-@keyframes scanLine{0%,100%{top:12px}50%{top:calc(100% - 12px)}}
 
-/* ══════════════════════════════════════
-   LOGIN SCREEN
-══════════════════════════════════════ */
-#s-login{align-items:center;justify-content:center;padding:24px;background:var(--bg);}
-.login-card{background:var(--card);border:1px solid var(--border2);border-radius:20px;padding:32px 28px;width:100%;max-width:340px;position:relative;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.6);}
-.login-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad);}
-.login-logo{display:flex;align-items:center;gap:11px;margin-bottom:24px;}
-.login-logo-icon{width:44px;height:44px;border-radius:13px;background:var(--grad-d);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(33,104,253,.3);flex-shrink:0;}
-.login-logo-name{font-family:'Manrope',sans-serif;font-size:15px;font-weight:800;line-height:1.2;}
-.login-logo-sub{font-size:10px;color:var(--dim);}
-.lbl{display:block;font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--dim);margin-bottom:6px;}
-.inp{width:100%;background:rgba(255,255,255,.04);border:1.5px solid var(--border2);border-radius:10px;padding:12px 14px;font-size:14px;font-family:'Sarabun',sans-serif;color:var(--fg);outline:none;transition:border-color .2s,box-shadow .2s;margin-bottom:12px;}
-.inp:focus{border-color:rgba(33,104,253,.5);box-shadow:0 0 0 3px rgba(33,104,253,.08);}
-.inp::placeholder{color:var(--dim);}
-.login-err{background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.18);color:#F87171;border-radius:9px;padding:9px 12px;font-size:12px;font-weight:600;margin-bottom:12px;display:none;}
-.login-err.show{display:block;}
-.login-btn{width:100%;padding:13px;background:var(--grad);border:none;border-radius:11px;font-family:'Sarabun',sans-serif;font-size:15px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 16px rgba(33,104,253,.28);transition:opacity .15s,transform .15s;cursor:pointer;}
-.login-btn:hover{opacity:.9;transform:translateY(-1px);}
-.login-btn:active{transform:scale(.97);}
-.login-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
-.spin-sm{width:14px;height:14px;border:2px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:none;}
-.spin-sm.show{display:inline-block;}
+/* ── LOGIN ── */
+#s-login{align-items:center;justify-content:center;padding:24px;background:var(--bg)}
+.login-card{background:var(--card);border:1px solid var(--border2);border-radius:20px;padding:32px 28px;width:100%;max-width:340px;position:relative;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.6)}
+.login-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad)}
+.login-logo{display:flex;align-items:center;gap:11px;margin-bottom:24px}
+.ll-icon{width:44px;height:44px;border-radius:13px;background:var(--grad-d);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(33,104,253,.3);flex-shrink:0}
+.ll-name{font-family:'Manrope',sans-serif;font-size:15px;font-weight:800;line-height:1.2}
+.ll-sub{font-size:10px;color:var(--dim)}
+.lbl{display:block;font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+.inp{width:100%;background:rgba(255,255,255,.04);border:1.5px solid var(--border2);border-radius:10px;padding:12px 14px;font-size:14px;font-family:'Sarabun',sans-serif;color:var(--fg);outline:none;transition:border-color .2s,box-shadow .2s;margin-bottom:12px}
+.inp:focus{border-color:rgba(33,104,253,.5);box-shadow:0 0 0 3px rgba(33,104,253,.08)}
+.inp::placeholder{color:var(--dim)}
+.login-err{background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.18);color:#F87171;border-radius:9px;padding:9px 12px;font-size:12px;font-weight:600;margin-bottom:12px;display:none}
+.login-err.show{display:block}
+.login-btn{width:100%;padding:13px;background:var(--grad);border:none;border-radius:11px;font-family:'Sarabun',sans-serif;font-size:15px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 16px rgba(33,104,253,.28);transition:opacity .15s,transform .15s;cursor:pointer}
+.login-btn:hover{opacity:.9;transform:translateY(-1px)}
+.login-btn:active{transform:scale(.97)}
+.login-btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.spin-sm{width:14px;height:14px;border:2px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:none}
+.spin-sm.show{display:inline-block}
 
-/* ══════════════════════════════════════
-   MAIN TOPBAR
-══════════════════════════════════════ */
-.topbar{height:50px;background:rgba(0,0,0,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 16px;flex-shrink:0;position:sticky;top:0;z-index:30;}
-.tb-left{display:flex;align-items:center;gap:8px;}
-.tb-icon{width:28px;height:28px;border-radius:8px;background:var(--grad-d);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.tb-name{font-family:'Manrope',sans-serif;font-size:13px;font-weight:800;}
-.tb-right{display:flex;align-items:center;gap:7px;}
-.live-chip{display:inline-flex;align-items:center;gap:5px;font-size:9px;font-weight:700;color:var(--green);background:rgba(74,222,128,.07);border:1px solid rgba(74,222,128,.18);padding:3px 9px;border-radius:20px;letter-spacing:.5px;}
-.live-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;flex-shrink:0;}
-.tb-clock{font-family:'Manrope',sans-serif;font-size:12px;font-weight:800;color:var(--muted);background:rgba(255,255,255,.04);border:1px solid var(--border);padding:3px 9px;border-radius:7px;}
-.btn-out{background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.16);color:#F87171;border-radius:7px;padding:4px 10px;font-size:11px;font-weight:700;font-family:'Sarabun',sans-serif;cursor:pointer;transition:background .15s;}
-.btn-out:hover{background:rgba(239,68,68,.13);}
+/* ── TOPBAR ── */
+.topbar{height:50px;background:rgba(0,0,0,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 16px;flex-shrink:0;position:sticky;top:0;z-index:30}
+.tb-left{display:flex;align-items:center;gap:8px}
+.tb-icon{width:28px;height:28px;border-radius:8px;background:var(--grad-d);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tb-name{font-family:'Manrope',sans-serif;font-size:13px;font-weight:800}
+.tb-right{display:flex;align-items:center;gap:7px}
+.live-chip{display:inline-flex;align-items:center;gap:5px;font-size:9px;font-weight:700;color:var(--green);background:rgba(74,222,128,.07);border:1px solid rgba(74,222,128,.18);padding:3px 9px;border-radius:20px;letter-spacing:.5px}
+.live-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;flex-shrink:0}
+.tb-clock{font-family:'Manrope',sans-serif;font-size:12px;font-weight:800;color:var(--muted);background:rgba(255,255,255,.04);border:1px solid var(--border);padding:3px 9px;border-radius:7px}
+.btn-out{background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.16);color:#F87171;border-radius:7px;padding:4px 10px;font-size:11px;font-weight:700;font-family:'Sarabun',sans-serif;cursor:pointer;transition:background .15s}
+.btn-out:hover{background:rgba(239,68,68,.13)}
 
-/* ══════════════════════════════════════
-   FORM BODY
-══════════════════════════════════════ */
-#s-main{background:var(--bg);}
-.form-body{flex:1;overflow-y:auto;padding:14px 14px 12px;}
+/* ── FORM ── */
+#s-main{background:var(--bg)}
+.form-body{flex:1;overflow-y:auto;padding:14px 14px 12px}
 
-/* steps */
-.steps{display:flex;align-items:center;gap:3px;margin-bottom:16px;}
-.step{display:flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:var(--dim);white-space:nowrap;transition:color .2s;}
-.step.done{color:var(--green);}
-.step.active{color:var(--blue2);}
-.step-dot{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;font-family:'Manrope',sans-serif;flex-shrink:0;transition:all .2s;}
-.step.done .step-dot{border-color:var(--green);background:rgba(74,222,128,.1);color:var(--green);}
-.step.active .step-dot{border-color:var(--blue2);background:rgba(33,104,253,.12);color:var(--blue2);}
-.step-line{flex:1;height:1px;background:var(--border);min-width:4px;}
+.steps{display:flex;align-items:center;gap:3px;margin-bottom:16px}
+.step{display:flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:var(--dim);white-space:nowrap;transition:color .2s}
+.step.done{color:var(--green)}.step.active{color:var(--blue2)}
+.step-dot{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;font-family:'Manrope',sans-serif;flex-shrink:0;transition:all .2s}
+.step.done .step-dot{border-color:var(--green);background:rgba(74,222,128,.1);color:var(--green)}
+.step.active .step-dot{border-color:var(--blue2);background:rgba(33,104,253,.12);color:var(--blue2)}
+.step-line{flex:1;height:1px;background:var(--border);min-width:4px}
 
-/* profile card */
-.prof-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:11px;margin-bottom:14px;position:relative;overflow:hidden;}
-.prof-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad);opacity:.7;}
-.prof-av{width:40px;height:40px;border-radius:50%;background:var(--grad-d);display:flex;align-items:center;justify-content:center;font-family:'Manrope',sans-serif;font-size:16px;font-weight:900;color:#fff;flex-shrink:0;}
-.prof-name{font-family:'Manrope',sans-serif;font-size:14px;font-weight:800;}
-.prof-sub{font-size:11px;color:var(--dim);margin-top:2px;}
-.prof-pass{text-align:right;flex-shrink:0;}
-.prof-pass-num{font-family:'Manrope',sans-serif;font-size:26px;font-weight:900;color:var(--teal);line-height:1;}
-.prof-pass-lbl{font-size:9px;color:var(--dim);letter-spacing:1px;text-transform:uppercase;}
+.prof-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:11px;margin-bottom:14px;position:relative;overflow:hidden}
+.prof-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad);opacity:.7}
+.prof-av{width:40px;height:40px;border-radius:50%;background:var(--grad-d);display:flex;align-items:center;justify-content:center;font-family:'Manrope',sans-serif;font-size:16px;font-weight:900;color:#fff;flex-shrink:0}
+.prof-name{font-family:'Manrope',sans-serif;font-size:14px;font-weight:800}
+.prof-sub{font-size:11px;color:var(--dim);margin-top:2px}
+.prof-pass{text-align:right;flex-shrink:0}
+.prof-pass-num{font-family:'Manrope',sans-serif;font-size:26px;font-weight:900;color:var(--teal);line-height:1}
+.prof-pass-lbl{font-size:9px;color:var(--dim);letter-spacing:1px;text-transform:uppercase}
 
-/* section label */
-.sec-lbl{font-size:9px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--dim);margin-bottom:8px;display:flex;align-items:center;gap:7px;font-family:'Manrope',sans-serif;}
-.sec-lbl::after{content:'';flex:1;height:1px;background:var(--border);}
+.sec-lbl{font-size:9px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--dim);margin-bottom:8px;display:flex;align-items:center;gap:7px;font-family:'Manrope',sans-serif}
+.sec-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
 
-/* ── SHIFT CARDS ── */
-.shift-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:16px;}
-.shift-card{background:var(--card);border:1.5px solid var(--border);border-radius:13px;padding:12px;cursor:pointer;transition:all .18s;position:relative;-webkit-user-select:none;user-select:none;}
-.shift-card:active{transform:scale(.97);}
-.shift-card.sel-day{background:rgba(245,158,11,.05);border-color:rgba(245,158,11,.35);}
-.shift-card.sel-night{background:rgba(168,85,247,.05);border-color:rgba(168,85,247,.35);}
-.shift-card-ico{font-size:20px;margin-bottom:4px;}
-.shift-card-name{font-family:'Manrope',sans-serif;font-size:13px;font-weight:800;margin-bottom:2px;}
-.shift-card.sel-day .shift-card-name{color:#FBBF24;}
-.shift-card.sel-night .shift-card-name{color:#C084FC;}
-.shift-card-time{font-size:10px;color:var(--dim);}
-.shift-card-win{font-size:9px;color:var(--teal);font-weight:700;margin-top:3px;}
-.shift-badge{position:absolute;top:7px;right:7px;font-size:8px;font-weight:700;padding:2px 7px;border-radius:20px;}
-.sb-open{background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.2);color:var(--green);}
-.sb-closed{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.18);color:#F87171;}
-.sb-emg{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.22);color:#FBBF24;animation:pulse-amber 1.2s infinite;}
-@keyframes pulse-amber{0%,100%{opacity:1}50%{opacity:.5}}
+/* shift cards */
+.shift-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:16px}
+.shift-card{background:var(--card);border:1.5px solid var(--border);border-radius:13px;padding:12px;cursor:pointer;transition:all .18s;position:relative;-webkit-user-select:none;user-select:none}
+.shift-card:active{transform:scale(.97)}
+.shift-card.sel-day{background:rgba(245,158,11,.05);border-color:rgba(245,158,11,.35)}
+.shift-card.sel-night{background:rgba(168,85,247,.05);border-color:rgba(168,85,247,.35)}
+.sc-name{font-family:'Manrope',sans-serif;font-size:13px;font-weight:800;margin-bottom:2px;display:flex;align-items:center;gap:6px}
+.shift-card.sel-day .sc-name{color:#FBBF24}
+.shift-card.sel-night .sc-name{color:#C084FC}
+.sc-time{font-size:10px;color:var(--dim)}
+.sc-win{font-size:9px;color:var(--teal);font-weight:700;margin-top:3px}
+.sh-badge{position:absolute;top:7px;right:7px;font-size:8px;font-weight:700;padding:2px 7px;border-radius:20px}
+.shb-open{background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.2);color:var(--green)}
+.shb-closed{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.18);color:#F87171}
+.shb-emg{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.22);color:#FBBF24}
 
-/* ── QR SCANNER BOX ── */
-.qr-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:14px;transition:border-color .2s;}
-.qr-wrap.scanned{border-color:rgba(74,222,128,.3);}
-.qr-head{display:flex;align-items:center;justify-content:space-between;padding:9px 13px;border-bottom:1px solid var(--border);background:rgba(33,104,253,.04);}
-.qr-head-title{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--blue2);font-family:'Manrope',sans-serif;}
-.qr-head-hint{font-size:10px;color:var(--dim);}
+/* QR box */
+.qr-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:14px;transition:border-color .2s}
+.qr-wrap.scanned{border-color:rgba(74,222,128,.3)}
+.qr-head{display:flex;align-items:center;justify-content:space-between;padding:9px 13px;border-bottom:1px solid var(--border);background:rgba(33,104,253,.04)}
+.qr-head-title{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--blue2);font-family:'Manrope',sans-serif}
+.qr-head-hint{font-size:10px;color:var(--dim)}
+.scan-btn{width:100%;display:flex;align-items:center;gap:10px;background:var(--grad);border:none;border-radius:11px;padding:14px 16px;font-family:'Sarabun',sans-serif;font-size:15px;font-weight:800;color:#fff;cursor:pointer;box-shadow:0 4px 18px rgba(33,104,253,.28);transition:all .18s;position:relative;overflow:hidden;margin:14px 0 0}
+.scan-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.1),transparent);pointer-events:none}
+.scan-btn:active{transform:scale(.97)}
+.scan-btn-icon{width:34px;height:34px;background:rgba(255,255,255,.18);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.scan-btn-txt{text-align:left;flex:1}
+.sbt-main{font-size:14px;font-weight:800;display:block}
+.sbt-sub{font-size:10px;color:rgba(255,255,255,.7);display:block;margin-top:1px}
+.qr-divider{display:flex;align-items:center;gap:8px;padding:10px 0 2px}
+.qr-divider::before,.qr-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.qr-divider span{font-size:10px;color:var(--dim);font-weight:600}
+.manual-row{display:flex;gap:7px;padding-bottom:14px}
+.manual-inp{flex:1;background:rgba(255,255,255,.04);border:1.5px solid var(--border2);border-radius:9px;padding:10px 12px;font-size:14px;font-family:'Sarabun',sans-serif;color:var(--fg);outline:none;transition:border-color .2s}
+.manual-inp:focus{border-color:rgba(33,104,253,.45)}
+.manual-inp::placeholder{color:var(--dim)}
+.manual-ok{background:rgba(33,104,253,.12);border:1.5px solid rgba(33,104,253,.24);border-radius:9px;padding:10px 14px;font-size:13px;font-weight:700;color:var(--blue2);cursor:pointer;font-family:'Sarabun',sans-serif;transition:all .15s;flex-shrink:0}
+.manual-ok:hover{background:rgba(33,104,253,.2)}
+.scan-btn-wrap{padding:0 14px}
 
-/* scan button */
-.scan-btn{width:100%;display:flex;align-items:center;gap:10px;background:var(--grad);border:none;border-radius:11px;padding:14px 16px;font-family:'Sarabun',sans-serif;font-size:15px;font-weight:800;color:#fff;cursor:pointer;box-shadow:0 4px 18px rgba(33,104,253,.28);transition:all .18s;position:relative;overflow:hidden;margin:14px 0 0;}
-.scan-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.1),transparent);pointer-events:none;}
-.scan-btn:active{transform:scale(.97);}
-.scan-btn-icon{width:34px;height:34px;background:rgba(255,255,255,.18);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.scan-btn-txt{text-align:left;flex:1;}
-.sbt-main{font-size:14px;font-weight:800;display:block;}
-.sbt-sub{font-size:10px;color:rgba(255,255,255,.7);display:block;margin-top:1px;}
+.radio-found{padding:14px}
+.radio-inner{background:linear-gradient(135deg,rgba(33,104,253,.08),rgba(58,228,201,.04));border:1px solid rgba(33,104,253,.18);border-radius:12px;padding:13px 14px;display:flex;align-items:center;gap:12px;position:relative;overflow:hidden}
+.radio-inner::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--grad-d);border-radius:0 2px 2px 0}
+.radio-icon{width:46px;height:46px;border-radius:12px;background:rgba(33,104,253,.1);border:1px solid rgba(58,228,201,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.radio-wd{font-family:'Manrope',sans-serif;font-size:22px;font-weight:900;line-height:1;letter-spacing:-1px}
+.radio-area{font-size:12px;color:var(--muted);margin-top:3px;font-weight:600}
+.radio-sn{font-size:10px;color:var(--dim);margin-top:2px;font-family:monospace}
+.method-tag{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:700;padding:2px 7px;border-radius:18px;margin-top:5px;letter-spacing:.5px;text-transform:uppercase}
+.mt-qr{background:rgba(33,104,253,.1);border:1px solid rgba(33,104,253,.2);color:var(--blue2)}
+.mt-manual{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);color:#FBBF24}
+.mt-url{background:rgba(58,228,201,.08);border:1px solid rgba(58,228,201,.2);color:var(--teal)}
+.rescan-btn{background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;padding:6px 11px;font-size:11px;font-weight:700;color:var(--muted);cursor:pointer;font-family:'Sarabun',sans-serif;transition:all .15s;flex-shrink:0;align-self:flex-start}
+.rescan-btn:hover{background:rgba(255,255,255,.08)}
 
-.qr-divider{display:flex;align-items:center;gap:8px;padding:10px 0 2px;}
-.qr-divider::before,.qr-divider::after{content:'';flex:1;height:1px;background:var(--border);}
-.qr-divider span{font-size:10px;color:var(--dim);font-weight:600;}
+.url-banner{background:rgba(58,228,201,.06);border:1px solid rgba(58,228,201,.18);border-radius:9px;padding:8px 12px;margin-bottom:9px;font-size:12px;font-weight:600;color:var(--teal);display:none;align-items:center;gap:7px;border-left:3px solid var(--teal)}
+.url-banner.show{display:flex}
 
-.manual-row{display:flex;gap:7px;padding-bottom:14px;}
-.manual-inp{flex:1;background:rgba(255,255,255,.04);border:1.5px solid var(--border2);border-radius:9px;padding:10px 12px;font-size:14px;font-family:'Sarabun',sans-serif;color:var(--fg);outline:none;transition:border-color .2s;}
-.manual-inp:focus{border-color:rgba(33,104,253,.45);}
-.manual-inp::placeholder{color:var(--dim);}
-.manual-ok{background:rgba(33,104,253,.12);border:1.5px solid rgba(33,104,253,.24);border-radius:9px;padding:10px 14px;font-size:13px;font-weight:700;color:var(--blue2);cursor:pointer;font-family:'Sarabun',sans-serif;transition:all .15s;flex-shrink:0;}
-.manual-ok:hover{background:rgba(33,104,253,.2);}
+/* progress */
+.prog-wrap{margin-bottom:12px}
+.prog-hdr{display:flex;justify-content:space-between;margin-bottom:4px}
+.prog-lbl{font-size:10px;font-weight:700;color:var(--dim);letter-spacing:1px;text-transform:uppercase}
+.prog-pct{font-size:11px;font-weight:900;color:var(--teal);font-family:'Manrope',sans-serif}
+.prog-track{height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:var(--grad);border-radius:3px;transition:width .3s ease}
 
-.scan-btn-wrap{padding:0 14px;}
+/* checklist */
+.cl-card{background:var(--card);border:1px solid rgba(33,104,253,.16);border-radius:14px;overflow:hidden;margin-bottom:14px}
+.cl-head{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-bottom:1px solid var(--border);background:rgba(33,104,253,.04)}
+.cl-head-l{display:flex;align-items:center;gap:8px}
+.cl-title{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--blue2);font-family:'Manrope',sans-serif}
+.cl-cnt{font-size:11px;font-weight:900;color:var(--teal);font-family:'Manrope',sans-serif}
+.cl-btns{display:flex;gap:5px}
+.cl-btn{font-size:10px;font-weight:700;padding:4px 10px;border-radius:7px;cursor:pointer;font-family:'Sarabun',sans-serif;border:none;transition:all .15s}
+.cl-btn-pass{background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.2);color:var(--green)}
+.cl-btn-reset{background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--dim)}
+.cl-prog{height:3px;background:rgba(255,255,255,.05)}
+.cl-prog-fill{height:100%;background:linear-gradient(90deg,#22c55e,#16a34a);transition:width .25s}
+.cl-list{overflow-y:auto;max-height:360px}
+.cl-list::-webkit-scrollbar{width:2px}
+.cl-row{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.035);cursor:pointer;-webkit-user-select:none;user-select:none;transition:background .12s}
+.cl-row:last-child{border-bottom:none}
+.cl-row:active{background:rgba(255,255,255,.03)}
+.cl-row.pass{background:rgba(74,222,128,.04)}
+.cl-row.fail{background:rgba(239,68,68,.04)}
+.cl-num{font-family:'Manrope',sans-serif;font-size:10px;font-weight:800;color:var(--dim);min-width:18px;flex-shrink:0}
+.cl-text{flex:1}
+.cl-th{font-size:13px;font-weight:600;line-height:1.2}
+.cl-row.fail .cl-th{color:#FCA5A5}
+.cl-en{font-size:10px;color:var(--dim);margin-top:1px}
+.tog{display:flex;align-items:center;border-radius:18px;border:1px solid rgba(255,255,255,.1);min-width:60px;height:24px;background:rgba(255,255,255,.04);cursor:pointer;transition:all .18s;flex-shrink:0}
+.tog.pass{background:var(--pass-bg);border-color:var(--pass-bd);flex-direction:row-reverse}
+.tog.fail{background:var(--fail-bg);border-color:var(--fail-bd)}
+.tog-knob{width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,.12);margin:2px;flex-shrink:0;transition:background .18s}
+.tog.pass .tog-knob{background:var(--pass-fg)}
+.tog.fail .tog-knob{background:var(--fail-fg)}
+.tog-lbl{font-family:'Manrope',sans-serif;font-size:10px;font-weight:800;padding:0 6px;flex:1;text-align:center;color:var(--dim);transition:color .18s}
+.tog.pass .tog-lbl{color:var(--pass-fg)}
+.tog.fail .tog-lbl{color:var(--fail-fg)}
 
-/* found radio card */
-.radio-found{padding:14px;}
-.radio-inner{background:linear-gradient(135deg,rgba(33,104,253,.08),rgba(58,228,201,.04));border:1px solid rgba(33,104,253,.18);border-radius:12px;padding:13px 14px;display:flex;align-items:center;gap:12px;position:relative;overflow:hidden;}
-.radio-inner::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--grad-d);border-radius:0 2px 2px 0;}
-.radio-icon{width:46px;height:46px;border-radius:12px;background:rgba(33,104,253,.1);border:1px solid rgba(58,228,201,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.radio-wd{font-family:'Manrope',sans-serif;font-size:22px;font-weight:900;line-height:1;letter-spacing:-1px;}
-.radio-area{font-size:12px;color:var(--muted);margin-top:3px;font-weight:600;}
-.radio-sn{font-size:10px;color:var(--dim);margin-top:2px;font-family:monospace;}
-.method-tag{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:700;padding:2px 7px;border-radius:18px;margin-top:5px;letter-spacing:.5px;text-transform:uppercase;}
-.mt-qr{background:rgba(33,104,253,.1);border:1px solid rgba(33,104,253,.2);color:var(--blue2);}
-.mt-manual{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);color:#FBBF24;}
-.mt-url{background:rgba(58,228,201,.08);border:1px solid rgba(58,228,201,.2);color:var(--teal);}
-.rescan-btn{background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;padding:6px 11px;font-size:11px;font-weight:700;color:var(--muted);cursor:pointer;font-family:'Sarabun',sans-serif;transition:all .15s;flex-shrink:0;align-self:flex-start;}
-.rescan-btn:hover{background:rgba(255,255,255,.08);}
+/* submit */
+.submit-area{flex-shrink:0;padding:0 14px 30px}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+.stat-box{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:9px;text-align:center}
+.stat-num{font-family:'Manrope',sans-serif;font-size:22px;font-weight:900;line-height:1;margin-bottom:2px}
+.stat-lbl{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--dim)}
+.st-total{background:rgba(58,228,201,.04);border-color:rgba(58,228,201,.12)}
+.st-pass{background:rgba(74,222,128,.04);border-color:rgba(74,222,128,.12)}
+.st-fail{background:rgba(239,68,68,.04);border-color:rgba(239,68,68,.1)}
+.st-total .stat-num{color:var(--teal)}
+.st-pass .stat-num{color:var(--green)}
+.st-fail .stat-num{color:#F87171}
+.submit-btn{width:100%;padding:15px;background:var(--grad);border:none;border-radius:50px;font-family:'Sarabun',sans-serif;font-size:16px;font-weight:800;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 16px rgba(33,104,253,.25);transition:all .18s}
+.submit-btn:active{transform:scale(.97)}
+.submit-btn:disabled{opacity:.35;cursor:not-allowed;transform:none}
 
-/* ── PROGRESS ── */
-.prog-wrap{margin-bottom:12px;}
-.prog-hdr{display:flex;justify-content:space-between;margin-bottom:4px;}
-.prog-lbl{font-size:10px;font-weight:700;color:var(--dim);letter-spacing:1px;text-transform:uppercase;}
-.prog-pct{font-size:11px;font-weight:900;color:var(--teal);font-family:'Manrope',sans-serif;}
-.prog-track{height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;}
-.prog-fill{height:100%;background:var(--grad);border-radius:3px;transition:width .3s ease;}
+/* QR modal */
+.qr-modal{position:fixed;inset:0;z-index:9000;background:#000;display:none;flex-direction:column}
+.qr-modal.show{display:flex}
+#qrVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#qrOvCv{position:absolute;inset:0;width:100%;height:100%;z-index:5;pointer-events:none}
+#qrFlash{position:absolute;inset:0;z-index:8;background:rgba(58,228,201,.35);opacity:0;pointer-events:none;transition:opacity .1s}
+#qrFlash.on{opacity:1}
+.qrm-top{position:absolute;top:0;left:0;right:0;z-index:10;padding:16px;background:linear-gradient(to bottom,rgba(0,0,0,.85),transparent);display:flex;align-items:center;justify-content:space-between}
+.qrm-title{font-family:'Manrope',sans-serif;font-size:15px;font-weight:800;color:#fff}
+.qrm-close{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.22);border-radius:9px;padding:7px 16px;font-size:13px;font-weight:700;color:#fff;cursor:pointer;font-family:'Sarabun',sans-serif}
+.qrm-bot{position:absolute;bottom:0;left:0;right:0;z-index:10;padding:16px 16px 42px;background:linear-gradient(to top,rgba(0,0,0,.88),transparent);text-align:center}
+.qrm-status{font-size:14px;font-weight:700;margin-bottom:4px;color:var(--teal)}
+.qrm-hint{font-size:11px;color:rgba(255,255,255,.45);margin-bottom:6px}
+.qrm-rawbox{background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.1);border-radius:9px;padding:8px 12px;margin-top:6px;display:none}
+.qrm-rawbox.show{display:block}
+.qrm-rawtitle{font-size:9px;color:rgba(255,255,255,.45);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:3px}
+.qrm-rawtext{font-size:11px;color:#93C5FD;word-break:break-all;font-family:monospace}
+.qrm-notfound{background:rgba(239,68,68,.09);border:1px solid rgba(239,68,68,.25);border-radius:9px;padding:9px 13px;margin-top:8px;display:none}
+.qrm-notfound.show{display:block}
+.qrm-nf-title{font-size:12px;color:#F87171;font-weight:700;margin-bottom:2px}
+.qrm-nf-desc{font-size:10px;color:rgba(248,113,113,.65)}
 
-/* ── CHECKLIST ── */
-.cl-card{background:var(--card);border:1px solid rgba(33,104,253,.16);border-radius:14px;overflow:hidden;margin-bottom:14px;}
-.cl-head{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-bottom:1px solid var(--border);background:rgba(33,104,253,.04);}
-.cl-head-l{display:flex;align-items:center;gap:8px;}
-.cl-title{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--blue2);font-family:'Manrope',sans-serif;}
-.cl-cnt{font-size:11px;font-weight:900;color:var(--teal);font-family:'Manrope',sans-serif;}
-.cl-btns{display:flex;gap:5px;}
-.cl-btn{font-size:10px;font-weight:700;padding:4px 10px;border-radius:7px;cursor:pointer;font-family:'Sarabun',sans-serif;border:none;transition:all .15s;}
-.cl-btn-pass{background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.2);color:var(--green);}
-.cl-btn-reset{background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--dim);}
-.cl-prog{height:3px;background:rgba(255,255,255,.05);}
-.cl-prog-fill{height:100%;background:linear-gradient(90deg,#22c55e,#16a34a);transition:width .25s;}
-.cl-list{overflow-y:auto;max-height:360px;}
-.cl-list::-webkit-scrollbar{width:2px;}
-.cl-row{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.035);cursor:pointer;-webkit-user-select:none;user-select:none;transition:background .12s;}
-.cl-row:last-child{border-bottom:none;}
-.cl-row:active{background:rgba(255,255,255,.03);}
-.cl-row.pass{background:rgba(74,222,128,.04);}
-.cl-row.fail{background:rgba(239,68,68,.04);}
-.cl-num{font-family:'Manrope',sans-serif;font-size:10px;font-weight:800;color:var(--dim);min-width:18px;flex-shrink:0;}
-.cl-text{flex:1;}
-.cl-th{font-size:13px;font-weight:600;line-height:1.2;}
-.cl-row.fail .cl-th{color:#FCA5A5;}
-.cl-en{font-size:10px;color:var(--dim);margin-top:1px;}
-.tog{display:flex;align-items:center;border-radius:18px;border:1px solid rgba(255,255,255,.1);min-width:60px;height:24px;background:rgba(255,255,255,.04);cursor:pointer;transition:all .18s;flex-shrink:0;}
-.tog.pass{background:var(--pass-bg);border-color:var(--pass-bd);flex-direction:row-reverse;}
-.tog.fail{background:var(--fail-bg);border-color:var(--fail-bd);}
-.tog-knob{width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,.12);margin:2px;flex-shrink:0;transition:background .18s;}
-.tog.pass .tog-knob{background:var(--pass-fg);}
-.tog.fail .tog-knob{background:var(--fail-fg);}
-.tog-lbl{font-family:'Manrope',sans-serif;font-size:10px;font-weight:800;padding:0 6px;flex:1;text-align:center;color:var(--dim);transition:color .18s;}
-.tog.pass .tog-lbl{color:var(--pass-fg);}
-.tog.fail .tog-lbl{color:var(--fail-fg);}
+/* lock */
+.lock-ov{position:fixed;inset:0;z-index:8000;background:rgba(0,0,0,.96);display:none;flex-direction:column;align-items:center;justify-content:center;padding:28px;backdrop-filter:blur(8px);overflow-y:auto}
+.lock-ov.show{display:flex}
+.lock-icon-box{width:68px;height:68px;border-radius:20px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;border:2px solid rgba(239,68,68,.3);background:rgba(239,68,68,.08)}
+.lock-icon-box.emg{border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.08)}
+.lock-title{font-family:'Manrope',sans-serif;font-size:20px;font-weight:900;color:#F87171;text-align:center;margin-bottom:7px}
+.lock-title.emg{color:#FBBF24}
+.lock-info{background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:14px;padding:16px 18px;margin-bottom:12px;width:100%;max-width:290px}
+.lock-clock{font-family:'Manrope',sans-serif;font-size:40px;font-weight:900;color:var(--teal);letter-spacing:-2px;text-align:center;margin-bottom:3px}
+.lock-datestr{font-size:11px;color:var(--dim);text-align:center}
+.lock-row{display:flex;justify-content:space-between;font-size:12px;padding:4px 0}
+.lrk{color:var(--dim);font-weight:600}.lrv{color:var(--fg);font-weight:700}
+.lock-badge{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:10px;font-size:12px;font-weight:700;margin-bottom:12px;background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.18);color:#F87171}
+.lock-badge.emg{background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.2);color:#FBBF24}
+.lock-emg-cnt{background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.18);border-radius:12px;padding:11px;text-align:center;margin-bottom:12px;width:100%;max-width:270px;display:none}
+.lock-emg-lbl{font-size:9px;font-weight:700;letter-spacing:1.5px;color:#FBBF24;text-transform:uppercase;margin-bottom:3px}
+.lock-emg-num{font-family:'Manrope',sans-serif;font-size:30px;font-weight:900;color:#FBBF24;letter-spacing:-1px}
+.lock-proceed{background:var(--grad);border:none;border-radius:11px;padding:12px 28px;font-family:'Sarabun',sans-serif;font-size:14px;font-weight:700;color:#fff;cursor:pointer;width:100%;max-width:270px;margin-bottom:8px;display:none}
+.lock-contact{background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.18);border-radius:11px;padding:11px 28px;font-family:'Sarabun',sans-serif;font-size:13px;font-weight:700;color:#FCA5A5;cursor:pointer;width:100%;max-width:270px}
 
-/* ── SUBMIT AREA ── */
-.submit-area{flex-shrink:0;padding:0 14px 30px;}
-.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;}
-.stat-box{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:9px;text-align:center;}
-.stat-num{font-family:'Manrope',sans-serif;font-size:22px;font-weight:900;line-height:1;margin-bottom:2px;}
-.stat-lbl{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--dim);}
-.st-total{background:rgba(58,228,201,.04);border-color:rgba(58,228,201,.12);}
-.st-pass{background:rgba(74,222,128,.04);border-color:rgba(74,222,128,.12);}
-.st-fail{background:rgba(239,68,68,.04);border-color:rgba(239,68,68,.1);}
-.st-total .stat-num{color:var(--teal);}
-.st-pass .stat-num{color:var(--green);}
-.st-fail .stat-num{color:#F87171;}
-.submit-btn{width:100%;padding:15px;background:var(--grad);border:none;border-radius:50px;font-family:'Sarabun',sans-serif;font-size:16px;font-weight:800;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 16px rgba(33,104,253,.25);transition:all .18s;}
-.submit-btn:active{transform:scale(.97);}
-.submit-btn:disabled{opacity:.35;cursor:not-allowed;transform:none;}
+/* result */
+#s-result{align-items:center;justify-content:center;padding:28px;background:var(--bg)}
+.res-wrap{width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;text-align:center}
+.res-icon{width:80px;height:80px;border-radius:24px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;animation:popIn .4s cubic-bezier(.175,.885,.32,1.275)}
+.res-title{font-family:'Manrope',sans-serif;font-size:24px;font-weight:900;margin-bottom:6px}
+.res-sub{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:20px}
+.res-info{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:20px;width:100%;text-align:left}
+.res-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px}
+.res-row:last-child{border-bottom:none}
+.rrk{color:var(--muted)}.rrv{font-weight:700}
+.res-next{background:var(--grad);color:#fff;border:none;border-radius:13px;padding:13px 32px;font-family:'Sarabun',sans-serif;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(33,104,253,.22);transition:all .18s}
+.res-next:active{transform:scale(.97)}
 
-/* ══════════════════════════════════════
-   QR CAMERA MODAL
-══════════════════════════════════════ */
-.qr-modal{position:fixed;inset:0;z-index:9000;background:#000;display:none;flex-direction:column;}
-.qr-modal.show{display:flex;}
-#qrVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
-#qrCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:5;pointer-events:none;}
-#qrFlash{position:absolute;inset:0;z-index:8;background:rgba(58,228,201,.35);opacity:0;pointer-events:none;transition:opacity .1s;}
-#qrFlash.on{opacity:1;}
-.qrm-top{position:absolute;top:0;left:0;right:0;z-index:10;padding:16px;background:linear-gradient(to bottom,rgba(0,0,0,.85),transparent);display:flex;align-items:center;justify-content:space-between;}
-.qrm-title{font-family:'Manrope',sans-serif;font-size:15px;font-weight:800;color:#fff;}
-.qrm-close{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.22);border-radius:9px;padding:7px 16px;font-size:13px;font-weight:700;color:#fff;cursor:pointer;font-family:'Sarabun',sans-serif;}
-.qrm-bot{position:absolute;bottom:0;left:0;right:0;z-index:10;padding:16px 16px 42px;background:linear-gradient(to top,rgba(0,0,0,.88),transparent);text-align:center;}
-.qrm-status{font-size:14px;font-weight:700;margin-bottom:5px;color:var(--teal);}
-.qrm-engine{display:inline-block;font-size:9px;font-weight:700;padding:2px 9px;border-radius:18px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:rgba(255,255,255,.6);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;}
-.qrm-hint{font-size:11px;color:rgba(255,255,255,.4);}
-.qrm-notfound{background:rgba(239,68,68,.09);border:1px solid rgba(239,68,68,.25);border-radius:9px;padding:9px 13px;margin-top:9px;display:none;}
-.qrm-notfound.show{display:block;}
-.qrm-nf-title{font-size:12px;color:#F87171;font-weight:700;margin-bottom:2px;}
-.qrm-nf-desc{font-size:10px;color:rgba(248,113,113,.65);}
-
-/* ══════════════════════════════════════
-   LOCK OVERLAY
-══════════════════════════════════════ */
-.lock-ov{position:fixed;inset:0;z-index:8000;background:rgba(0,0,0,.95);display:none;flex-direction:column;align-items:center;justify-content:center;padding:28px;backdrop-filter:blur(8px);}
-.lock-ov.show{display:flex;}
-.lock-icon{width:68px;height:68px;border-radius:20px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;border:2px solid rgba(239,68,68,.3);background:rgba(239,68,68,.08);animation:lock-pulse 2s infinite;}
-.lock-icon.emg{border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.08);animation:emg-pulse 2s infinite;}
-@keyframes lock-pulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.2)}70%{box-shadow:0 0 0 10px rgba(239,68,68,0)}}
-@keyframes emg-pulse{0%,100%{box-shadow:0 0 0 0 rgba(245,158,11,.2)}70%{box-shadow:0 0 0 10px rgba(245,158,11,0)}}
-.lock-title{font-family:'Manrope',sans-serif;font-size:20px;font-weight:900;color:#F87171;text-align:center;margin-bottom:7px;}
-.lock-title.emg{color:#FBBF24;}
-.lock-info{background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:14px;padding:16px 18px;margin-bottom:14px;width:100%;max-width:290px;}
-.lock-clock{font-family:'Manrope',sans-serif;font-size:40px;font-weight:900;color:var(--teal);letter-spacing:-2px;text-align:center;margin-bottom:3px;}
-.lock-datestr{font-size:11px;color:var(--dim);text-align:center;}
-.lock-row{display:flex;justify-content:space-between;font-size:12px;padding:4px 0;}
-.lrk{color:var(--dim);font-weight:600;}
-.lrv{color:var(--fg);font-weight:700;}
-.lock-badge{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:10px;font-size:12px;font-weight:700;margin-bottom:12px;background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.18);color:#F87171;}
-.lock-badge.emg{background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.2);color:#FBBF24;}
-.lock-desc{font-size:13px;color:var(--muted);text-align:center;line-height:1.6;margin-bottom:14px;max-width:270px;}
-.lock-proceed{background:var(--grad);border:none;border-radius:11px;padding:12px 28px;font-family:'Sarabun',sans-serif;font-size:14px;font-weight:700;color:#fff;cursor:pointer;width:100%;max-width:270px;margin-bottom:8px;display:none;}
-.lock-contact{background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.18);border-radius:11px;padding:11px 28px;font-family:'Sarabun',sans-serif;font-size:13px;font-weight:700;color:#FCA5A5;cursor:pointer;width:100%;max-width:270px;}
-.lock-emg-cnt{background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.18);border-radius:12px;padding:11px;text-align:center;margin-bottom:12px;width:100%;max-width:270px;display:none;}
-.lock-emg-lbl{font-size:9px;font-weight:700;letter-spacing:1.5px;color:#FBBF24;text-transform:uppercase;margin-bottom:3px;}
-.lock-emg-num{font-family:'Manrope',sans-serif;font-size:30px;font-weight:900;color:#FBBF24;letter-spacing:-1px;}
-
-/* ══════════════════════════════════════
-   RESULT SCREEN
-══════════════════════════════════════ */
-#s-result{align-items:center;justify-content:center;padding:28px;background:var(--bg);}
-.res-wrap{width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;text-align:center;}
-.res-icon{width:80px;height:80px;border-radius:24px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;animation:popIn .4s cubic-bezier(.175,.885,.32,1.275);}
-.res-title{font-family:'Manrope',sans-serif;font-size:24px;font-weight:900;margin-bottom:6px;}
-.res-sub{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:20px;}
-.res-info{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:20px;width:100%;text-align:left;}
-.res-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;}
-.res-row:last-child{border-bottom:none;}
-.rrk{color:var(--muted);}.rrv{font-weight:700;}
-.res-next{background:var(--grad);color:#fff;border:none;border-radius:13px;padding:13px 32px;font-family:'Sarabun',sans-serif;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(33,104,253,.22);transition:all .18s;}
-.res-next:active{transform:scale(.97);}
-
-/* ── TOAST ── */
-.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card2);border:1px solid rgba(74,222,128,.28);border-radius:12px;padding:10px 20px;font-size:13px;font-weight:700;color:var(--green);z-index:9999;transition:transform .28s cubic-bezier(.4,0,.2,1),opacity .28s;opacity:0;white-space:nowrap;backdrop-filter:blur(10px);box-shadow:0 12px 40px rgba(0,0,0,.5);}
-.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
-.toast.err{border-color:rgba(239,68,68,.28);color:#F87171;}
-.toast.warn{border-color:rgba(245,158,11,.28);color:#FBBF24;}
-
-/* ── URL BANNER ── */
-.url-banner{background:rgba(58,228,201,.06);border:1px solid rgba(58,228,201,.18);border-radius:9px;padding:8px 12px;margin-bottom:9px;font-size:12px;font-weight:600;color:var(--teal);display:none;align-items:center;gap:7px;border-left:3px solid var(--teal);}
-.url-banner.show{display:flex;}
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card2);border:1px solid rgba(74,222,128,.28);border-radius:12px;padding:10px 20px;font-size:13px;font-weight:700;color:var(--green);z-index:9999;transition:transform .28s,opacity .28s;opacity:0;white-space:nowrap;backdrop-filter:blur(10px);box-shadow:0 12px 40px rgba(0,0,0,.5)}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+.toast.err{border-color:rgba(239,68,68,.28);color:#F87171}
+.toast.warn{border-color:rgba(245,158,11,.28);color:#FBBF24}
 </style>
 </head>
 <body>
 
-<!-- ══ QR MODAL ══ -->
+<!-- QR MODAL -->
 <div class="qr-modal" id="qrModal">
   <video id="qrVideo" playsinline muted autoplay></video>
-  <canvas id="qrCanvas"></canvas>
+  <canvas id="qrOvCv"></canvas>
   <div id="qrFlash"></div>
   <div class="qrm-top">
     <div class="qrm-title">สแกน QR Code วิทยุ</div>
@@ -310,8 +280,11 @@ html,body{min-height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);
   </div>
   <div class="qrm-bot">
     <div class="qrm-status" id="qrmStatus">กำลังเปิดกล้อง...</div>
-    <div class="qrm-engine" id="qrmEngine">—</div>
-    <div class="qrm-hint">จ่อ QR Code ให้อยู่กลางเฟรม · ระยะ 10–20 ซม.</div>
+    <div class="qrm-hint">จ่อ QR Code ให้อยู่กลางกรอบ · ระยะ 10–20 ซม.</div>
+    <div class="qrm-rawbox" id="qrmRawBox">
+      <div class="qrm-rawtitle">QR Text ที่อ่านได้</div>
+      <div class="qrm-rawtext" id="qrmRawText">—</div>
+    </div>
     <div class="qrm-notfound" id="qrmNotFound">
       <div class="qrm-nf-title" id="qrmNFMsg">ไม่พบวิทยุในระบบ</div>
       <div class="qrm-nf-desc">สแกน QR จากการ์ด Radio Tag เท่านั้น</div>
@@ -319,40 +292,40 @@ html,body{min-height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);
   </div>
 </div>
 
-<!-- ══ LOCK ══ -->
+<!-- LOCK -->
 <div class="lock-ov" id="lockOv">
-  <div class="lock-icon" id="lockIcon">
-    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="lockIconSvg"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+  <div class="lock-icon-box" id="lockIconBox">
+    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="lockSvg"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
   </div>
   <div class="lock-title" id="lockTitle">ไม่อยู่ในช่วงเวลาที่กำหนด</div>
   <div class="lock-info">
     <div class="lock-clock" id="lockClock">--:--</div>
-    <div class="lock-datestr" id="lockDateStr"></div>
+    <div class="lock-datestr" id="lockDate"></div>
   </div>
   <div class="lock-info" style="margin-bottom:12px;">
     <div class="lock-row"><span class="lrk">ผลัดที่เลือก</span><span class="lrv" id="lockShift">—</span></div>
     <div class="lock-row"><span class="lrk">ช่วงอนุญาต</span><span class="lrv" id="lockWindow">—</span></div>
-    <div class="lock-row"><span class="lrk">เวลาปัจจุบัน</span><span class="lrv" id="lockNow" style="color:#F87171;">—</span></div>
+    <div class="lock-row"><span class="lrk">เวลาปัจจุบัน</span><span class="lrv" id="lockNow" style="color:#F87171">—</span></div>
   </div>
   <div class="lock-badge" id="lockBadge">กรุณาเริ่มในช่วงเวลาที่กำหนด</div>
   <div class="lock-emg-cnt" id="lockEmgCnt">
     <div class="lock-emg-lbl">ปลดล็อคฉุกเฉิน — เหลือ</div>
     <div class="lock-emg-num" id="lockEmgNum">--:--</div>
   </div>
-  <button class="lock-proceed" id="lockProceed" onclick="proceedEmg()">ดำเนินการตรวจสอบต่อ</button>
+  <button class="lock-proceed" id="lockProceed" onclick="proceedEmg()">ดำเนินการต่อ</button>
   <button class="lock-contact" onclick="alert('กรุณาติดต่อผู้ดูแลระบบเพื่อปลดล็อค')">ติดต่อผู้ดูแลระบบ</button>
 </div>
 
-<!-- ══ LOGIN ══ -->
+<!-- LOGIN -->
 <div id="s-login" class="screen act">
   <div class="login-card">
     <div class="login-logo">
-      <div class="login-logo-icon">
+      <div class="ll-icon">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg>
       </div>
       <div>
-        <div class="login-logo-name">Radio Inspection</div>
-        <div class="login-logo-sub">WD Security · ระบบตรวจสอบวิทยุสื่อสาร</div>
+        <div class="ll-name">Radio Inspection</div>
+        <div class="ll-sub">WD Security · ระบบตรวจสอบวิทยุสื่อสาร</div>
       </div>
     </div>
     <div id="loginErr" class="login-err"></div>
@@ -367,7 +340,7 @@ html,body{min-height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);
   </div>
 </div>
 
-<!-- ══ MAIN ══ -->
+<!-- MAIN -->
 <div id="s-main" class="screen">
   <div class="topbar">
     <div class="tb-left">
@@ -384,8 +357,7 @@ html,body{min-height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);
   </div>
 
   <div class="form-body">
-    <!-- Steps -->
-    <div class="steps" id="stepsBar">
+    <div class="steps">
       <div class="step active" id="step1"><div class="step-dot">1</div>ผลัด</div>
       <div class="step-line"></div>
       <div class="step" id="step2"><div class="step-dot">2</div>สแกน</div>
@@ -395,7 +367,6 @@ html,body{min-height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);
       <div class="step" id="step4"><div class="step-dot">4</div>บันทึก</div>
     </div>
 
-    <!-- Profile -->
     <div class="prof-card">
       <div class="prof-av" id="profAv">U</div>
       <div style="flex:1;min-width:0;">
@@ -408,37 +379,39 @@ html,body{min-height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);
       </div>
     </div>
 
-    <!-- Shift -->
     <div class="sec-lbl">เลือกผลัดการทำงาน</div>
     <div class="shift-grid">
       <div class="shift-card" id="shiftDay" onclick="selShift('day')">
-        <div class="shift-badge sb-closed" id="bDay">—</div>
-        <div class="shift-card-ico">☀️</div>
-        <div class="shift-card-name">ผลัดกลางวัน</div>
-        <div class="shift-card-time" id="sdayTime">07:30–19:30 น.</div>
-        <div class="shift-card-win" id="sdayWin">⏱ โหลด...</div>
+        <div class="sh-badge shb-closed" id="bDay">—</div>
+        <div class="sc-name">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FBBF24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          ผลัดกลางวัน
+        </div>
+        <div class="sc-time" id="sdayTime">07:30–19:30 น.</div>
+        <div class="sc-win" id="sdayWin">⏱ กำลังโหลด...</div>
       </div>
       <div class="shift-card" id="shiftNight" onclick="selShift('night')">
-        <div class="shift-badge sb-closed" id="bNight">—</div>
-        <div class="shift-card-ico">🌙</div>
-        <div class="shift-card-name">ผลัดกลางคืน</div>
-        <div class="shift-card-time" id="snightTime">19:30–07:30 น.</div>
-        <div class="shift-card-win" id="snightWin">⏱ โหลด...</div>
+        <div class="sh-badge shb-closed" id="bNight">—</div>
+        <div class="sc-name">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C084FC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          ผลัดกลางคืน
+        </div>
+        <div class="sc-time" id="snightTime">19:30–07:30 น.</div>
+        <div class="sc-win" id="snightWin">⏱ กำลังโหลด...</div>
       </div>
     </div>
 
-    <!-- Radio / QR -->
     <div class="sec-lbl">เลือกเครื่องวิทยุ</div>
     <div class="url-banner" id="urlBanner">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
       <span id="urlBannerTxt">โหลดอัตโนมัติจาก URL</span>
     </div>
+
     <div class="qr-wrap" id="qrWrap">
       <div class="qr-head">
         <div class="qr-head-title">QR CODE SCANNER</div>
         <div class="qr-head-hint">สแกนการ์ด Radio Tag</div>
       </div>
-      <!-- Before scan -->
       <div id="qrBefore">
         <div class="scan-btn-wrap">
           <button class="scan-btn" onclick="openQR()">
@@ -451,20 +424,19 @@ html,body{min-height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);
             </div>
           </button>
         </div>
-        <div class="qr-divider" style="padding:10px 14px 2px;"><span>หรือกรอก WD หมายเลข</span></div>
-        <div class="manual-row" style="padding:0 14px 14px;">
+        <div class="qr-divider" style="padding:10px 14px 2px"><span>หรือกรอก WD หมายเลข</span></div>
+        <div class="manual-row" style="padding:0 14px 14px">
           <input id="manualInp" class="manual-inp" placeholder="เช่น 1, WD1, WD-1" maxlength="8">
           <button class="manual-ok" onclick="doManual()">ยืนยัน</button>
         </div>
       </div>
-      <!-- After scan -->
-      <div id="qrAfter" style="display:none;">
+      <div id="qrAfter" style="display:none">
         <div class="radio-found">
           <div class="radio-inner">
             <div class="radio-icon">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3AE4C9" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg>
             </div>
-            <div style="flex:1;min-width:0;">
+            <div style="flex:1;min-width:0">
               <div class="radio-wd" id="rWD">WD—</div>
               <div class="radio-area" id="rArea">—</div>
               <div class="radio-sn" id="rSN">—</div>
@@ -476,16 +448,14 @@ html,body{min-height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);
       </div>
     </div>
 
-    <!-- Progress -->
     <div class="prog-wrap">
       <div class="prog-hdr">
         <span class="prog-lbl">ความคืบหน้า</span>
         <span class="prog-pct" id="progPct">0%</span>
       </div>
-      <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%;"></div></div>
+      <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
     </div>
 
-    <!-- Checklist -->
     <div class="sec-lbl">รายการตรวจสอบ</div>
     <div class="cl-card">
       <div class="cl-head">
@@ -498,14 +468,13 @@ html,body{min-height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);
           <button class="cl-btn cl-btn-reset" onclick="resetAll()">Reset</button>
         </div>
       </div>
-      <div class="cl-prog"><div class="cl-prog-fill" id="clProgFill" style="width:0%;"></div></div>
+      <div class="cl-prog"><div class="cl-prog-fill" id="clProgFill" style="width:0%"></div></div>
       <div class="cl-list" id="clList">
-        <div style="padding:16px;text-align:center;color:var(--dim);font-size:12px;">กำลังโหลดรายการ...</div>
+        <div style="padding:16px;text-align:center;color:var(--dim);font-size:12px">กำลังโหลดรายการ...</div>
       </div>
     </div>
-  </div><!-- end form-body -->
+  </div>
 
-  <!-- Submit -->
   <div class="submit-area">
     <div class="stats-row">
       <div class="stat-box st-total"><div class="stat-num" id="stTotal">21</div><div class="stat-lbl">รายการ</div></div>
@@ -517,9 +486,9 @@ html,body{min-height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);
       บันทึกข้อมูล
     </button>
   </div>
-</div><!-- end s-main -->
+</div>
 
-<!-- ══ RESULT ══ -->
+<!-- RESULT -->
 <div id="s-result" class="screen">
   <div class="res-wrap">
     <div class="res-icon" id="resIcon"></div>
@@ -532,7 +501,6 @@ html,body{min-height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);
 
 <div class="toast" id="toast"></div>
 
-<!-- ══ FIREBASE + APP ══ -->
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
 import {
@@ -540,19 +508,12 @@ import {
   onSnapshot, query, orderBy, serverTimestamp
 } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
-const fbCfg = {
-  apiKey:"AIzaSyCBSvlRDbhibsNIgqNRd9UB5fdnm8g-G2A",
-  authDomain:"building-access-control.firebaseapp.com",
-  projectId:"building-access-control",
-  storageBucket:"building-access-control.firebasestorage.app",
-  messagingSenderId:"492098937762",
-  appId:"1:492098937762:web:53c52cbbfd4cb030ad08fb"
-};
-const fbApp = initializeApp(fbCfg);
-const db    = getFirestore(fbApp);
+const fbCfg={apiKey:"AIzaSyCBSvlRDbhibsNIgqNRd9UB5fdnm8g-G2A",authDomain:"building-access-control.firebaseapp.com",projectId:"building-access-control",storageBucket:"building-access-control.firebasestorage.app",messagingSenderId:"492098937762",appId:"1:492098937762:web:53c52cbbfd4cb030ad08fb"};
+const fbApp=initializeApp(fbCfg);
+const db=getFirestore(fbApp);
 
-/* ══ DEFAULT DATA ══ */
-const DEF_RADIOS = [
+/* ── DEF DATA ── */
+const DEF_RADIOS=[
   {id:1,area:"จุดตรวจโลหะที่ 1",sn:"S/N 278TBPG297"},{id:2,area:"Support 5 Ph1",sn:"S/N 278TBPG307"},
   {id:3,area:"Main Entrance Ph1",sn:"S/N 278TBPG308"},{id:4,area:"จุดตรวจโลหะที่ 4",sn:"S/N 278TBPG324"},
   {id:5,area:"Support P6",sn:"S/N 278TBPG327"},{id:6,area:"Support P7",sn:"S/N 278TBPG330"},
@@ -570,13 +531,9 @@ const DEF_RADIOS = [
   {id:32,area:"Loading B.3",sn:"S/N 278TBPG558"},{id:33,area:"Gate 1",sn:"S/N 278TBPG561"},
   {id:34,area:"Gate 2",sn:"S/N 278TBPG563"},{id:35,area:"Gate 3",sn:"S/N 278TBPG565"},
   {id:36,area:"Gate 4",sn:"S/N 278TBPG567"},{id:37,area:"Patrol North",sn:"S/N 278TBPG570"},
-  {id:38,area:"Patrol South",sn:"S/N 278TBPG572"},{id:39,area:"Spare 1",sn:"S/N 278TBPG580"},
-  {id:40,area:"Spare 2",sn:"S/N 278TBPG581"},{id:41,area:"Spare 3",sn:"S/N 278TBPG582"},
-  {id:42,area:"Spare 4",sn:"S/N 278TBPG583"},{id:43,area:"Spare 5",sn:"S/N 278TBPG584"},
-  {id:44,area:"Spare 6",sn:"S/N 278TBPG585"},{id:45,area:"Spare 7",sn:"S/N 278TBPG586"},
-  {id:46,area:"Spare 8",sn:"S/N 278TBPG587"},
+  {id:38,area:"Patrol South",sn:"S/N 278TBPG572"},
 ];
-const DEF_CL = [
+const DEF_CL=[
   {id:1,th:"เสาอากาศ",en:"Antenna"},{id:2,th:"แบตเตอรี่",en:"Battery"},
   {id:3,th:"ปุ่มกดพูด (PTT)",en:"PTT Button"},{id:4,th:"ลำโพง",en:"Speaker"},
   {id:5,th:"ไมโครโฟน",en:"Microphone"},{id:6,th:"ปุ่มเลือกช่องสัญญาณ",en:"Channel Selector"},
@@ -590,388 +547,300 @@ const DEF_CL = [
   {id:21,th:"เอกสารประกอบ",en:"Documentation"},
 ];
 
-/* ══ STATE ══ */
-let currentUser = null;
-let RADIOS = [...DEF_RADIOS];
-let CL_ITEMS = DEF_CL.map(x=>({...x}));
-let chkState = {};
-let selectedShift = null;
-let scannedRadio  = null;
-let scanMethod    = 'manual';
-let shiftCfg = {
+/* ── STATE ── */
+let currentUser=null,RADIOS=[...DEF_RADIOS],CL_ITEMS=DEF_CL.map(x=>({...x}));
+let chkState={},selectedShift=null,scannedRadio=null,scanMethod='manual';
+let lockActive=false,cfgUnsub=null;
+let shiftCfg={
   day:{shiftStart:'07:30',shiftEnd:'19:30',inspStart:'07:30',inspEnd:'10:00',emergencyUnlock:false,emergencyUntil:null},
   night:{shiftStart:'19:30',shiftEnd:'07:30',inspStart:'19:30',inspEnd:'22:00',emergencyUnlock:false,emergencyUntil:null}
 };
-let lockActive = false;
-let cfgUnsub = null;
 
-/* ══ HELPERS ══ */
-const G  = id => document.getElementById(id);
-const pad2 = n => String(n).padStart(2,'0');
-function toMins(s){ const[h,m]=(s||'0:0').split(':'); return +h*60 + +m; }
-function nowMins(){ const d=new Date(); return d.getHours()*60+d.getMinutes(); }
-function nowStr(){ const d=new Date(); return pad2(d.getHours())+':'+pad2(d.getMinutes()); }
-function todayStr(){ return new Date().toISOString().slice(0,10); }
-function resolveTs(v){
-  if(!v) return null;
-  if(typeof v==='object'&&v.toDate) return v.toDate().getTime();
-  const ms=new Date(v).getTime(); return isNaN(ms)?null:ms;
-}
+/* ── HELPERS ── */
+const G=id=>document.getElementById(id);
+const pad2=n=>String(n).padStart(2,'0');
+function toMins(s){const[h,m]=(s||'0:0').split(':');return +h*60+ +m;}
+function nowMins(){const d=new Date();return d.getHours()*60+d.getMinutes();}
+function todayStr(){return new Date().toISOString().slice(0,10);}
+function resolveTs(v){if(!v)return null;if(typeof v==='object'&&v.toDate)return v.toDate().getTime();const ms=new Date(v).getTime();return isNaN(ms)?null:ms;}
+function showScreen(id){['s-login','s-main','s-result'].forEach(s=>{const e=G(s);if(e){e.classList.remove('act');e.style.display='';}});const t=G(id);if(t)t.classList.add('act');}
+function showToast(msg,type='ok'){const t=G('toast');t.textContent=msg;t.className='toast'+(type==='err'?' err':type==='warn'?' warn':'');t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),3200);}
 
-function showScreen(id){
-  ['s-login','s-main','s-result'].forEach(s=>{ const e=G(s); if(e){e.classList.remove('act');e.style.display='';} });
-  const t=G(id); if(t){t.classList.add('act');}
-}
-function showToast(msg,type='ok'){
-  const t=G('toast'); t.textContent=msg;
-  t.className='toast'+(type==='err'?' err':type==='warn'?' warn':'');
-  t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),3200);
-}
-
-/* ══ CLOCK ══ */
+/* ── CLOCK ── */
 function tick(){
   const d=new Date();
   const ts=pad2(d.getHours())+':'+pad2(d.getMinutes());
-  G('tbClock').textContent=ts;
-  G('lockClock').textContent=ts;
-  G('lockDateStr').textContent=d.toLocaleDateString('th-TH',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  G('tbClock').textContent=ts;G('lockClock').textContent=ts;
+  G('lockDate').textContent=d.toLocaleDateString('th-TH',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
   G('lockNow').textContent=ts+' น.';
-  updateShiftBadges();
-  updateEmgCountdown();
-  if(lockActive && selectedShift && isAllowed(selectedShift)){ hideLock(); }
-  if(!lockActive && selectedShift && !isAllowed(selectedShift)){ showLock(selectedShift,false); }
+  updateShiftBadges();updateEmgCountdown();
+  if(lockActive&&selectedShift&&isAllowed(selectedShift))hideLock();
+  if(!lockActive&&selectedShift&&!isAllowed(selectedShift))showLock(selectedShift,true);
 }
-setInterval(tick,1000); tick();
+setInterval(tick,1000);tick();
 
-/* ══ SHIFT CONFIG ══ */
+/* ── SHIFT ── */
 function isAllowed(sh){
-  const c=shiftCfg[sh]; if(!c)return false;
+  const c=shiftCfg[sh];if(!c)return false;
   const ms=resolveTs(c.emergencyUntil);
   if(c.emergencyUnlock&&ms&&Date.now()<ms)return true;
-  const t=nowMins(), s=toMins(c.inspStart), e=toMins(c.inspEnd);
+  const t=nowMins(),s=toMins(c.inspStart),e=toMins(c.inspEnd);
   return s<=e?(t>=s&&t<e):(t>=s||t<e);
 }
-function winLbl(sh){ const c=shiftCfg[sh]; return c?c.inspStart+'–'+c.inspEnd+' น.':'—'; }
-
+function winLbl(sh){const c=shiftCfg[sh];return c?c.inspStart+'–'+c.inspEnd+' น.':'—';}
 function updateShiftBadges(){
   ['day','night'].forEach(sh=>{
     const c=shiftCfg[sh];
     const ms=resolveTs(c.emergencyUntil);
     const isEmg=c.emergencyUnlock&&ms&&Date.now()<ms;
     const open=isAllowed(sh);
-    const b=G(sh==='day'?'bDay':'bNight');
-    if(!b)return;
-    if(isEmg){b.textContent='ปลดล็อค';b.className='shift-badge sb-emg';}
-    else if(open){b.textContent='เปิด';b.className='shift-badge sb-open';}
-    else{b.textContent='ปิด';b.className='shift-badge sb-closed';}
+    const b=G(sh==='day'?'bDay':'bNight');if(!b)return;
+    if(isEmg){b.textContent='ปลดล็อค';b.className='sh-badge shb-emg';}
+    else if(open){b.textContent='เปิด';b.className='sh-badge shb-open';}
+    else{b.textContent='ปิด';b.className='sh-badge shb-closed';}
     G(sh==='day'?'sdayTime':'snightTime').textContent=(c.shiftStart||'07:30')+'–'+(c.shiftEnd||'19:30')+' น.';
     G(sh==='day'?'sdayWin':'snightWin').textContent='⏱ '+c.inspStart+'–'+c.inspEnd+' น.';
   });
 }
 function updateEmgCountdown(){
-  let anyEmg=false;
-  ['day','night'].forEach(sh=>{
-    const c=shiftCfg[sh], ms=resolveTs(c.emergencyUntil);
-    if(c.emergencyUnlock&&ms&&Date.now()<ms){ anyEmg=true; const r=Math.max(0,Math.floor((ms-Date.now())/1000)); const m=Math.floor(r/60),s2=r%60; G('lockEmgNum').textContent=pad2(m)+':'+pad2(s2); }
-  });
-  G('lockEmgCnt').style.display=anyEmg?'block':'none';
-  G('lockProceed').style.display=anyEmg?'block':'none';
+  let any=false;
+  ['day','night'].forEach(sh=>{const c=shiftCfg[sh],ms=resolveTs(c.emergencyUntil);if(c.emergencyUnlock&&ms&&Date.now()<ms){any=true;const r=Math.max(0,Math.floor((ms-Date.now())/1000));G('lockEmgNum').textContent=pad2(Math.floor(r/60))+':'+pad2(r%60);}});
+  G('lockEmgCnt').style.display=any?'block':'none';G('lockProceed').style.display=any?'block':'none';
 }
-
 async function fetchShiftConfig(){
-  try{
-    const snap=await getDoc(doc(db,'shiftConfig','main'));
-    if(snap.exists()){ applyShiftCfg(snap.data()); }
-  }catch(e){}
-  if(!cfgUnsub){
-    try{cfgUnsub=onSnapshot(doc(db,'shiftConfig','main'),snap=>{ if(snap.exists())applyShiftCfg(snap.data()); });}catch(e){}
-  }
+  try{const snap=await getDoc(doc(db,'shiftConfig','main'));if(snap.exists())applyShiftCfg(snap.data());}catch(e){}
+  if(!cfgUnsub){try{cfgUnsub=onSnapshot(doc(db,'shiftConfig','main'),snap=>{if(snap.exists())applyShiftCfg(snap.data());});}catch(e){}}
 }
 function applyShiftCfg(data){
-  if(data.day)   Object.assign(shiftCfg.day,   data.day);
-  if(data.night) Object.assign(shiftCfg.night, data.night);
+  if(data.day)Object.assign(shiftCfg.day,data.day);
+  if(data.night)Object.assign(shiftCfg.night,data.night);
   updateShiftBadges();
-  if(lockActive&&selectedShift&&isAllowed(selectedShift)) hideLock();
+  if(lockActive&&selectedShift&&isAllowed(selectedShift))hideLock();
 }
-
-/* ══ LOCK ══ */
-function showLock(sh, auto=false){
-  lockActive=true; selectedShift=sh;
-  G('lockTitle').textContent=auto?'หมดเวลาตรวจสอบ':'ไม่อยู่ในช่วงเวลาที่กำหนด';
-  G('lockTitle').className='lock-title';
-  G('lockIcon').className='lock-icon';
-  G('lockIconSvg').setAttribute('stroke','#EF4444');
+function showLock(sh,auto=false){
+  lockActive=true;selectedShift=sh;
+  const isEmg=isAllowed(sh)&&shiftCfg[sh].emergencyUnlock;
+  G('lockIconBox').className='lock-icon-box'+(isEmg?' emg':'');
+  G('lockSvg').setAttribute('stroke',isEmg?'#FBBF24':'#EF4444');
+  G('lockTitle').className='lock-title'+(isEmg?' emg':'');
+  G('lockTitle').textContent=isEmg?'ปลดล็อคฉุกเฉิน':auto?'หมดเวลาตรวจสอบ':'ไม่อยู่ในช่วงเวลาที่กำหนด';
+  G('lockBadge').className='lock-badge'+(isEmg?' emg':'');
+  G('lockBadge').textContent=isEmg?'ปลดล็อคฉุกเฉินอยู่':'กรุณาเริ่มในช่วงเวลาที่กำหนด';
   G('lockShift').textContent=sh==='day'?'ผลัดกลางวัน':'ผลัดกลางคืน';
   G('lockWindow').textContent=winLbl(sh);
-  G('lockBadge').textContent='กรุณาเริ่มในช่วงเวลาที่กำหนด';
-  G('lockBadge').className='lock-badge';
-  const ms=resolveTs(shiftCfg[sh].emergencyUntil);
-  if(shiftCfg[sh].emergencyUnlock&&ms&&Date.now()<ms){
-    G('lockTitle').className='lock-title emg'; G('lockTitle').textContent='ปลดล็อคฉุกเฉิน';
-    G('lockIcon').className='lock-icon emg'; G('lockIconSvg').setAttribute('stroke','#FBBF24');
-    G('lockBadge').textContent='ปลดล็อคฉุกเฉินอยู่'; G('lockBadge').className='lock-badge emg';
-  }
   G('lockOv').classList.add('show');
 }
-function hideLock(){ lockActive=false; G('lockOv').classList.remove('show'); }
-window.proceedEmg=function(){ if(selectedShift&&isAllowed(selectedShift)) hideLock(); };
+function hideLock(){lockActive=false;G('lockOv').classList.remove('show');}
+window.proceedEmg=function(){if(selectedShift&&isAllowed(selectedShift))hideLock();};
 
-/* ══ RADIO LOOKUP ══ */
-function findRadio(label){
-  const s=String(label||'').trim(); if(!s)return null;
-  const mWD=s.match(/^WD[\s\-_]?(\d+)$/i);
-  if(mWD){ const id=+mWD[1]; return RADIOS.find(r=>r.id===id)||null; }
-  if(/^\d+$/.test(s)){ return RADIOS.find(r=>r.id===+s)||null; }
-  return null;
-}
-function parseQRValue(raw){
-  const s=(raw||'').trim(); if(!s)return null;
-  if(s.startsWith('http')||s.includes('?')){
-    try{
-      const url=new URL(s.includes('://')?s:'https://x.com/'+s);
-      for(const pn of['radio','id','code','wdcode','wd','radioId']){
-        const v=url.searchParams.get(pn); if(v){ const r=findRadio(v); if(r)return r; }
-      }
-      const seg=url.pathname.split('/').filter(Boolean).pop()||'';
-      if(seg){ const r=findRadio(seg); if(r)return r; }
-    }catch(e){}
-  }
-  if(s.startsWith('{')){ try{ const p=JSON.parse(s); const r=findRadio(p.id||p.radioId); if(r)return r; }catch(e){} }
-  return findRadio(s);
-}
-function checkUrlParam(){
-  try{
-    const p=new URLSearchParams(window.location.search);
-    for(const pn of['radio','id','code','wdcode','wd','radioId']){
-      const v=p.get(pn); if(v){ const r=findRadio(v); if(r)return r; }
-    }
-  }catch(e){}
-  return null;
-}
+/* ─────────────────────────────────────
+   QR SCANNER — jsQR เท่านั้น
+   ไม่พึ่ง ZXing / BarcodeDetector
+   ทำงานได้ทุก browser รวม Safari iOS
+───────────────────────────────────── */
+let _qrStream=null,_qrRun=false,_qrLock=false,_qrRaf=null,_scanTimer=null;
 
-async function loadRadios(){
-  try{
-    const snap=await getDocs(collection(db,'radioItems'));
-    if(!snap.empty){ RADIOS=snap.docs.map(d=>({id:+d.data().id,area:d.data().area||'',sn:d.data().sn||''})).filter(r=>r.id>0); }
-  }catch(e){}
-}
-async function loadChecklist(){
-  try{
-    const snap=await getDocs(query(collection(db,'checklistItems'),orderBy('id')));
-    if(!snap.empty){ CL_ITEMS=snap.docs.map(d=>({id:d.data().id,th:d.data().th,en:d.data().en})).filter(x=>x.th); }
-  }catch(e){}
-  buildChecklist();
-}
-
-/* ══ QR SCANNER — 3 Engine System ══ */
-let _qrStream=null, _qrRun=false, _qrLock=false;
-let _bdTimer=null, _zxReader=null, _cvTimer=null, _rafId=null;
-
-function qrmStat(msg,col){ const e=G('qrmStatus'); if(e){e.textContent=msg;e.style.color=col||'#3AE4C9';} }
-function qrmEng(txt){ const e=G('qrmEngine'); if(e)e.textContent=txt; }
-function drawViewfinder(){
-  const cv=G('qrCanvas'); if(!cv)return;
+function qrmStat(msg,col){const e=G('qrmStatus');if(e){e.textContent=msg;e.style.color=col||'#3AE4C9';}}
+function drawVF(){
+  const cv=G('qrOvCv');if(!cv)return;
   const W=window.innerWidth,H=window.innerHeight;
-  if(cv.width!==W)cv.width=W; if(cv.height!==H)cv.height=H;
-  const ctx=cv.getContext('2d'); ctx.clearRect(0,0,W,H);
+  if(cv.width!==W)cv.width=W;if(cv.height!==H)cv.height=H;
+  const ctx=cv.getContext('2d');ctx.clearRect(0,0,W,H);
   const sz=Math.min(W,H)*.65,x=(W-sz)/2,y=(H-sz)/2,c=24,lw=4;
-  ctx.fillStyle='rgba(0,0,0,.52)'; ctx.fillRect(0,0,W,H); ctx.clearRect(x,y,sz,sz);
-  ctx.strokeStyle='#3AE4C9'; ctx.lineWidth=lw; ctx.lineCap='round';
+  ctx.fillStyle='rgba(0,0,0,.54)';ctx.fillRect(0,0,W,H);ctx.clearRect(x,y,sz,sz);
+  ctx.strokeStyle='#3AE4C9';ctx.lineWidth=lw;ctx.lineCap='round';
   [[x,y+c,x,y,x+c,y],[x+sz-c,y,x+sz,y,x+sz,y+c],[x,y+sz-c,x,y+sz,x+c,y+sz],[x+sz-c,y+sz,x+sz,y+sz,x+sz,y+sz-c]].forEach(p=>{ctx.beginPath();ctx.moveTo(p[0],p[1]);ctx.lineTo(p[2],p[3]);ctx.lineTo(p[4],p[5]);ctx.stroke();});
-  const ph=(Date.now()%2000)/2000;
-  const ly=y+(ph<.5?ph*2:(2-ph*2))*sz;
-  const g=ctx.createLinearGradient(x,0,x+sz,0); g.addColorStop(0,'rgba(58,228,201,0)'); g.addColorStop(.5,'rgba(58,228,201,.9)'); g.addColorStop(1,'rgba(58,228,201,0)');
-  ctx.strokeStyle=g; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(x,ly); ctx.lineTo(x+sz,ly); ctx.stroke();
+  const ph=(Date.now()%2000)/2000,ly=y+(ph<.5?ph*2:(2-ph*2))*sz;
+  const g=ctx.createLinearGradient(x,0,x+sz,0);g.addColorStop(0,'rgba(58,228,201,0)');g.addColorStop(.5,'rgba(58,228,201,.9)');g.addColorStop(1,'rgba(58,228,201,0)');
+  ctx.strokeStyle=g;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x,ly);ctx.lineTo(x+sz,ly);ctx.stroke();
 }
-function rafLoop(){ if(!_qrRun){_rafId=null;return;} drawViewfinder(); _rafId=requestAnimationFrame(rafLoop); }
+function rafLoop(){if(!_qrRun){_qrRaf=null;return;}drawVF();_qrRaf=requestAnimationFrame(rafLoop);}
 
-function onQRResult(raw){
-  if(_qrLock)return; const s=String(raw||'').trim(); if(!s)return;
+function onQRText(raw){
+  if(_qrLock)return;
+  const s=String(raw||'').trim();if(!s)return;
   _qrLock=true;
-  const radio=parseQRValue(s);
+  /* Show raw text for debug */
+  const rb=G('qrmRawBox'),rt=G('qrmRawText');
+  if(rb)rb.classList.add('show');if(rt)rt.textContent=s.length>60?s.slice(0,60)+'…':s;
+  /* Parse */
+  const radio=parseQR(s);
   if(!radio){
-    qrmStat('⚠ ไม่พบวิทยุ: "'+s.slice(0,20)+'"','#FBBF24');
+    qrmStat('⚠ ไม่พบ WD: "'+s.slice(0,18)+'"','#FBBF24');
     const nf=G('qrmNotFound'),nm=G('qrmNFMsg');
-    if(nf)nf.classList.add('show'); if(nm)nm.textContent='ไม่พบ: "'+s.slice(0,22)+'"';
-    setTimeout(()=>{ _qrLock=false; if(nf)nf.classList.remove('show'); },2500); return;
+    if(nf)nf.classList.add('show');if(nm)nm.textContent='ไม่พบ: "'+s.slice(0,22)+'"';
+    setTimeout(()=>{_qrLock=false;if(nf)nf.classList.remove('show');},2800);return;
   }
   qrmStat('✅ WD'+radio.id,'#4ADE80');
   if(navigator.vibrate)navigator.vibrate([60,40,100]);
-  const fl=G('qrFlash'); if(fl){fl.classList.add('on');setTimeout(()=>fl.classList.remove('on'),160);}
-  setTimeout(()=>{ stopQR(); G('qrModal').classList.remove('show'); setScannedRadio(radio,'qr'); },600);
+  const fl=G('qrFlash');if(fl){fl.classList.add('on');setTimeout(()=>fl.classList.remove('on'),160);}
+  setTimeout(()=>{stopQR();G('qrModal').classList.remove('show');setScannedRadio(radio,'qr');},600);
 }
 
-/* Engine 1: BarcodeDetector */
-function startBarcodeDetector(vid){
-  if(typeof BarcodeDetector==='undefined')return false;
-  try{
-    const bd=new BarcodeDetector({formats:['qr_code']});
-    _bdTimer=setInterval(async()=>{
-      if(!_qrRun||_qrLock)return;
-      try{ const cs=await bd.detect(vid); if(cs&&cs.length>0)onQRResult(cs[0].rawValue); }catch(e){}
-    },180);
-    qrmEng('BarcodeDetector (Chrome)'); qrmStat('● กำลังสแกน...','#3AE4C9'); return true;
-  }catch(e){return false;}
+/* ── QR parser: รองรับทุก format ที่ QR Card นี้ใช้ ── */
+function parseQR(raw){
+  const s=String(raw||'').trim();if(!s)return null;
+  /* Format 1: URL มี ?radio=WD1 หรือ ?radio=1 */
+  if(s.startsWith('http')||s.includes('?')||s.includes('://')){
+    try{
+      const url=new URL(s.includes('://')?s:'https://x.com/'+s);
+      /* ลอง params ที่น่าจะใช้ทั้งหมด */
+      for(const pn of['radio','wdcode','wd','id','code','radioId']){
+        const v=url.searchParams.get(pn);
+        if(v){const r=findRadio(v);if(r)return r;}
+      }
+      /* path segment สุดท้าย */
+      const seg=url.pathname.split('/').filter(Boolean).pop()||'';
+      if(seg){const r=findRadio(seg);if(r)return r;}
+    }catch(e){}
+  }
+  /* Format 2: ตัวเลขล้วน หรือ WD1 WD-1 WD_1 */
+  return findRadio(s);
+}
+function findRadio(label){
+  const s=String(label||'').trim();if(!s)return null;
+  const mWD=s.match(/^WD[\s\-_]?(\d+)$/i);
+  if(mWD){const id=+mWD[1];return RADIOS.find(r=>r.id===id)||null;}
+  if(/^\d+$/.test(s)){return RADIOS.find(r=>r.id===+s)||null;}
+  return null;
 }
 
-/* Engine 2: ZXing from window scope (Safari iOS) */
-function startZXing(vid){
-  const ZX=window.ZXing||window.ZXingBrowser||null;
-  if(!ZX||!window._zxReady)return false;
-  try{
-    const hints=new Map(); hints.set(ZX.DecodeHintType.TRY_HARDER,true);
-    let reader;
-    if(ZX.BrowserMultiFormatReader) reader=new ZX.BrowserMultiFormatReader(hints);
-    else if(ZX.BrowserQRCodeReader)  reader=new ZX.BrowserQRCodeReader(hints);
-    else return false;
-    _zxReader=reader;
-    reader.decodeFromVideoDevice(null,vid,(result,err)=>{
-      if(result&&result.getText)onQRResult(result.getText());
-    });
-    qrmEng('ZXing (Safari/iOS)'); qrmStat('● กำลังสแกน...','#3AE4C9'); return true;
-  }catch(e){ console.error('[ZXing]',e); return false; }
-}
-
-/* Engine 3: Canvas polling + ZXing decode */
-function startCanvasPoll(vid){
-  const ZX=window.ZXing||window.ZXingBrowser||null;
-  qrmEng('Canvas Poll'); qrmStat('● กำลังสแกน (Fallback)...','#FBBF24');
-  if(!ZX){ qrmStat('⚠ กรุณากรอก ID ด้วย Manual','#F87171'); return; }
-  let reader;
-  try{
-    if(ZX.BrowserMultiFormatReader) reader=new ZX.BrowserMultiFormatReader();
-    else if(ZX.BrowserQRCodeReader)  reader=new ZX.BrowserQRCodeReader();
-    else{qrmStat('⚠ กรุณากรอก ID ด้วย Manual','#F87171');return;}
-  }catch(e){qrmStat('⚠ กรุณากรอก ID ด้วย Manual','#F87171');return;}
+/* ── jsQR scan loop ── */
+function startJsQRLoop(vid){
+  if(!window.jsQR){qrmStat('⚠ jsQR ยังไม่โหลด กรุณาใช้ Manual','#F87171');return;}
   const canvas=document.createElement('canvas');
-  const ctx=canvas.getContext('2d');
-  _cvTimer=setInterval(()=>{
+  const ctx=canvas.getContext('2d',{willReadFrequently:true});
+  qrmStat('● กำลังสแกน...','#3AE4C9');
+  _scanTimer=setInterval(()=>{
     if(!_qrRun||_qrLock)return;
-    if(vid.readyState<2)return;
-    canvas.width=vid.videoWidth||320; canvas.height=vid.videoHeight||240;
+    if(vid.readyState<2||vid.videoWidth===0)return;
+    canvas.width=vid.videoWidth;canvas.height=vid.videoHeight;
     ctx.drawImage(vid,0,0,canvas.width,canvas.height);
     try{
       const imageData=ctx.getImageData(0,0,canvas.width,canvas.height);
-      const lum=new Uint8ClampedArray(canvas.width*canvas.height);
-      for(let i=0;i<lum.length;i++) lum[i]=(imageData.data[i*4]*.3+imageData.data[i*4+1]*.59+imageData.data[i*4+2]*.11)|0;
-      if(reader.decodeFromImageData){
-        const result=reader.decodeFromImageData(imageData);
-        if(result)onQRResult(result.getText?result.getText():String(result));
-      }
+      const code=window.jsQR(imageData.data,imageData.width,imageData.height,{inversionAttempts:'attemptBoth'});
+      if(code&&code.data){onQRText(code.data);}
     }catch(e){}
-  },350);
+  },200);
 }
 
 window.openQR=async function(){
   if(_qrRun)return;
   G('qrModal').classList.add('show');
   G('qrmNotFound').classList.remove('show');
-  qrmEng('STARTING'); qrmStat('● กำลังเปิดกล้อง...','#3AE4C9');
+  const rb=G('qrmRawBox');if(rb)rb.classList.remove('show');
+  qrmStat('กำลังเปิดกล้อง...','#3AE4C9');
   try{
-    const constraints={video:{facingMode:{ideal:'environment'},width:{ideal:1280},height:{ideal:720}}};
+    const constraints={video:{facingMode:{ideal:'environment'},width:{ideal:1920},height:{ideal:1080}}};
     _qrStream=await navigator.mediaDevices.getUserMedia(constraints);
     const vid=G('qrVideo');
     vid.srcObject=_qrStream;
-    vid.setAttribute('playsinline',''); vid.setAttribute('autoplay',''); vid.muted=true;
+    vid.setAttribute('playsinline','');vid.setAttribute('autoplay','');vid.muted=true;
     await new Promise((res,rej)=>{
       const t=setTimeout(()=>res(),5000);
       vid.onloadedmetadata=()=>{clearTimeout(t);res();};
       vid.onerror=()=>{clearTimeout(t);rej(new Error('video error'));};
     });
     try{await vid.play();}catch(e){}
-    _qrRun=true; _qrLock=false;
-    _rafId=requestAnimationFrame(rafLoop);
-    if(!startBarcodeDetector(vid)){
-      if(!startZXing(vid)) startCanvasPoll(vid);
+    _qrRun=true;_qrLock=false;
+    _qrRaf=requestAnimationFrame(rafLoop);
+    /* รอให้ jsQR โหลดเสร็จก่อน (กรณีโหลดช้า) */
+    if(!window.jsQR){
+      qrmStat('รอ jsQR โหลด...','#FBBF24');
+      let waited=0;
+      await new Promise(res=>{
+        const chk=setInterval(()=>{
+          waited+=100;
+          if(window.jsQR||waited>5000){clearInterval(chk);res();}
+        },100);
+      });
     }
+    startJsQRLoop(vid);
   }catch(e){
-    G('qrModal').classList.remove('show'); _qrRun=false;
-    if(e.name==='NotAllowedError') showToast('กรุณาอนุญาตการใช้กล้อง','err');
-    else showToast('ไม่สามารถเปิดกล้อง','err');
+    G('qrModal').classList.remove('show');_qrRun=false;
+    if(e.name==='NotAllowedError')showToast('กรุณาอนุญาตการใช้กล้อง','err');
+    else showToast('ไม่สามารถเปิดกล้อง: '+e.message,'err');
     console.error('[openQR]',e);
   }
 };
-window.closeQR=function(){ stopQR(); G('qrModal').classList.remove('show'); };
+window.closeQR=function(){stopQR();G('qrModal').classList.remove('show');};
 function stopQR(){
-  _qrRun=false; _qrLock=false;
-  if(_bdTimer){clearInterval(_bdTimer);_bdTimer=null;}
-  if(_cvTimer){clearInterval(_cvTimer);_cvTimer=null;}
-  if(_rafId){cancelAnimationFrame(_rafId);_rafId=null;}
-  if(_zxReader){try{_zxReader.reset();}catch(e){}_zxReader=null;}
+  _qrRun=false;_qrLock=false;
+  if(_scanTimer){clearInterval(_scanTimer);_scanTimer=null;}
+  if(_qrRaf){cancelAnimationFrame(_qrRaf);_qrRaf=null;}
   if(_qrStream){_qrStream.getTracks().forEach(t=>t.stop());_qrStream=null;}
-  const v=G('qrVideo'); if(v){v.pause();v.srcObject=null;}
+  const v=G('qrVideo');if(v){v.pause();v.srcObject=null;}
 }
-window.addEventListener('resize',()=>{ if(_qrRun)drawViewfinder(); });
+window.addEventListener('resize',()=>{if(_qrRun)drawVF();});
 
-/* ══ MANUAL ENTRY ══ */
+/* ── MANUAL ── */
 window.doManual=function(){
-  const val=G('manualInp').value.trim(); if(!val){showToast('กรุณากรอก ID วิทยุ','err');return;}
-  const r=parseQRValue(val)||findRadio(val);
+  const val=G('manualInp').value.trim();if(!val){showToast('กรุณากรอก ID วิทยุ','err');return;}
+  const r=parseQR(val)||findRadio(val);
   if(!r){showToast('ไม่พบวิทยุ: "'+val+'"','err');return;}
-  setScannedRadio(r,'manual'); G('manualInp').value='';
+  setScannedRadio(r,'manual');G('manualInp').value='';
 };
-G('manualInp').addEventListener('keydown',e=>{ if(e.key==='Enter') window.doManual(); });
+G('manualInp').addEventListener('keydown',e=>{if(e.key==='Enter')window.doManual();});
 
-/* ══ SET RADIO ══ */
+/* ── SET RADIO ── */
 function setScannedRadio(radio,method){
-  scannedRadio=radio; scanMethod=method;
+  scannedRadio=radio;scanMethod=method;
   G('rWD').textContent='WD'+radio.id;
   G('rArea').textContent=radio.area||'—';
   G('rSN').textContent=radio.sn||'—';
   const mt=G('rMethod');
-  if(mt){ mt.className='method-tag '+(method==='qr'?'mt-qr':method==='url'?'mt-url':'mt-manual'); mt.textContent=method==='qr'?'QR Scan':method==='url'?'URL Auto':'Manual'; }
-  G('qrBefore').style.display='none'; G('qrAfter').style.display='block';
+  if(mt){mt.className='method-tag '+(method==='qr'?'mt-qr':method==='url'?'mt-url':'mt-manual');mt.textContent=method==='qr'?'QR Scan':method==='url'?'URL Auto':'Manual';}
+  G('qrBefore').style.display='none';G('qrAfter').style.display='block';
   G('qrWrap').classList.add('scanned');
-  if(method!=='url') showToast('✓ WD'+radio.id+' — '+(radio.area||''));
+  if(method!=='url')showToast('✓ WD'+radio.id+' — '+(radio.area||''));
   updateSteps();
 }
 window.doRescan=function(){
   scannedRadio=null;
-  G('qrBefore').style.display='block'; G('qrAfter').style.display='none';
-  G('qrWrap').classList.remove('scanned');
-  G('urlBanner').classList.remove('show');
+  G('qrBefore').style.display='block';G('qrAfter').style.display='none';
+  G('qrWrap').classList.remove('scanned');G('urlBanner').classList.remove('show');
   updateSteps();
 };
 
-/* ══ SHIFT SELECTION ══ */
+/* ── URL PARAM AUTO-LOAD ── */
+function checkUrlParam(){
+  try{
+    const p=new URLSearchParams(window.location.search);
+    for(const pn of['radio','wdcode','wd','id','code','radioId']){
+      const v=p.get(pn);if(v){const r=findRadio(v);if(r)return r;}
+    }
+  }catch(e){}
+  return null;
+}
+
+/* ── SHIFT SELECT ── */
 window.selShift=function(sh){
   selectedShift=sh;
   G('shiftDay').className='shift-card'+(sh==='day'?' sel-day':'');
   G('shiftNight').className='shift-card'+(sh==='night'?' sel-night':'');
-  if(!isAllowed(sh)){ showLock(sh,false); }
-  else{ hideLock(); showToast((sh==='day'?'☀️ ผลัดกลางวัน':'🌙 ผลัดกลางคืน')+' — '+winLbl(sh)); }
+  if(!isAllowed(sh))showLock(sh,false);
+  else{hideLock();showToast((sh==='day'?'กลางวัน':'กลางคืน')+' — '+winLbl(sh));}
   updateSteps();
 };
 
-/* ══ CHECKLIST ══ */
+/* ── CHECKLIST ── */
 function buildChecklist(){
-  chkState={}; CL_ITEMS.forEach(i=>chkState[i.id]=null);
+  chkState={};CL_ITEMS.forEach(i=>chkState[i.id]=null);
   G('stTotal').textContent=CL_ITEMS.length;
   G('clList').innerHTML=CL_ITEMS.map(item=>`
     <div class="cl-row" id="cr${item.id}" onclick="togItem(${item.id})">
       <div class="cl-num">${item.id}.</div>
-      <div class="cl-text">
-        <div class="cl-th">${item.th}</div>
-        ${item.en?`<div class="cl-en">${item.en}</div>`:''}
-      </div>
-      <div class="tog" id="tog${item.id}">
-        <div class="tog-knob"></div>
-        <div class="tog-lbl" id="tl${item.id}">—</div>
-      </div>
+      <div class="cl-text"><div class="cl-th">${item.th}</div>${item.en?`<div class="cl-en">${item.en}</div>`:''}</div>
+      <div class="tog" id="tog${item.id}"><div class="tog-knob"></div><div class="tog-lbl" id="tl${item.id}">—</div></div>
     </div>`).join('');
   updateClStats();
 }
-window.togItem=function(id){
-  const cur=chkState[id];
-  chkState[id]=cur===null?'pass':cur==='pass'?'fail':null;
-  updateRow(id); updateClStats(); if(navigator.vibrate)navigator.vibrate(8);
-};
+window.togItem=function(id){const c=chkState[id];chkState[id]=c===null?'pass':c==='pass'?'fail':null;updateRow(id);updateClStats();if(navigator.vibrate)navigator.vibrate(8);};
 function updateRow(id){
   const st=chkState[id];
   const row=G('cr'+id),tog=G('tog'+id),lbl=G('tl'+id);
   if(!row||!tog||!lbl)return;
-  row.classList.remove('pass','fail');
-  tog.classList.remove('pass','fail');
+  row.classList.remove('pass','fail');tog.classList.remove('pass','fail');
   if(st==='pass'){row.classList.add('pass');tog.classList.add('pass');lbl.textContent='Pass';}
   else if(st==='fail'){row.classList.add('fail');tog.classList.add('fail');lbl.textContent='Fail';}
   else lbl.textContent='—';
@@ -979,78 +848,70 @@ function updateRow(id){
 function updateClStats(){
   const pass=Object.values(chkState).filter(v=>v==='pass').length;
   const fail=Object.values(chkState).filter(v=>v==='fail').length;
-  const total=CL_ITEMS.length, done=pass+fail;
-  const pct=Math.round(pass/total*100)||0;
-  G('stPass').textContent=pass; G('stFail').textContent=fail;
+  const total=CL_ITEMS.length,done=pass+fail,pct=Math.round(pass/total*100)||0;
+  G('stPass').textContent=pass;G('stFail').textContent=fail;
   G('profPassNum').textContent=pass;
   G('clCnt').textContent=done+'/'+total;
   G('clProgFill').style.width=Math.round(done/total*100)+'%';
-  G('progFill').style.width=pct+'%'; G('progPct').textContent=pct+'%';
+  G('progFill').style.width=pct+'%';G('progPct').textContent=pct+'%';
   updateSteps();
 }
-window.allPass=function(){
-  CL_ITEMS.forEach(i=>{chkState[i.id]='pass';updateRow(i.id);});
-  updateClStats(); showToast('✓ All Pass');
-};
-window.resetAll=function(){
-  CL_ITEMS.forEach(i=>{chkState[i.id]=null;updateRow(i.id);});
-  updateClStats();
-};
-
-/* ══ STEPS ══ */
+window.allPass=function(){CL_ITEMS.forEach(i=>{chkState[i.id]='pass';updateRow(i.id);});updateClStats();showToast('✓ All Pass');};
+window.resetAll=function(){CL_ITEMS.forEach(i=>{chkState[i.id]=null;updateRow(i.id);});updateClStats();};
 function updateSteps(){
-  const s1=selectedShift!==null;
-  const s2=scannedRadio!==null;
+  const s1=selectedShift!==null,s2=scannedRadio!==null;
   const s3=CL_ITEMS.length>0&&Object.values(chkState).filter(v=>v!==null).length===CL_ITEMS.length;
-  const set=(id,done,active)=>{
-    const el=G(id); if(!el)return;
-    el.classList.remove('done','active');
-    if(done) el.classList.add('done');
-    else if(active) el.classList.add('active');
-  };
-  set('step1',s1,!s1); set('step2',s2,s1&&!s2);
-  set('step3',s3,s2&&!s3); set('step4',false,s3);
+  const set=(id,done,active)=>{const el=G(id);if(!el)return;el.classList.remove('done','active');if(done)el.classList.add('done');else if(active)el.classList.add('active');};
+  set('step1',s1,!s1);set('step2',s2,s1&&!s2);set('step3',s3,s2&&!s3);set('step4',false,s3);
 }
 
-/* ══ LOGIN ══ */
+/* ── LOGIN ── */
+async function loadRadios(){try{const snap=await getDocs(collection(db,'radioItems'));if(!snap.empty){RADIOS=snap.docs.map(d=>({id:+d.data().id,area:d.data().area||'',sn:d.data().sn||''})).filter(r=>r.id>0);}}catch(e){}}
+async function loadChecklist(){try{const snap=await getDocs(query(collection(db,'checklistItems'),orderBy('id')));if(!snap.empty)CL_ITEMS=snap.docs.map(d=>({id:d.data().id,th:d.data().th,en:d.data().en})).filter(x=>x.th);}catch(e){}buildChecklist();}
+
 window.doLogin=async function(){
-  const id=G('lId').value.trim(), pw=G('lPw').value.trim();
+  const id=G('lId').value.trim(),pw=G('lPw').value.trim();
   G('loginErr').classList.remove('show');
-  if(!id||!pw){setLoginErr('กรุณากรอกข้อมูลให้ครบ');return;}
-  setLoginLoading(true);
+  if(!id||!pw){setLE('กรุณากรอกข้อมูลให้ครบ');return;}
+  setLL(true);
   try{
-    const snap=await getDocs(collection(db,'radioUsers'));
-    let found=null;
-    snap.forEach(d=>{ if(d.data().userId===id) found=d.data(); });
-    if(!found){setLoginErr('ไม่พบรหัสพนักงานนี้');return;}
-    if(found.password!==pw){setLoginErr('รหัสผ่านไม่ถูกต้อง');return;}
-    if(!found.enabled){setLoginErr('บัญชีถูกระงับ');return;}
-    if(found.role==='admin'){setLoginErr('กรุณาใช้บัญชี User เท่านั้น');return;}
+    const snap=await getDocs(collection(db,'radioUsers'));let found=null;
+    snap.forEach(d=>{if(d.data().userId===id)found=d.data();});
+    if(!found){setLE('ไม่พบรหัสพนักงานนี้');return;}
+    if(found.password!==pw){setLE('รหัสผ่านไม่ถูกต้อง');return;}
+    if(!found.enabled){setLE('บัญชีถูกระงับ');return;}
+    if(found.role==='admin'){setLE('กรุณาใช้บัญชี User เท่านั้น');return;}
     currentUser=found;
     G('profAv').textContent=(found.name||'U').charAt(0).toUpperCase();
     G('profName').textContent=found.name||found.userId;
-    G('profSub').textContent='ID: '+(found.userId)+' · '+(found.dept||'Security');
-    await Promise.all([fetchShiftConfig(), loadRadios(), loadChecklist()]);
+    G('profSub').textContent='ID: '+found.userId+' · '+(found.dept||'Security');
+    await Promise.all([fetchShiftConfig(),loadRadios(),loadChecklist()]);
+    /* URL param auto-load — รองรับ ?radio=WD1 จาก QR Card */
     const urlR=checkUrlParam();
-    if(urlR){ setTimeout(()=>{ setScannedRadio(urlR,'url'); G('urlBanner').classList.add('show'); G('urlBannerTxt').textContent='โหลดอัตโนมัติ: WD'+urlR.id+' — '+urlR.area; },200); }
-    showScreen('s-main'); updateSteps();
-  }catch(e){setLoginErr('เกิดข้อผิดพลาด: '+e.message);}
-  setLoginLoading(false);
+    if(urlR){
+      setTimeout(()=>{
+        setScannedRadio(urlR,'url');
+        G('urlBanner').classList.add('show');
+        G('urlBannerTxt').textContent='โหลดอัตโนมัติ: WD'+urlR.id+' — '+urlR.area;
+      },300);
+    }
+    showScreen('s-main');updateSteps();
+  }catch(e){setLE('เกิดข้อผิดพลาด: '+e.message);}
+  setLL(false);
 };
-function setLoginErr(m){G('loginErr').textContent=m;G('loginErr').classList.add('show');}
-function setLoginLoading(b){G('loginBtn').disabled=b;G('loginSpin').classList.toggle('show',b);G('loginTxt').textContent=b?'กำลังเข้าระบบ...':'เข้าสู่ระบบ';}
-G('lPw').addEventListener('keydown',e=>{ if(e.key==='Enter') doLogin(); });
-G('lId').addEventListener('keydown',e=>{ if(e.key==='Enter') G('lPw').focus(); });
+function setLE(m){G('loginErr').textContent=m;G('loginErr').classList.add('show');}
+function setLL(b){G('loginBtn').disabled=b;G('loginSpin').classList.toggle('show',b);G('loginTxt').textContent=b?'กำลังเข้าระบบ...':'เข้าสู่ระบบ';}
+G('lPw').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+G('lId').addEventListener('keydown',e=>{if(e.key==='Enter')G('lPw').focus();});
 
 window.doLogout=function(){
-  currentUser=null; selectedShift=null; scannedRadio=null; chkState={};
-  lockActive=false; stopQR(); if(cfgUnsub){cfgUnsub();cfgUnsub=null;}
-  G('lockOv').classList.remove('show');
-  G('lId').value=''; G('lPw').value='';
+  currentUser=null;selectedShift=null;scannedRadio=null;chkState={};
+  lockActive=false;stopQR();if(cfgUnsub){cfgUnsub();cfgUnsub=null;}
+  G('lockOv').classList.remove('show');G('lId').value='';G('lPw').value='';
   showScreen('s-login');
 };
 
-/* ══ SUBMIT ══ */
+/* ── SUBMIT ── */
 window.doSubmit=async function(){
   if(!selectedShift){showToast('กรุณาเลือกผลัดก่อน','err');return;}
   await fetchShiftConfig();
@@ -1063,26 +924,26 @@ window.doSubmit=async function(){
   const pass=Object.values(chkState).filter(v=>v==='pass').length;
   const fail=Object.values(chkState).filter(v=>v==='fail').length;
   const failItems=CL_ITEMS.filter(i=>chkState[i.id]==='fail').map(i=>i.th);
-  const results={}; CL_ITEMS.forEach(i=>results['item_'+i.id]=chkState[i.id]||'pending');
+  const results={};CL_ITEMS.forEach(i=>results['item_'+i.id]=chkState[i.id]||'pending');
   const data={
-    userId:currentUser.userId, userName:currentUser.name||currentUser.userId,
-    dept:currentUser.dept||'Security', position:currentUser.position||'Inspector',
-    shift:selectedShift, shiftName:selectedShift==='day'?'ผลัดกลางวัน':'ผลัดกลางคืน',
-    radioId:scannedRadio.id, radioLabel:'WD'+scannedRadio.id,
-    area:scannedRadio.area||'', sn:scannedRadio.sn||'',
-    passCount:pass, failCount:fail, totalItems:CL_ITEMS.length,
+    userId:currentUser.userId,userName:currentUser.name||currentUser.userId,
+    dept:currentUser.dept||'Security',position:currentUser.position||'Inspector',
+    shift:selectedShift,shiftName:selectedShift==='day'?'ผลัดกลางวัน':'ผลัดกลางคืน',
+    radioId:scannedRadio.id,radioLabel:'WD'+scannedRadio.id,
+    area:scannedRadio.area||'',sn:scannedRadio.sn||'',
+    passCount:pass,failCount:fail,totalItems:CL_ITEMS.length,
     passRate:Math.round(pass/CL_ITEMS.length*100),
-    failItems, checkResults:results,
+    failItems,checkResults:results,
     overallStatus:fail===0?'PASS':'FAIL',
-    scanMethod, emergencyUnlock:false,
+    scanMethod,
     date:now.toISOString().slice(0,10),
     time:now.toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'}),
-    timestamp:serverTimestamp(), formVersion:'user-v1'
+    timestamp:serverTimestamp(),formVersion:'user-v2'
   };
   try{
     await addDoc(collection(db,'submissions'),data);
     const hFail=fail>0;
-    G('resIcon').style.cssText=`background:${hFail?'rgba(239,68,68,.1)':'rgba(74,222,128,.08)'};border:2px solid ${hFail?'rgba(239,68,68,.25)':'rgba(74,222,128,.2)'};border-radius:24px;width:80px;height:80px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;animation:popIn .4s cubic-bezier(.175,.885,.32,1.275);`;
+    G('resIcon').style.cssText=`background:${hFail?'rgba(239,68,68,.1)':'rgba(74,222,128,.08)'};border:2px solid ${hFail?'rgba(239,68,68,.25)':'rgba(74,222,128,.2)'};border-radius:24px;width:80px;height:80px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;animation:popIn .4s cubic-bezier(.175,.885,.32,1.275)`;
     G('resIcon').innerHTML=hFail
       ?'<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>'
       :'<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
@@ -1092,22 +953,22 @@ window.doSubmit=async function(){
     G('resInfo').innerHTML=`
       <div class="res-row"><span class="rrk">ผู้ตรวจ</span><span class="rrv">${currentUser.name||currentUser.userId}</span></div>
       <div class="res-row"><span class="rrk">ผลัด</span><span class="rrv">${selectedShift==='day'?'กลางวัน':'กลางคืน'}</span></div>
-      <div class="res-row"><span class="rrk">วิทยุ</span><span class="rrv" style="font-family:'Manrope',sans-serif;font-weight:900;font-size:15px;color:#93C5FD;">WD${scannedRadio.id}</span></div>
+      <div class="res-row"><span class="rrk">วิทยุ</span><span class="rrv" style="font-family:'Manrope',sans-serif;font-weight:900;font-size:15px;color:#93C5FD">WD${scannedRadio.id}</span></div>
       <div class="res-row"><span class="rrk">พื้นที่</span><span class="rrv">${scannedRadio.area||'—'}</span></div>
       <div class="res-row"><span class="rrk">Pass / Fail</span><span class="rrv" style="color:${fail>0?'#F87171':'#4ADE80'}">${pass} / ${fail}</span></div>
       <div class="res-row"><span class="rrk">เวลา</span><span class="rrv">${data.time} น.</span></div>
-      ${failItems.length?`<div class="res-row" style="flex-direction:column;gap:5px;border-bottom:none;"><span class="rrk">รายการ Fail</span><div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:3px;">${failItems.map(f=>`<span style="font-size:11px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.18);color:#FCA5A5;padding:2px 7px;border-radius:10px;">${f}</span>`).join('')}</div></div>`:''}`;
+      ${failItems.length?`<div class="res-row" style="flex-direction:column;gap:5px;border-bottom:none"><span class="rrk">รายการ Fail</span><div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:3px">${failItems.map(f=>`<span style="font-size:11px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.18);color:#FCA5A5;padding:2px 7px;border-radius:10px">${f}</span>`).join('')}</div></div>`:''}`;
     showScreen('s-result');
-  }catch(e){ showToast('บันทึกไม่สำเร็จ: '+e.message,'err'); }
+  }catch(e){showToast('บันทึกไม่สำเร็จ: '+e.message,'err');}
   G('submitBtn').disabled=false;
 };
 
 window.startNew=function(){
   CL_ITEMS.forEach(i=>{chkState[i.id]=null;updateRow(i.id);});
-  selectedShift=null; scannedRadio=null;
-  G('shiftDay').className='shift-card'; G('shiftNight').className='shift-card';
+  selectedShift=null;scannedRadio=null;
+  G('shiftDay').className='shift-card';G('shiftNight').className='shift-card';
   G('urlBanner').classList.remove('show');
-  window.doRescan(); updateClStats(); showScreen('s-main'); window.scrollTo(0,0);
+  window.doRescan();updateClStats();showScreen('s-main');window.scrollTo(0,0);
 };
 </script>
 </body>
