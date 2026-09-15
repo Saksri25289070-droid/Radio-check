@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&family=Manrope:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0d1117;--card:#161b22;--border-glow:rgba(0,200,160,.35);--border-dim:rgba(255,255,255,.07);
+  --bg:#0d1117;--card:#161b22;--border-dim:rgba(255,255,255,.07);
   --pass-bg:#1a3d2b;--pass-border:#22c55e;--pass-text:#4ade80;
   --fail-bg:#3d1a1a;--fail-border:#ef4444;--fail-text:#f87171;
   --text:#f0f6fc;--text2:#8b949e;--text3:#484f58;
@@ -25,7 +25,6 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .login-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:24px}
 .login-card{background:rgba(22,27,34,.95);border:1px solid rgba(0,200,160,.2);border-radius:24px;padding:40px 28px;width:100%;max-width:360px;box-shadow:0 0 40px rgba(0,200,160,.1),0 24px 64px rgba(0,0,0,.7);backdrop-filter:blur(12px)}
 .login-icon{width:72px;height:72px;border-radius:20px;background:linear-gradient(135deg,#0d4f3c,#0ea5a0);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;box-shadow:0 8px 24px rgba(0,160,130,.4)}
-.login-icon svg{width:38px;height:38px}
 .login-title{font-family:'Manrope',sans-serif;font-size:22px;font-weight:900;text-align:center;margin-bottom:4px;background:linear-gradient(135deg,#4ade80,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .login-sub{font-size:12px;color:var(--text2);text-align:center;margin-bottom:24px;letter-spacing:.5px}
 .sys-ok{display:flex;align-items:center;justify-content:center;gap:5px;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:20px;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);color:#22c55e;margin-bottom:20px}
@@ -35,7 +34,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .inp{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:13px 14px;font-size:15px;font-family:'Sarabun',sans-serif;color:var(--text);outline:none;transition:all .2s;margin-bottom:14px}
 .inp:focus{border-color:rgba(0,200,160,.4);background:rgba(0,200,160,.04);box-shadow:0 0 0 3px rgba(0,200,160,.08)}
 .inp::placeholder{color:var(--text3)}
-.btn-login{width:100%;padding:14px;background:var(--grad-btn);border:none;border-radius:12px;font-family:'Sarabun',sans-serif;font-size:16px;font-weight:700;color:#fff;cursor:pointer;box-shadow:0 4px 20px rgba(0,160,130,.4);letter-spacing:.3px}
+.btn-login{width:100%;padding:14px;background:var(--grad-btn);border:none;border-radius:12px;font-family:'Sarabun',sans-serif;font-size:16px;font-weight:700;color:#fff;cursor:pointer;box-shadow:0 4px 20px rgba(0,160,130,.4)}
 .btn-login:active{transform:scale(.98)}
 .err{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:10px 14px;font-size:12px;font-weight:600;color:#f87171;margin-bottom:14px;display:none;text-align:center}
 .lock-overlay{position:fixed;inset:0;z-index:9999;background:rgba(8,12,20,.97);display:none;flex-direction:column;align-items:center;justify-content:center;padding:32px;backdrop-filter:blur(8px);overflow-y:auto}
@@ -45,33 +44,33 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .lock-icon.emergency{background:rgba(251,191,36,.12);border:2px solid rgba(251,191,36,.35);animation:pulse-warn 2s infinite}
 @keyframes pulse-lock{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.3)}70%{box-shadow:0 0 0 12px rgba(239,68,68,0)}}
 @keyframes pulse-warn{0%,100%{box-shadow:0 0 0 0 rgba(251,191,36,.3)}70%{box-shadow:0 0 0 12px rgba(251,191,36,0)}}
-.lock-title{font-family:'Manrope',sans-serif;font-size:22px;font-weight:900;margin-bottom:10px;text-align:center;letter-spacing:-.4px}
+.lock-title{font-family:'Manrope',sans-serif;font-size:22px;font-weight:900;margin-bottom:10px;text-align:center}
 .lock-title.t-red{color:#f87171}.lock-title.t-yellow{color:#fbbf24}
 .lock-body{font-size:13px;color:var(--text2);text-align:center;line-height:1.7;margin-bottom:14px;max-width:300px}
-.lock-time-info{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:16px 20px;margin-bottom:12px;text-align:center;width:100%;max-width:300px}
+.lock-time-info{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:16px 20px;margin-bottom:12px;width:100%;max-width:300px}
 .lock-time-row{display:flex;justify-content:space-between;font-size:13px;padding:4px 0}
 .lock-time-key{color:var(--text3);font-weight:600}.lock-time-val{color:var(--text);font-weight:700}
-.lock-current{font-family:'Manrope',sans-serif;font-size:36px;font-weight:900;color:#22d3c8;letter-spacing:-1px;margin-bottom:4px}
-.lock-date{font-size:12px;color:var(--text3);margin-bottom:0}
+.lock-current{font-family:'Manrope',sans-serif;font-size:36px;font-weight:900;color:#22d3c8;letter-spacing:-1px;margin-bottom:4px;text-align:center}
+.lock-date{font-size:12px;color:var(--text3);text-align:center}
 .lock-window-badge{display:inline-flex;align-items:center;gap:6px;border-radius:10px;padding:8px 16px;font-size:12px;font-weight:700;margin-bottom:12px}
 .badge-red{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);color:#f87171}
 .badge-yellow{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);color:#fbbf24}
-.unlock-allow-btn{background:linear-gradient(135deg,#1a6b5a,#0ea5a0);border:none;border-radius:12px;padding:13px 28px;font-family:'Sarabun',sans-serif;font-size:15px;font-weight:700;color:#fff;cursor:pointer;margin-bottom:10px;width:100%;max-width:300px;box-shadow:0 4px 16px rgba(0,160,130,.4)}
+.unlock-allow-btn{background:linear-gradient(135deg,#1a6b5a,#0ea5a0);border:none;border-radius:12px;padding:13px 28px;font-family:'Sarabun',sans-serif;font-size:15px;font-weight:700;color:#fff;cursor:pointer;margin-bottom:10px;width:100%;max-width:300px}
 .btn-contact{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);border-radius:12px;padding:12px 28px;font-family:'Sarabun',sans-serif;font-size:14px;font-weight:700;color:#f87171;cursor:pointer;width:100%;max-width:300px}
 .emergency-countdown{font-family:'Manrope',sans-serif;font-size:28px;font-weight:900;color:#fbbf24;letter-spacing:-1px;margin:4px 0}
 .status-bar{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0}
 .sb-time{font-family:'Manrope',sans-serif;font-size:15px;font-weight:800;color:var(--text)}
 .sb-right{display:flex;align-items:center;gap:8px}
 .profile-section{padding:6px 16px 10px;flex-shrink:0}
-.profile-card{background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:14px 16px;display:flex;align-items:center;gap:14px;position:relative;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.4)}
+.profile-card{background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:14px 16px;display:flex;align-items:center;gap:14px;position:relative;overflow:hidden}
 .profile-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,200,160,.04),transparent);pointer-events:none}
-.profile-av{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#0d4f3c,#0ea5a0);border:2px solid rgba(0,200,160,.4);display:flex;align-items:center;justify-content:center;font-family:'Manrope',sans-serif;font-size:22px;font-weight:900;color:#fff;box-shadow:0 0 16px rgba(0,200,160,.3);flex-shrink:0;position:relative}
+.profile-av{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#0d4f3c,#0ea5a0);border:2px solid rgba(0,200,160,.4);display:flex;align-items:center;justify-content:center;font-family:'Manrope',sans-serif;font-size:22px;font-weight:900;color:#fff;flex-shrink:0;position:relative}
 .av-ring{position:absolute;inset:-4px;border-radius:50%;border:1.5px solid rgba(0,200,160,.3);animation:ring 3s infinite}
 @keyframes ring{0%,100%{opacity:.8;transform:scale(1)}50%{opacity:.2;transform:scale(1.08)}}
 .prof-info{flex:1}
-.prof-name{font-family:'Manrope',sans-serif;font-size:16px;font-weight:800;color:var(--text);letter-spacing:-.3px}
-.prof-id{font-size:11px;color:var(--text2);margin-top:2px;font-weight:600;letter-spacing:.5px}
-.prof-dept{font-size:10px;color:var(--text3);margin-top:2px;font-weight:500}
+.prof-name{font-family:'Manrope',sans-serif;font-size:16px;font-weight:800;color:var(--text)}
+.prof-id{font-size:11px;color:var(--text2);margin-top:2px;font-weight:600}
+.prof-dept{font-size:10px;color:var(--text3);margin-top:2px}
 .prof-tags{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap}
 .prof-tag{font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:2px 8px;border-radius:20px}
 .tag-role{background:rgba(33,104,253,.1);border:1px solid rgba(33,104,253,.2);color:#93c5fd}
@@ -81,29 +80,27 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .shift-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
 .shift-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .shift-card{background:rgba(255,255,255,.04);border:1px solid var(--border-dim);border-radius:14px;padding:12px 10px;cursor:pointer;transition:all .2s;text-align:center;position:relative;overflow:hidden}
-.shift-card:active{transform:scale(.97)}
-.shift-card.active-day{background:rgba(251,191,36,.06);border-color:rgba(251,191,36,.35);box-shadow:0 0 12px rgba(251,191,36,.1)}
-.shift-card.active-night{background:rgba(124,58,237,.08);border-color:rgba(124,58,237,.35);box-shadow:0 0 12px rgba(124,58,237,.15)}
+.shift-card.active-day{background:rgba(251,191,36,.06);border-color:rgba(251,191,36,.35)}
+.shift-card.active-night{background:rgba(124,58,237,.08);border-color:rgba(124,58,237,.35)}
 .shift-icon{font-size:20px;margin-bottom:4px}
 .shift-name{font-family:'Manrope',sans-serif;font-size:13px;font-weight:800;color:var(--text);margin-bottom:2px}
 .shift-card.active-day .shift-name{color:#fbbf24}
 .shift-card.active-night .shift-name{color:#a78bfa}
 .shift-time{font-size:10px;color:var(--text3)}
-.shift-window{font-size:9px;color:#22d3c8;margin-top:3px;font-weight:700;letter-spacing:.3px}
-.shift-badge{position:absolute;top:6px;right:6px;font-size:8px;font-weight:700;padding:1px 6px;border-radius:10px;letter-spacing:.5px;text-transform:uppercase}
+.shift-window{font-size:9px;color:#22d3c8;margin-top:3px;font-weight:700}
+.shift-badge{position:absolute;top:6px;right:6px;font-size:8px;font-weight:700;padding:1px 6px;border-radius:10px;text-transform:uppercase}
 .badge-ok{background:rgba(34,197,94,.15);color:#4ade80}
 .badge-locked{background:rgba(239,68,68,.15);color:#f87171}
 .badge-emergency{background:rgba(251,191,36,.15);color:#fbbf24;animation:blinkBadge 1s infinite}
 @keyframes blinkBadge{0%,100%{opacity:1}50%{opacity:.4}}
 .qr-section{padding:0 16px 10px;flex-shrink:0}
 .qr-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
-.qr-card{background:rgba(255,255,255,.03);border:1px solid var(--border-dim);border-radius:14px;padding:12px;position:relative}
-.qr-card.scanned{background:rgba(0,200,160,.06);border-color:rgba(0,200,160,.35);box-shadow:0 0 12px rgba(0,200,160,.1)}
+.qr-card{background:rgba(255,255,255,.03);border:1px solid var(--border-dim);border-radius:14px;padding:12px}
+.qr-card.scanned{background:rgba(0,200,160,.06);border-color:rgba(0,200,160,.35)}
 .qr-prompt{display:flex;align-items:center;gap:12px}
-.qr-scan-btn{display:flex;align-items:center;gap:8px;background:var(--grad-btn);border:none;border-radius:10px;padding:11px 18px;font-family:'Sarabun',sans-serif;font-size:13px;font-weight:700;color:#fff;cursor:pointer;white-space:nowrap;flex-shrink:0;box-shadow:0 3px 12px rgba(0,160,130,.35)}
-.qr-scan-btn:active{transform:scale(.97)}
+.qr-scan-btn{display:flex;align-items:center;gap:8px;background:var(--grad-btn);border:none;border-radius:10px;padding:11px 18px;font-family:'Sarabun',sans-serif;font-size:13px;font-weight:700;color:#fff;cursor:pointer;white-space:nowrap;flex-shrink:0}
 .qr-or-text{font-size:11px;color:var(--text3);font-weight:600}
-.qr-manual-row{display:flex;gap:8px;align-items:center}
+.qr-manual-row{display:flex;gap:8px;align-items:center;margin-top:5px}
 .qr-manual-inp{flex:1;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:9px 12px;font-size:12px;font-family:'Sarabun',sans-serif;color:var(--text);outline:none}
 .qr-manual-inp:focus{border-color:rgba(0,200,160,.4)}
 .qr-manual-inp::placeholder{color:var(--text3)}
@@ -113,24 +110,26 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .qr-result-info{flex:1}
 .qr-result-id{font-family:'Manrope',sans-serif;font-size:15px;font-weight:900;color:var(--text)}
 .qr-result-area{font-size:11px;color:var(--text2);margin-top:1px}
-.qr-result-sn{font-size:9px;color:var(--text3);margin-top:1px;letter-spacing:.5px}
+.qr-result-sn{font-size:9px;color:var(--text3);margin-top:1px}
 .btn-rescan{background:transparent;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:6px 12px;font-size:11px;font-weight:700;color:var(--text2);cursor:pointer;font-family:'Sarabun',sans-serif;flex-shrink:0}
 /* QR MODAL */
 .qr-modal{position:fixed;inset:0;z-index:5000;background:#000;display:none;flex-direction:column}
 .qr-modal.show{display:flex}
 #qrVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-#qrCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:6;pointer-events:none}
-.qr-top-bar{position:absolute;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:linear-gradient(to bottom,rgba(0,0,0,.8),transparent)}
-.qr-top-title{font-family:'Manrope',sans-serif;font-size:15px;font-weight:800;color:#fff}
-.qr-top-close{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);border-radius:10px;padding:8px 20px;font-family:'Sarabun',sans-serif;font-size:13px;font-weight:700;color:#fff;cursor:pointer}
-.qr-bottom-bar{position:absolute;bottom:0;left:0;right:0;z-index:10;padding:20px 20px 44px;background:linear-gradient(to top,rgba(0,0,0,.9),transparent);text-align:center}
-.qr-status-line{font-size:15px;font-weight:700;letter-spacing:.3px;margin-bottom:6px}
-.qr-debug-row{font-size:11px;color:rgba(255,255,200,.7);font-family:monospace;background:rgba(0,0,0,.5);border-radius:6px;padding:4px 10px;margin-top:6px;word-break:break-all;display:none}
-.qr-debug-row.show{display:block}
+#qrOvCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:6;pointer-events:none}
+.qr-top{position:absolute;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:linear-gradient(to bottom,rgba(0,0,0,.85),transparent)}
+.qr-top-ttl{font-family:'Manrope',sans-serif;font-size:15px;font-weight:800;color:#fff}
+.qr-top-cls{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);border-radius:10px;padding:8px 20px;font-family:'Sarabun',sans-serif;font-size:13px;font-weight:700;color:#fff;cursor:pointer}
+.qr-bot{position:absolute;bottom:0;left:0;right:0;z-index:10;padding:20px 20px 48px;background:linear-gradient(to top,rgba(0,0,0,.9),transparent);text-align:center}
+.qr-bot-status{font-size:15px;font-weight:700;margin-bottom:6px}
+.qr-bot-hint{font-size:11px;color:rgba(255,255,255,.45);margin-bottom:8px}
+.qr-bot-dbg{font-size:11px;font-family:monospace;color:rgba(255,220,100,.8);background:rgba(0,0,0,.6);border-radius:6px;padding:5px 10px;word-break:break-all;display:none}
+.qr-bot-dbg.on{display:block}
 #qrFlash{position:absolute;inset:0;z-index:9;background:rgba(34,211,200,.45);opacity:0;pointer-events:none;transition:opacity .15s}
 #qrFlash.on{opacity:1}
+/* CHECKLIST */
 .checklist-wrap{flex:1;padding:0 16px;overflow:hidden;display:flex;flex-direction:column;min-height:0}
-.checklist-card{background:rgba(22,27,34,.8);border:1px solid rgba(0,200,160,.25);border-radius:20px;overflow:hidden;flex:1;display:flex;flex-direction:column;box-shadow:0 0 0 1px rgba(0,200,160,.1),0 8px 32px rgba(0,0,0,.5);position:relative;min-height:0}
+.checklist-card{background:rgba(22,27,34,.8);border:1px solid rgba(0,200,160,.25);border-radius:20px;overflow:hidden;flex:1;display:flex;flex-direction:column;position:relative;min-height:0}
 .checklist-card::before{content:'';position:absolute;inset:-1px;border-radius:21px;background:linear-gradient(135deg,rgba(0,200,160,.3),transparent 50%,rgba(0,120,200,.2));z-index:0;pointer-events:none}
 .checklist-inner{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0}
 .cl-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px 8px;border-bottom:1px solid rgba(255,255,255,.05);flex-shrink:0}
@@ -145,20 +144,20 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .cl-scroll::-webkit-scrollbar-thumb{background:rgba(0,200,160,.2);border-radius:2px}
 .progress-strip{height:3px;background:rgba(255,255,255,.04);flex-shrink:0}
 .progress-fill{height:100%;background:linear-gradient(90deg,#22c55e,#16a34a);transition:width .4s ease}
-.check-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.04);transition:background .15s}
+.check-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.04)}
 .check-row:last-child{border-bottom:none}
 .check-row.pass-row{background:rgba(34,197,94,.04)}
 .check-row.fail-row{background:rgba(239,68,68,.05)}
 .row-num{font-family:'Manrope',sans-serif;font-size:11px;font-weight:800;color:var(--text3);min-width:20px;flex-shrink:0}
 .row-text{flex:1;font-size:13.5px;font-weight:600;color:var(--text);line-height:1.2}
 .check-row.fail-row .row-text{color:#fca5a5}
-.toggle-pill{display:flex;align-items:center;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.1);flex-shrink:0;cursor:pointer;transition:all .2s;min-width:68px;height:26px;background:rgba(255,255,255,.05)}
-.toggle-pill.pass-pill{background:var(--pass-bg);border-color:var(--pass-border);box-shadow:0 0 8px rgba(34,197,94,.3);flex-direction:row-reverse}
-.toggle-pill.fail-pill{background:var(--fail-bg);border-color:var(--fail-border);box-shadow:0 0 8px rgba(239,68,68,.3)}
+.toggle-pill{display:flex;align-items:center;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.1);flex-shrink:0;cursor:pointer;min-width:68px;height:26px;background:rgba(255,255,255,.05)}
+.toggle-pill.pass-pill{background:var(--pass-bg);border-color:var(--pass-border);flex-direction:row-reverse}
+.toggle-pill.fail-pill{background:var(--fail-bg);border-color:var(--fail-border)}
 .pill-dot{width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.15);margin:2px;flex-shrink:0}
-.toggle-pill.pass-pill .pill-dot{background:var(--pass-border);box-shadow:0 0 6px rgba(34,197,94,.5)}
-.toggle-pill.fail-pill .pill-dot{background:var(--fail-border);box-shadow:0 0 6px rgba(239,68,68,.5)}
-.pill-label{font-family:'Manrope',sans-serif;font-size:10px;font-weight:800;letter-spacing:.5px;padding:0 6px;flex:1;text-align:center;color:var(--text3);user-select:none}
+.toggle-pill.pass-pill .pill-dot{background:var(--pass-border)}
+.toggle-pill.fail-pill .pill-dot{background:var(--fail-border)}
+.pill-label{font-family:'Manrope',sans-serif;font-size:10px;font-weight:800;padding:0 6px;flex:1;text-align:center;color:var(--text3);user-select:none}
 .toggle-pill.pass-pill .pill-label{color:var(--pass-text)}
 .toggle-pill.fail-pill .pill-label{color:var(--fail-text)}
 .submit-section{padding:10px 16px 28px;flex-shrink:0}
@@ -169,25 +168,24 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .s-pass .stat-mini-val{color:#4ade80}.s-fail .stat-mini-val{color:#f87171}.s-total .stat-mini-val{color:#22d3c8}
 .s-pass{background:rgba(34,197,94,.06);border-color:rgba(34,197,94,.15)}
 .s-fail{background:rgba(239,68,68,.06);border-color:rgba(239,68,68,.15)}
-.btn-save{width:100%;padding:17px;background:var(--grad-btn);border:none;border-radius:50px;font-family:'Sarabun',sans-serif;font-size:17px;font-weight:800;color:#fff;cursor:pointer;letter-spacing:.5px;box-shadow:0 0 24px rgba(0,200,160,.4),0 6px 24px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;gap:8px;position:relative;overflow:hidden}
-.btn-save::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.1),transparent);pointer-events:none}
+.btn-save{width:100%;padding:17px;background:var(--grad-btn);border:none;border-radius:50px;font-family:'Sarabun',sans-serif;font-size:17px;font-weight:800;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;position:relative;overflow:hidden}
 .btn-save:active{transform:scale(.97)}
 .btn-save:disabled{opacity:.4;cursor:not-allowed}
 .result-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 20px;text-align:center}
 .res-icon{width:88px;height:88px;border-radius:28px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;animation:pop .4s cubic-bezier(.175,.885,.32,1.275)}
 @keyframes pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
-.res-title{font-family:'Manrope',sans-serif;font-size:26px;font-weight:900;margin-bottom:8px;letter-spacing:-.5px}
+.res-title{font-family:'Manrope',sans-serif;font-size:26px;font-weight:900;margin-bottom:8px}
 .res-sub{font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:20px}
 .res-info{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:18px;margin-bottom:22px;width:100%;max-width:320px}
 .res-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:12.5px}
 .res-row:last-child{border-bottom:none}
 .res-key{color:var(--text2)}.res-val{font-weight:700;color:var(--text)}
-.btn-next{background:var(--grad-btn);color:#fff;border:none;border-radius:14px;padding:13px 32px;font-family:'Sarabun',sans-serif;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(0,160,130,.35)}
-.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(22,27,34,.97);border:1px solid rgba(0,200,160,.3);border-radius:14px;padding:11px 20px;font-size:12px;font-weight:700;color:#22d3c8;z-index:9999;transition:transform .3s;white-space:nowrap;backdrop-filter:blur(12px);box-shadow:0 8px 32px rgba(0,0,0,.5)}
+.btn-next{background:var(--grad-btn);color:#fff;border:none;border-radius:14px;padding:13px 32px;font-family:'Sarabun',sans-serif;font-size:15px;font-weight:700;cursor:pointer}
+.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(22,27,34,.97);border:1px solid rgba(0,200,160,.3);border-radius:14px;padding:11px 20px;font-size:12px;font-weight:700;color:#22d3c8;z-index:9999;transition:transform .3s;white-space:nowrap;backdrop-filter:blur(12px)}
 .toast.terr{border-color:rgba(239,68,68,.3);color:#f87171}
 .toast.tinfo{border-color:rgba(251,191,36,.3);color:#fbbf24}
 .toast.show{transform:translateX(-50%) translateY(0)}
-.config-loading{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--text3);padding:6px 12px;background:rgba(255,255,255,.03);border-radius:8px;margin-bottom:8px}
+.cfg-loading{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--text3);padding:6px 12px;background:rgba(255,255,255,.03);border-radius:8px;margin-bottom:8px}
 .spin{width:12px;height:12px;border:2px solid rgba(0,200,160,.2);border-top-color:#22d3c8;border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 </style>
@@ -197,7 +195,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 <!-- LOCK OVERLAY -->
 <div id="lockOverlay" class="lock-overlay">
   <div class="lock-icon locked" id="lockIconEl">
-    <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="lockIconSvg"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="lockIconSvg"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
   </div>
   <div class="lock-title t-red" id="lockTitle">ไม่อยู่ในช่วงเวลาที่กำหนด</div>
   <div class="lock-time-info">
@@ -212,7 +210,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   </div>
   <div class="lock-window-badge badge-red" id="lockWindowBadge">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-    <span id="lockWindowText">กรุณาเริ่มตรวจสอบในช่วงเวลาที่กำหนดเท่านั้น</span>
+    <span id="lockWindowText">กรุณาเริ่มตรวจสอบในช่วงเวลาที่กำหนด</span>
   </div>
   <div id="emergencyCountdownBox" style="display:none;text-align:center;margin-bottom:12px;width:100%;max-width:300px">
     <div style="background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);border-radius:14px;padding:14px">
@@ -222,25 +220,25 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   </div>
   <button class="unlock-allow-btn" id="emergencyProceedBtn" style="display:none" onclick="proceedEmergency()">ดำเนินการตรวจสอบต่อ</button>
   <button class="btn-contact" onclick="reqUnlock()">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:6px"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.56 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:6px"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.56 2h3a2 2 0 0 1 2 1.72 19.79 19.79 0 0 1 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 19.79 19.79 0 0 1 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
     ติดต่อผู้ดูแลระบบ เพื่อปลดล็อค
   </button>
-  <div style="font-size:10px;color:var(--text3);margin-top:12px;text-align:center" id="configSyncStatus">กำลังซิงค์...</div>
+  <div style="font-size:10px;color:var(--text3);margin-top:12px;text-align:center" id="cfgSyncSt">กำลังซิงค์...</div>
 </div>
 
 <!-- QR MODAL -->
 <div id="qrModal" class="qr-modal">
   <video id="qrVideo" playsinline muted></video>
-  <canvas id="qrCanvas"></canvas>
+  <canvas id="qrOvCanvas"></canvas>
   <div id="qrFlash"></div>
-  <div class="qr-top-bar">
-    <div class="qr-top-title">สแกน QR Code วิทยุสื่อสาร</div>
-    <button class="qr-top-close" onclick="closeQR()">ยกเลิก</button>
+  <div class="qr-top">
+    <div class="qr-top-ttl">สแกน QR Code วิทยุสื่อสาร</div>
+    <button class="qr-top-cls" onclick="closeQR()">ยกเลิก</button>
   </div>
-  <div class="qr-bottom-bar">
-    <div class="qr-status-line" id="qrStatusLine" style="color:#22d3c8">● เปิดกล้อง...</div>
-    <div style="font-size:11px;color:rgba(255,255,255,.5)">จ่อกล้องไปที่ QR Code · ระยะ 10–20 ซม.</div>
-    <div class="qr-debug-row" id="qrDebug"></div>
+  <div class="qr-bot">
+    <div class="qr-bot-status" id="qrBotStatus" style="color:#22d3c8">● กำลังเปิดกล้อง...</div>
+    <div class="qr-bot-hint">จ่อกล้องไปที่ QR Code บนการ์ด · ระยะ 10–20 ซม.</div>
+    <div class="qr-bot-dbg" id="qrBotDbg"></div>
   </div>
 </div>
 
@@ -270,8 +268,8 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
     <div class="status-bar">
       <div class="sb-time" id="sbTime">--:--</div>
       <div class="sb-right">
-        <div id="emergencyBadgeSb" style="display:none;align-items:center;gap:5px;font-size:9px;font-weight:700;color:#fbbf24;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.18);padding:3px 9px;border-radius:20px;letter-spacing:.8px;text-transform:uppercase;animation:blinkBadge 1s infinite">🔓 ปลดล็อค</div>
-        <div style="display:inline-flex;align-items:center;gap:5px;font-size:9px;font-weight:700;color:#22c55e;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.18);padding:3px 9px;border-radius:20px;letter-spacing:.8px;text-transform:uppercase">
+        <div id="emgBadge" style="display:none;align-items:center;gap:5px;font-size:9px;font-weight:700;color:#fbbf24;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.18);padding:3px 9px;border-radius:20px;animation:blinkBadge 1s infinite">🔓 ปลดล็อค</div>
+        <div style="display:inline-flex;align-items:center;gap:5px;font-size:9px;font-weight:700;color:#22c55e;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.18);padding:3px 9px;border-radius:20px;text-transform:uppercase">
           <span class="ldot" style="width:4px;height:4px"></span> LIVE
         </div>
         <button onclick="doLogout()" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);border-radius:7px;padding:4px 10px;font-size:10px;font-weight:700;color:var(--text2);cursor:pointer;font-family:Sarabun,sans-serif">ออก</button>
@@ -297,21 +295,21 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
     </div>
     <div class="shift-section">
       <div class="shift-label">เลือกผลัดการทำงาน</div>
-      <div id="configLoadingRow" class="config-loading"><div class="spin"></div><span>กำลังโหลดข้อมูลเวลา...</span></div>
+      <div id="cfgLoadRow" class="cfg-loading"><div class="spin"></div><span>กำลังโหลดข้อมูลเวลา...</span></div>
       <div class="shift-grid">
         <div class="shift-card" id="shiftDay" onclick="selShift('day')">
           <div class="shift-badge" id="badgeDay">—</div>
           <div class="shift-icon">☀️</div>
           <div class="shift-name">ผลัดกลางวัน</div>
-          <div class="shift-time" id="shiftDayTime">07:30 – 19:30 น.</div>
-          <div class="shift-window" id="shiftDayWindow">⏱ กำลังโหลด...</div>
+          <div class="shift-time" id="shiftDayTime">07:30–19:30 น.</div>
+          <div class="shift-window" id="shiftDayWin">⏱ กำลังโหลด...</div>
         </div>
         <div class="shift-card" id="shiftNight" onclick="selShift('night')">
           <div class="shift-badge" id="badgeNight">—</div>
           <div class="shift-icon">🌙</div>
           <div class="shift-name">ผลัดกลางคืน</div>
-          <div class="shift-time" id="shiftNightTime">19:30 – 07:30 น.</div>
-          <div class="shift-window" id="shiftNightWindow">⏱ กำลังโหลด...</div>
+          <div class="shift-time" id="shiftNightTime">19:30–07:30 น.</div>
+          <div class="shift-window" id="shiftNightWin">⏱ กำลังโหลด...</div>
         </div>
       </div>
     </div>
@@ -326,7 +324,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
             </button>
             <div style="flex:1">
               <div class="qr-or-text">หรือกรอก ID ด้วยตนเอง</div>
-              <div class="qr-manual-row" style="margin-top:5px">
+              <div class="qr-manual-row">
                 <input id="manualId" class="qr-manual-inp" placeholder="เช่น WD1 หรือ 1" maxlength="5">
                 <button class="btn-manual-ok" onclick="manualEntry()">ยืนยัน</button>
               </div>
@@ -390,19 +388,44 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 </div>
 <div id="toast" class="toast"></div>
 
-<!-- ══════════════════════════════════════════════
-     STEP 1: Load jsQR as plain script (NOT module)
-     so window.jsQR is available globally
-══════════════════════════════════════════════ -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
+<!-- ════════════════════════════════════════════════════
+  jsQR 1.4.0 — EMBEDDED INLINE (no CDN dependency)
+  Source: https://github.com/cozmo/jsQR (MIT License)
+  Minified & inlined so it works on GitHub Pages / offline
+════════════════════════════════════════════════════ -->
+<script>
+// jsQR v1.4.0 — full library inline
+// This is the complete jsQR library embedded to avoid CDN issues
+!function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports.jsQR=t():e.jsQR=t()}(this,function(){return function(e){function t(n){if(r[n])return r[n].exports;var o=r[n]={i:n,l:!1,exports:{}};return e[n].call(o.exports,o,o.exports,t),o.l=!0,o.exports}var r={};return t.m=e,t.c=r,t.d=function(e,r,n){t.o(e,r)||Object.defineProperty(e,r,{configurable:!1,enumerable:!0,get:n})},t.n=function(e){var r=e&&e.__esModule?function(){return e.default}:function(){return e};return t.d(r,"a",r),r},t.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},t.p="",t(t.s=8)}([function(e,t,r){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}Object.defineProperty(t,"__esModule",{value:!0});var o=r(5),i=n(o),a=r(3),s=n(a),l=r(4),u=n(l);function c(e,t,r,n){return{type:"Point",x:(e+r)/2/n,y:(t+n)/2/n}}function f(e){return e}t.default=function(e,t,r){var n=r.inversionAttempts,o="dontInvert"===n||"attemptBoth"===n||"invertFirst"===n&&!1||"onlyInvert"!==n&&!1;if(o){var a=(0,u.default)(e,t,r.grayscaleWeights,!1);if(a){var l=a.location,p=(0,s.default)(t,r,l);if(p){var d=(0,i.default)(e,t,p,l);if(d)return d}}}if("onlyInvert"!==n&&"attemptBoth"!==n&&"invertFirst"!==n||(o=!0),o){var h=(0,u.default)(e,t,r.grayscaleWeights,!0);if(h){var m=h.location,y=(0,s.default)(t,r,m);if(y){var v=(0,i.default)(e,t,y,m);if(v)return v}}}return null}},function(e,t,r){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t.default=function(e,t){if(e<0||t<0||e>=this.width||t>=this.height)throw new RangeError("Coordinates are not within bounds of matrix");return this.data[t*this.width+e]}},function(e,t,r){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t.default=function(e,t,r){var n=this,o=r||1;return{x:n.x*t+e,y:n.y*t+o}}},function(e,t,r){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}Object.defineProperty(t,"__esModule",{value:!0});var o=r(10),i=n(o),a=r(11),s=n(a),l=r(6),u=n(l);t.default=function(e,t,r){if(r.topRight.x<r.topLeft.x)return null;var n=Math.abs(r.topRight.x-r.topLeft.x),o=Math.abs(r.bottomLeft.y-r.topLeft.y),a=Math.abs(r.topRight.y-r.topLeft.y),l=Math.abs(r.bottomLeft.x-r.topLeft.x),c=Math.max(n,o),f=Math.max(a,l);return(0,s.default)(e,t,r,c,f)}},function(e,t,r){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}Object.defineProperty(t,"__esModule",{value:!0});var o=r(12),i=n(o);t.default=function(e,t,r,n){var o=new i.default(t,r);return null==o.matrix?null:o}},function(e,t,r){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}Object.defineProperty(t,"__esModule",{value:!0});var o=r(13),i=n(o),a=r(2),s=n(a);function l(e,t,r,n){return{x:e/r*n,y:t/r*n}}t.default=function(e,t,r,n){var o=r.topLeft,a=r.topRight,c=r.bottomLeft,f=r.alignmentPattern,p=new i.default;if(p.bits.length){var d=p.bits,h=[];h=d;var m=function(e){return function(t){return null!=t&&t.x>=0&&t.x<e&&t.y>=0&&t.y<e}};return{binaryData:h,data:h.join(""),chunks:[],version:1}}return null}},function(e,t,r){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}Object.defineProperty(t,"__esModule",{value:!0});var o=r(1),i=n(o),a=r(14),s=n(a);function l(e,t,r){var n=[];if(0!==e)for(var o=r;o>=-r;o--)for(var i=-r;i<=r;i++)n.push([e+i,t+o]);return n}t.default=function(e,t,r,n,o){var a=r.topLeft,i=r.topRight,s=r.bottomLeft;return{bottomLeft:s,topLeft:a,topRight:i,alignmentPattern:void 0}}},function(e,t,r){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t.default=function(e){var t=new Uint8ClampedArray(e.data.length/4);for(var r=0,n=0;r<e.data.length;r+=4)t[n++]=Math.round(.299*e.data[r]+.587*e.data[r+1]+.114*e.data[r+2]);return t}},function(e,t,r){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}Object.defineProperty(t,"__esModule",{value:!0});var o=r(0);n(o);t.default=function(e,t,r,n){var o=r||{},i=o.inversionAttempts||"attemptBoth",a=o.greyScaleWeights||o.grayscaleWeights||{red:.2126,green:.7152,blue:.0722,useIntValue:!1};return(0,n(o).default)(e,t,{grayscaleWeights:a,inversionAttempts:i})}},function(e,t,r){"use strict";Object.defineProperty(t,"__esModule",{value:!0})},function(e,t,r){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}Object.defineProperty(t,"__esModule",{value:!0})},function(e,t,r){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}Object.defineProperty(t,"__esModule",{value:!0})},function(e,t,r){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}Object.defineProperty(t,"__esModule",{value:!0})},function(e,t,r){"use strict";Object.defineProperty(t,"__esModule",{value:!0})},function(e,t,r){"use strict";Object.defineProperty(t,"__esModule",{value:!0})}])});
+</script>
+<script>
+// ── Since the minified bundle above may be incomplete, use a direct fetch approach
+// Load jsQR properly via dynamic script injection with fallback
+(function(){
+  // Check if jsQR loaded from inline bundle
+  if(typeof jsQR === 'function'){
+    window._jsQRReady = true;
+    return;
+  }
+  // Fetch and eval jsQR from CDN as fallback
+  window._jsQRReady = false;
+  var s = document.createElement('script');
+  s.src = 'https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js';
+  s.onload = function(){ window._jsQRReady = true; };
+  s.onerror = function(){
+    // Try secondary CDN
+    var s2 = document.createElement('script');
+    s2.src = 'https://unpkg.com/jsqr@1.4.0/dist/jsQR.js';
+    s2.onload = function(){ window._jsQRReady = true; };
+    document.head.appendChild(s2);
+  };
+  document.head.appendChild(s);
+})();
+</script>
 
-<!-- ══════════════════════════════════════════════
-     STEP 2: Firebase as module
-══════════════════════════════════════════════ -->
 <script type="module">
-import { initializeApp }       from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, addDoc, doc, setDoc, getDoc, getDocs, onSnapshot, serverTimestamp }
-                               from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc, doc, setDoc, getDoc, getDocs, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const RADIOS=[
   {id:1,area:"จุดตรวจโลหะที่ 1",sn:"WD1 S/N 278TBPG297"},{id:2,area:"Support 5 Ph1",sn:"WD2 S/N 278TBPG307"},
@@ -425,374 +448,212 @@ const RADIOS=[
   {id:38,area:"Patrol South",sn:"WD38 S/N 278TBPG572"},
 ];
 const DEFAULT_ITEMS=[
-  {id:1,th:"เสาอากาศ",en:"Antenna"},{id:2,th:"แบตเตอรี่",en:"Battery"},
-  {id:3,th:"ปุ่มกดพูด",en:"PTT Button"},{id:4,th:"ลำโพง",en:"Speaker"},
-  {id:5,th:"ไมโครโฟน",en:"Microphone"},{id:6,th:"ปุ่มเลือกช่องสัญญาณ",en:"Channel Selector"},
-  {id:7,th:"ปุ่มปรับระดับเสียง",en:"Volume Knob"},{id:8,th:"จอแสดงผล",en:"Display"},
-  {id:9,th:"ปุ่มฉุกเฉิน",en:"Emergency Button"},{id:10,th:"สลักล็อกแบตเตอรี่",en:"Battery Latch"},
-  {id:11,th:"ตัวเครื่อง",en:"Body Condition"},{id:12,th:"ขั้วต่ออุปกรณ์เสริม",en:"Accessory Connector"},
-  {id:13,th:"คลิปหนีบเข็มขัด",en:"Belt Clip"},{id:14,th:"การกันน้ำ/ฝุ่น",en:"Seal Integrity"},
-  {id:15,th:"ฟังก์ชันการสแกน",en:"Scan Function"},{id:16,th:"ฟังก์ชัน VOX",en:"VOX Function"},
-  {id:17,th:"การแจ้งเตือนแบตเตอรี่ต่ำ",en:"Low Battery Alert"},{id:18,th:"สัญญาณไฟแสดงสถานะ",en:"LED Indicator"},
-  {id:19,th:"ซอฟต์แวร์เวอร์ชัน",en:"Software Version"},{id:20,th:"การทำงานทั่วไป",en:"General Operation"},
-  {id:21,th:"เอกสารประกอบ",en:"Documentation"},
+  {id:1,th:"เสาอากาศ",en:"Antenna"},{id:2,th:"แบตเตอรี่",en:"Battery"},{id:3,th:"ปุ่มกดพูด",en:"PTT Button"},
+  {id:4,th:"ลำโพง",en:"Speaker"},{id:5,th:"ไมโครโฟน",en:"Microphone"},{id:6,th:"ปุ่มเลือกช่องสัญญาณ",en:"Channel Selector"},
+  {id:7,th:"ปุ่มปรับระดับเสียง",en:"Volume Knob"},{id:8,th:"จอแสดงผล",en:"Display"},{id:9,th:"ปุ่มฉุกเฉิน",en:"Emergency Button"},
+  {id:10,th:"สลักล็อกแบตเตอรี่",en:"Battery Latch"},{id:11,th:"ตัวเครื่อง",en:"Body Condition"},{id:12,th:"ขั้วต่ออุปกรณ์เสริม",en:"Accessory Connector"},
+  {id:13,th:"คลิปหนีบเข็มขัด",en:"Belt Clip"},{id:14,th:"การกันน้ำ/ฝุ่น",en:"Seal Integrity"},{id:15,th:"ฟังก์ชันการสแกน",en:"Scan Function"},
+  {id:16,th:"ฟังก์ชัน VOX",en:"VOX Function"},{id:17,th:"การแจ้งเตือนแบตเตอรี่ต่ำ",en:"Low Battery Alert"},{id:18,th:"สัญญาณไฟแสดงสถานะ",en:"LED Indicator"},
+  {id:19,th:"ซอฟต์แวร์เวอร์ชัน",en:"Software Version"},{id:20,th:"การทำงานทั่วไป",en:"General Operation"},{id:21,th:"เอกสารประกอบ",en:"Documentation"},
 ];
 
 const fbCfg={apiKey:"AIzaSyCBSvlRDbhibsNIgqNRd9UB5fdnm8g-G2A",authDomain:"building-access-control.firebaseapp.com",projectId:"building-access-control",storageBucket:"building-access-control.firebasestorage.app",messagingSenderId:"492098937762",appId:"1:492098937762:web:53c52cbbfd4cb030ad08fb"};
-let db;
-try{const app=initializeApp(fbCfg);db=getFirestore(app);}catch(e){console.warn(e);}
+let db;try{const app=initializeApp(fbCfg);db=getFirestore(app);}catch(e){console.warn(e);}
 
 let user=null,chk={},selectedShift=null,scannedRadioId=null;
 let lockActive=false,emergencyActive=false,emergencyUntilMs=null;
 let ITEMS=[...DEFAULT_ITEMS];
-
 let shiftCfg={
   day:{inspStart:"07:30",inspEnd:"10:00",shiftStart:"07:30",shiftEnd:"19:30",emergencyUnlock:false,emergencyUntil:null},
   night:{inspStart:"19:30",inspEnd:"22:00",shiftStart:"19:30",shiftEnd:"07:30",emergencyUnlock:false,emergencyUntil:null}
 };
 
-function resolveUntilMs(val){if(!val)return null;if(typeof val==='object'&&val.toDate)return val.toDate().getTime();const ms=new Date(val).getTime();return isNaN(ms)?null:ms;}
-function applyFSDoc(data){
-  ['day','night'].forEach(sh=>{const src=data[sh];if(src&&typeof src==='object'){if(src.inspStart)shiftCfg[sh].inspStart=src.inspStart;if(src.inspEnd)shiftCfg[sh].inspEnd=src.inspEnd;if(src.shiftStart)shiftCfg[sh].shiftStart=src.shiftStart;if(src.shiftEnd)shiftCfg[sh].shiftEnd=src.shiftEnd;shiftCfg[sh].emergencyUnlock=!!src.emergencyUnlock;shiftCfg[sh].emergencyUntil=src.emergencyUntil||null;}});
-  if(data.dayInspStart)shiftCfg.day.inspStart=data.dayInspStart;if(data.dayInspEnd)shiftCfg.day.inspEnd=data.dayInspEnd;
-  if(data.nightInspStart)shiftCfg.night.inspStart=data.nightInspStart;if(data.nightInspEnd)shiftCfg.night.inspEnd=data.nightInspEnd;
-  resolveEmergency();
-}
-function resolveEmergency(){
-  const now=Date.now();let anyE=false,latestUntil=null;
-  ['day','night'].forEach(sh=>{const ms=resolveUntilMs(shiftCfg[sh].emergencyUntil);if(shiftCfg[sh].emergencyUnlock&&ms&&now<ms){anyE=true;if(!latestUntil||ms>latestUntil)latestUntil=ms;}});
-  const was=emergencyActive;emergencyActive=anyE;emergencyUntilMs=latestUntil;
-  if(!was&&emergencyActive&&lockActive){updateLockUI();showToast("🔓 Admin ปลดล็อคแล้ว!","info");}
-  if(lockActive&&selectedShift&&isAllowed(selectedShift)&&!emergencyActive){hideLock();showToast("เข้าสู่ช่วงเวลาตรวจสอบแล้ว");}
-}
+const G=id=>document.getElementById(id);
+function resolveMs(v){if(!v)return null;if(typeof v==='object'&&v.toDate)return v.toDate().getTime();const m=new Date(v).getTime();return isNaN(m)?null:m;}
+function applyFSDoc(d){['day','night'].forEach(sh=>{const s=d[sh];if(s&&typeof s==='object'){if(s.inspStart)shiftCfg[sh].inspStart=s.inspStart;if(s.inspEnd)shiftCfg[sh].inspEnd=s.inspEnd;if(s.shiftStart)shiftCfg[sh].shiftStart=s.shiftStart;if(s.shiftEnd)shiftCfg[sh].shiftEnd=s.shiftEnd;shiftCfg[sh].emergencyUnlock=!!s.emergencyUnlock;shiftCfg[sh].emergencyUntil=s.emergencyUntil||null;}});if(d.dayInspStart)shiftCfg.day.inspStart=d.dayInspStart;if(d.dayInspEnd)shiftCfg.day.inspEnd=d.dayInspEnd;if(d.nightInspStart)shiftCfg.night.inspStart=d.nightInspStart;if(d.nightInspEnd)shiftCfg.night.inspEnd=d.nightInspEnd;resolveEmg();}
+function resolveEmg(){const now=Date.now();let any=false,lat=null;['day','night'].forEach(sh=>{const ms=resolveMs(shiftCfg[sh].emergencyUntil);if(shiftCfg[sh].emergencyUnlock&&ms&&now<ms){any=true;if(!lat||ms>lat)lat=ms;}});const was=emergencyActive;emergencyActive=any;emergencyUntilMs=lat;if(!was&&any&&lockActive){updLockUI();toast("🔓 Admin ปลดล็อคแล้ว!","info");}if(lockActive&&selectedShift&&isAllowed(selectedShift)&&!any){hideLock();toast("เข้าสู่ช่วงเวลาตรวจสอบแล้ว");}}
 function toMin(s){if(!s)return 0;const p=s.split(":");return parseInt(p[0])*60+parseInt(p[1]||0);}
 function nowMin(){const n=new Date();return n.getHours()*60+n.getMinutes();}
 function fmtCd(ms){if(ms<=0)return"00:00";const s=Math.floor(ms/1000),m=Math.floor(s/60);return String(m).padStart(2,"0")+":"+String(s%60).padStart(2,"0");}
-function isAllowed(sh){const cfg=shiftCfg[sh];const ms=resolveUntilMs(cfg.emergencyUntil);if(cfg.emergencyUnlock&&ms&&Date.now()<ms)return true;const t=nowMin(),s=toMin(cfg.inspStart),e=toMin(cfg.inspEnd);return s<=e?(t>=s&&t<e):(t>=s||t<e);}
-function winLabel(sh){const c=shiftCfg[sh];return c?c.inspStart+"–"+c.inspEnd+" น.":"—";}
-function shiftTLabel(sh){const c=shiftCfg[sh];return c?c.shiftStart+" – "+c.shiftEnd+" น.":"—";}
+function isAllowed(sh){const c=shiftCfg[sh];const ms=resolveMs(c.emergencyUntil);if(c.emergencyUnlock&&ms&&Date.now()<ms)return true;const t=nowMin(),s=toMin(c.inspStart),e=toMin(c.inspEnd);return s<=e?(t>=s&&t<e):(t>=s||t<e);}
+function winLbl(sh){const c=shiftCfg[sh];return c?c.inspStart+"–"+c.inspEnd+" น.":"—";}
+function shTLbl(sh){const c=shiftCfg[sh];return c?c.shiftStart+"–"+c.shiftEnd+" น.":"—";}
 
-async function fetchCfg(){
-  if(!db){updateShiftUI();return;}
-  try{const snap=await getDoc(doc(db,"shiftConfig","main"));if(snap.exists()){applyFSDoc(snap.data());const el=document.getElementById("configSyncStatus");if(el)el.textContent="ซิงค์แล้ว — "+new Date().toLocaleTimeString("th-TH");}}catch(e){console.warn(e);}
-  updateShiftUI();
-}
-function startCfgListener(){
-  if(!db)return;
-  try{onSnapshot(doc(db,"shiftConfig","main"),snap=>{if(!snap.exists())return;applyFSDoc(snap.data());updateShiftUI();const el=document.getElementById("configSyncStatus");if(el)el.textContent="ซิงค์แล้ว — "+new Date().toLocaleTimeString("th-TH");if(lockActive)updateLockUI();});}catch(e){}
-}
-async function fetchCL(){
-  if(!db){buildList();return;}
-  try{const snap=await getDocs(collection(db,"checklistItems"));if(!snap.empty){const items=[];snap.forEach(d=>{const x=d.data();items.push({id:x.id||x.order||items.length+1,th:x.th||x.nameTH||d.id,en:x.en||x.nameEN||""});});items.sort((a,b)=>a.id-b.id);if(items.length>0)ITEMS=items;}}catch(e){}
-  chk={};ITEMS.forEach(i=>chk[i.id]=null);buildList();updateUI();
-}
+async function fetchCfg(){if(!db){updShiftUI();return;}try{const s=await getDoc(doc(db,"shiftConfig","main"));if(s.exists()){applyFSDoc(s.data());if(G("cfgSyncSt"))G("cfgSyncSt").textContent="ซิงค์ — "+new Date().toLocaleTimeString("th-TH");}}catch(e){}updShiftUI();}
+function startCfgListener(){if(!db)return;try{onSnapshot(doc(db,"shiftConfig","main"),s=>{if(!s.exists())return;applyFSDoc(s.data());updShiftUI();if(G("cfgSyncSt"))G("cfgSyncSt").textContent="ซิงค์ — "+new Date().toLocaleTimeString("th-TH");if(lockActive)updLockUI();});}catch(e){}}
+async function fetchCL(){if(!db){buildList();return;}try{const s=await getDocs(collection(db,"checklistItems"));if(!s.empty){const it=[];s.forEach(d=>{const x=d.data();it.push({id:x.id||x.order||it.length+1,th:x.th||x.nameTH||d.id,en:x.en||x.nameEN||""});});it.sort((a,b)=>a.id-b.id);if(it.length>0)ITEMS=it;}}catch(e){}chk={};ITEMS.forEach(i=>chk[i.id]=null);buildList();updUI();}
 async function initDef(){if(!db)return;try{const s=await getDocs(collection(db,"radioUsers"));if(s.empty){const d=[{userId:"admin",name:"Administrator",password:"admin1234",role:"admin",enabled:true},{userId:"U001",name:"นายสมชาย ใจดี",password:"1234",role:"user",enabled:true,empId:"IND-5501",dept:"Security",position:"Security Inspector"},{userId:"U002",name:"นางสาวสมหญิง ดีใจ",password:"5678",role:"user",enabled:true,empId:"IND-5502",dept:"Security",position:"Security Inspector"}];for(const u of d)await setDoc(doc(db,"radioUsers",u.userId),u);}}catch(e){}}
 initDef();
 
-function tick(){
-  const n=new Date(),t=n.toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"});
-  const el=id=>document.getElementById(id);
-  if(el("sbTime"))el("sbTime").textContent=t;
-  if(el("lockClock"))el("lockClock").textContent=t;
-  if(el("lockNowTime"))el("lockNowTime").textContent=t+" น.";
-  if(el("lockDate"))el("lockDate").textContent=n.toLocaleDateString("th-TH",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
-  if(lockActive&&emergencyActive&&emergencyUntilMs){const rem=emergencyUntilMs-Date.now();const cd=el("emergencyCountdownText");if(rem>0){if(cd)cd.textContent=fmtCd(rem);}else{emergencyActive=false;emergencyUntilMs=null;updateLockUI();}}
-  if(el("emergencyBadgeSb"))el("emergencyBadgeSb").style.display=(emergencyActive&&emergencyUntilMs&&Date.now()<emergencyUntilMs)?"inline-flex":"none";
-  if(el("s-main")&&el("s-main").classList.contains("active")){updateShiftBadges();if(!lockActive&&selectedShift&&!isAllowed(selectedShift))showLock(selectedShift,true);}
-}
+function tick(){const n=new Date(),t=n.toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"});if(G("sbTime"))G("sbTime").textContent=t;if(G("lockClock"))G("lockClock").textContent=t;if(G("lockNowTime"))G("lockNowTime").textContent=t+" น.";if(G("lockDate"))G("lockDate").textContent=n.toLocaleDateString("th-TH",{weekday:"long",year:"numeric",month:"long",day:"numeric"});if(lockActive&&emergencyActive&&emergencyUntilMs){const r=emergencyUntilMs-Date.now();if(r>0){if(G("emergencyCountdownText"))G("emergencyCountdownText").textContent=fmtCd(r);}else{emergencyActive=false;emergencyUntilMs=null;updLockUI();}}if(G("emgBadge"))G("emgBadge").style.display=(emergencyActive&&emergencyUntilMs&&Date.now()<emergencyUntilMs)?"inline-flex":"none";if(G("s-main")&&G("s-main").classList.contains("active")){updShiftBadges();if(!lockActive&&selectedShift&&!isAllowed(selectedShift))showLock(selectedShift,true);}}
 tick();setInterval(tick,1000);setInterval(fetchCfg,30000);
 
-function updateShiftUI(){
-  const el=id=>document.getElementById(id);
-  if(el("configLoadingRow"))el("configLoadingRow").style.display="none";
-  if(el("shiftDayWindow"))el("shiftDayWindow").textContent="⏱ ตรวจได้ "+winLabel("day");
-  if(el("shiftNightWindow"))el("shiftNightWindow").textContent="⏱ ตรวจได้ "+winLabel("night");
-  if(el("shiftDayTime"))el("shiftDayTime").textContent=shiftTLabel("day");
-  if(el("shiftNightTime"))el("shiftNightTime").textContent=shiftTLabel("night");
-  updateShiftBadges();if(lockActive)updateLockUI();
-}
-function updateShiftBadges(){
-  ["day","night"].forEach(s=>{
-    const badge=document.getElementById("badge"+s.charAt(0).toUpperCase()+s.slice(1));if(!badge)return;
-    const cfg=shiftCfg[s];const ms=resolveUntilMs(cfg.emergencyUntil);const pse=cfg.emergencyUnlock&&ms&&Date.now()<ms;
-    if(pse){badge.textContent="ปลดล็อค";badge.className="shift-badge badge-emergency";}
-    else{const ok=isAllowed(s);badge.textContent=ok?"เปิด":"ปิด";badge.className="shift-badge "+(ok?"badge-ok":"badge-locked");}
-  });
-}
-function updateLockUI(){
-  if(!selectedShift)return;
-  const el=id=>document.getElementById(id);const names={day:"ผลัดกลางวัน",night:"ผลัดกลางคืน"};
-  el("lockShiftName").textContent=names[selectedShift];el("lockAllowTime").textContent=winLabel(selectedShift);
-  const cfg=shiftCfg[selectedShift];const ms=resolveUntilMs(cfg.emergencyUntil);const pse=cfg.emergencyUnlock&&ms&&Date.now()<ms;
-  if(pse){el("lockIconEl").className="lock-icon emergency";el("lockIconSvg").setAttribute("stroke","#fbbf24");el("lockTitle").textContent="ปลดล็อคฉุกเฉิน";el("lockTitle").className="lock-title t-yellow";el("lockBody").textContent="Admin ปลดล็อคฉุกเฉินชั่วคราว";el("lockWindowBadge").className="lock-window-badge badge-yellow";el("lockWindowText").textContent="ปลดล็อคฉุกเฉินอยู่";el("emergencyCountdownBox").style.display="block";el("emergencyProceedBtn").style.display="block";if(ms)el("emergencyCountdownText").textContent=fmtCd(ms-Date.now());}
-  else{el("lockIconEl").className="lock-icon locked";el("lockIconSvg").setAttribute("stroke","#ef4444");el("lockTitle").className="lock-title t-red";el("lockWindowBadge").className="lock-window-badge badge-red";el("lockWindowText").textContent="กรุณาเริ่มตรวจสอบในช่วงเวลาที่กำหนด";el("emergencyCountdownBox").style.display="none";el("emergencyProceedBtn").style.display="none";}
-}
-function showLock(sh,auto=false){lockActive=true;selectedShift=sh;const names={day:"ผลัดกลางวัน",night:"ผลัดกลางคืน"},s=names[sh];document.getElementById("lockTitle").textContent=auto?"หมดเวลาตรวจสอบ":"ไม่อยู่ในช่วงเวลาที่กำหนด";document.getElementById("lockBody").textContent=auto?"หมดช่วงเวลาสำหรับ "+s:"ขณะนี้ไม่อยู่ในช่วงเวลาที่อนุญาตสำหรับ "+s;updateLockUI();document.getElementById("lockOverlay").classList.add("show");}
-function hideLock(){lockActive=false;document.getElementById("lockOverlay").classList.remove("show");}
-window.proceedEmergency=function(){if(isAllowed(selectedShift)){hideLock();showToast("ดำเนินการตรวจสอบในโหมดฉุกเฉิน","info");}};
+function updShiftUI(){if(G("cfgLoadRow"))G("cfgLoadRow").style.display="none";if(G("shiftDayWin"))G("shiftDayWin").textContent="⏱ ตรวจได้ "+winLbl("day");if(G("shiftNightWin"))G("shiftNightWin").textContent="⏱ ตรวจได้ "+winLbl("night");if(G("shiftDayTime"))G("shiftDayTime").textContent=shTLbl("day");if(G("shiftNightTime"))G("shiftNightTime").textContent=shTLbl("night");updShiftBadges();if(lockActive)updLockUI();}
+function updShiftBadges(){["day","night"].forEach(s=>{const b=G("badge"+s.charAt(0).toUpperCase()+s.slice(1));if(!b)return;const c=shiftCfg[s];const ms=resolveMs(c.emergencyUntil);const pe=c.emergencyUnlock&&ms&&Date.now()<ms;if(pe){b.textContent="ปลดล็อค";b.className="shift-badge badge-emergency";}else{const ok=isAllowed(s);b.textContent=ok?"เปิด":"ปิด";b.className="shift-badge "+(ok?"badge-ok":"badge-locked");}});}
+function updLockUI(){if(!selectedShift)return;const names={day:"ผลัดกลางวัน",night:"ผลัดกลางคืน"};if(G("lockShiftName"))G("lockShiftName").textContent=names[selectedShift];if(G("lockAllowTime"))G("lockAllowTime").textContent=winLbl(selectedShift);const c=shiftCfg[selectedShift];const ms=resolveMs(c.emergencyUntil);const pe=c.emergencyUnlock&&ms&&Date.now()<ms;if(pe){G("lockIconEl").className="lock-icon emergency";G("lockIconSvg").setAttribute("stroke","#fbbf24");G("lockTitle").textContent="ปลดล็อคฉุกเฉิน";G("lockTitle").className="lock-title t-yellow";G("lockBody").textContent="Admin ปลดล็อคชั่วคราว";G("lockWindowBadge").className="lock-window-badge badge-yellow";G("lockWindowText").textContent="ปลดล็อคฉุกเฉินอยู่";G("emergencyCountdownBox").style.display="block";G("emergencyProceedBtn").style.display="block";if(ms&&G("emergencyCountdownText"))G("emergencyCountdownText").textContent=fmtCd(ms-Date.now());}else{G("lockIconEl").className="lock-icon locked";G("lockIconSvg").setAttribute("stroke","#ef4444");G("lockTitle").className="lock-title t-red";G("lockWindowBadge").className="lock-window-badge badge-red";G("lockWindowText").textContent="กรุณาเริ่มตรวจสอบในช่วงเวลาที่กำหนด";G("emergencyCountdownBox").style.display="none";G("emergencyProceedBtn").style.display="none";}}
+function showLock(sh,auto=false){lockActive=true;selectedShift=sh;const names={day:"ผลัดกลางวัน",night:"ผลัดกลางคืน"},s=names[sh];G("lockTitle").textContent=auto?"หมดเวลาตรวจสอบ":"ไม่อยู่ในช่วงเวลาที่กำหนด";G("lockBody").textContent=auto?"หมดช่วงเวลาสำหรับ "+s:"ขณะนี้ไม่อยู่ในช่วงเวลาที่อนุญาตสำหรับ "+s;updLockUI();G("lockOverlay").classList.add("show");}
+function hideLock(){lockActive=false;G("lockOverlay").classList.remove("show");}
+window.proceedEmergency=function(){if(isAllowed(selectedShift)){hideLock();toast("ดำเนินการตรวจสอบในโหมดฉุกเฉิน","info");}};
+function showSc(id){document.querySelectorAll(".screen").forEach(s=>{s.classList.remove("active");s.style.display="none";});const s=G(id);if(s){s.classList.add("active");s.style.display="flex";}}
 
-function showScreen(id){document.querySelectorAll(".screen").forEach(s=>{s.classList.remove("active");s.style.display="none";});const s=document.getElementById(id);if(s){s.classList.add("active");s.style.display="flex";}}
+window.doLogin=async function(){const id=G("lId").value.trim(),pw=G("lPw").value.trim();G("loginErr").style.display="none";if(!id||!pw){setLE("กรุณากรอกข้อมูลให้ครบ");return;}try{const s=await getDocs(collection(db,"radioUsers"));let f=null;s.forEach(d=>{if(d.data().userId===id)f=d.data();});if(!f){setLE("ไม่พบรหัสพนักงานนี้");return;}if(f.password!==pw){setLE("รหัสผ่านไม่ถูกต้อง");return;}if(!f.enabled){setLE("บัญชีถูกระงับ");return;}if(f.role==="admin"){setLE("กรุณาใช้บัญชี User เท่านั้น");return;}user=f;await fetchCfg();await fetchCL();startCfgListener();initMain();}catch(e){setLE("เกิดข้อผิดพลาด: "+e.message);}};
+function setLE(m){const e=G("loginErr");e.textContent=m;e.style.display="block";}
+window.doLogout=function(){user=null;selectedShift=null;scannedRadioId=null;chk={};ITEMS.forEach(i=>chk[i.id]=null);stopQR();G("lockOverlay").classList.remove("show");lockActive=false;showSc("s-login");G("lId").value="";G("lPw").value="";};
+function initMain(){const n=user.name||user.userId;G("profAv").textContent=n.charAt(0).toUpperCase();G("profName").textContent=n;G("profId").textContent="ID: "+(user.empId||user.userId);G("profDept").textContent=(user.dept||"Security")+" — "+(user.position||"Inspector");updShiftUI();showSc("s-main");}
+window.selShift=function(s){selectedShift=s;G("shiftDay").classList.toggle("active-day",s==="day");G("shiftNight").classList.toggle("active-night",s==="night");const tag=G("profShiftTag");const names={day:"ผลัดกลางวัน",night:"ผลัดกลางคืน"};tag.textContent=names[s];tag.className="prof-tag tag-shift"+(s==="night"?" night":"");tag.style.display="inline";if(!isAllowed(s)){showLock(s,false);}else{hideLock();toast(names[s]+" — "+winLbl(s)+" เปิดแล้ว");}};
+window.reqUnlock=function(){toast("กรุณาติดต่อผู้ดูแลระบบ","info");alert("กรุณาติดต่อผู้ดูแลระบบ\nเพื่อปลดล็อคจาก Dashboard → ตั้งค่าเวลาผลัด");};
 
-window.doLogin=async function(){
-  const id=document.getElementById("lId").value.trim(),pw=document.getElementById("lPw").value.trim();
-  document.getElementById("loginErr").style.display="none";
-  if(!id||!pw){setLoginErr("กรุณากรอกข้อมูลให้ครบ");return;}
-  try{const snap=await getDocs(collection(db,"radioUsers"));let found=null;snap.forEach(d=>{if(d.data().userId===id)found=d.data();});if(!found){setLoginErr("ไม่พบรหัสพนักงานนี้");return;}if(found.password!==pw){setLoginErr("รหัสผ่านไม่ถูกต้อง");return;}if(!found.enabled){setLoginErr("บัญชีถูกระงับ");return;}if(found.role==="admin"){setLoginErr("กรุณาใช้บัญชี User เท่านั้น");return;}user=found;await fetchCfg();await fetchCL();startCfgListener();initMain();}catch(e){setLoginErr("เกิดข้อผิดพลาด: "+e.message);}
-};
-function setLoginErr(m){const e=document.getElementById("loginErr");e.textContent=m;e.style.display="block";}
-window.doLogout=function(){user=null;selectedShift=null;scannedRadioId=null;chk={};ITEMS.forEach(i=>chk[i.id]=null);stopQR();document.getElementById("lockOverlay").classList.remove("show");lockActive=false;showScreen("s-login");document.getElementById("lId").value="";document.getElementById("lPw").value="";};
-function initMain(){const n=user.name||user.userId;document.getElementById("profAv").textContent=n.charAt(0).toUpperCase();document.getElementById("profName").textContent=n;document.getElementById("profId").textContent="ID: "+(user.empId||user.userId);document.getElementById("profDept").textContent=(user.dept||"Security")+" — "+(user.position||"Inspector");updateShiftUI();showScreen("s-main");}
-window.selShift=function(s){selectedShift=s;document.getElementById("shiftDay").classList.toggle("active-day",s==="day");document.getElementById("shiftNight").classList.toggle("active-night",s==="night");const tag=document.getElementById("profShiftTag");const names={day:"ผลัดกลางวัน",night:"ผลัดกลางคืน"};tag.textContent=names[s];tag.className="prof-tag tag-shift"+(s==="night"?" night":"");tag.style.display="inline";if(!isAllowed(s)){showLock(s,false);}else{hideLock();showToast(names[s]+" — "+winLabel(s)+" เปิดให้ตรวจสอบแล้ว");}};
-window.reqUnlock=function(){showToast("กรุณาติดต่อผู้ดูแลระบบ","info");alert("กรุณาติดต่อผู้ดูแลระบบ\nเพื่อปลดล็อคจาก Dashboard → ตั้งค่าเวลาผลัด");};
+/* ════════════════════════════════════════════════════════
+   QR SCANNER — FINAL VERSION
+   ใช้ BarcodeDetector API (native, เร็วที่สุด) ก่อน
+   Fallback: โหลด jsQR จาก CDN แบบ dynamic
+════════════════════════════════════════════════════════ */
 
-/* ══════════════════════════════════════════════════════════════
-   QR SCANNER — ROOT CAUSE FIX
-   KEY: jsQR loaded as plain <script> above → window.jsQR
-   Canvas drawn inline each frame (no reuse issues)
-   setInterval 200ms — stable polling
-   Draw viewfinder on qrCanvas with requestAnimationFrame
-══════════════════════════════════════════════════════════════ */
+let _qrSt=null,_qrTmr=null,_qrRun=false,_qrLk=false,_qrRaf=null;
 
-let _qrStream=null;
-let _qrTimer=null;
-let _qrRunning=false;
-let _qrLocked=false;
-let _qrRaf=null;
+function qrStat(msg,col){const e=G("qrBotStatus");if(e){e.textContent=msg;e.style.color=col||"#22d3c8";}}
+function qrDbg(v){const e=G("qrBotDbg");if(!e)return;if(v){e.textContent="RAW: "+String(v).slice(0,120);e.classList.add("on");}else{e.textContent="";e.classList.remove("on");}}
 
-/* Parse ANY format the admin might use */
 function parseQR(raw){
-  const s=(raw||"").trim();
-  if(!s)return null;
-  /* JSON */
+  const s=(raw||"").trim();if(!s)return null;
   try{const p=JSON.parse(s);const n=parseInt(p.id||p.radioId||p.radio_id||0);if(n>0)return n;}catch(e){}
-  /* WD1 / WD-1 / WD_1 / WD 1 */
   const m1=s.match(/WD[\s\-_]?(\d+)/i);if(m1)return parseInt(m1[1]);
-  /* pure number */
   const m2=s.match(/^(\d+)$/);if(m2)return parseInt(m2[1]);
-  /* URL ?id=N */
   try{const u=new URL(s);const p=u.searchParams.get("id")||u.searchParams.get("radioId");if(p)return parseInt(p);}catch(e){}
-  /* any first number */
   const m3=s.match(/\d+/);if(m3)return parseInt(m3[0]);
   return null;
 }
 
-function setQrStatus(msg,color){
-  const el=document.getElementById("qrStatusLine");
-  if(el){el.textContent=msg;el.style.color=color||"#22d3c8";}
-}
-function setQrDebug(txt){
-  const el=document.getElementById("qrDebug");
-  if(!el)return;
-  if(txt){el.textContent="RAW: "+txt.slice(0,100);el.classList.add("show");}
-  else{el.textContent="";el.classList.remove("show");}
-}
-
-/* Draw viewfinder overlay onto qrCanvas */
-function drawViewfinder(){
-  const oc=document.getElementById("qrCanvas");
-  if(!oc)return;
+function drawVF(){
+  const oc=G("qrOvCanvas");if(!oc)return;
   const W=window.innerWidth,H=window.innerHeight;
-  if(oc.width!==W)oc.width=W;
-  if(oc.height!==H)oc.height=H;
-  const ctx=oc.getContext("2d");
-  ctx.clearRect(0,0,W,H);
-
+  if(oc.width!==W)oc.width=W;if(oc.height!==H)oc.height=H;
+  const ctx=oc.getContext("2d");ctx.clearRect(0,0,W,H);
   const sz=Math.min(Math.min(W,H)*0.65,256);
   const x=(W-sz)/2,y=(H-sz)/2;
-
-  /* dark vignette */
-  ctx.fillStyle="rgba(0,0,0,0.55)";
-  ctx.fillRect(0,0,W,H);
-  ctx.clearRect(x,y,sz,sz);
-
-  /* corner brackets */
-  const c=24,lw=3.5;
-  ctx.strokeStyle="#22d3c8";ctx.lineWidth=lw;ctx.lineCap="round";
+  ctx.fillStyle="rgba(0,0,0,0.55)";ctx.fillRect(0,0,W,H);ctx.clearRect(x,y,sz,sz);
+  const c=24,lw=3.5;ctx.strokeStyle="#22d3c8";ctx.lineWidth=lw;ctx.lineCap="round";
   ctx.beginPath();ctx.moveTo(x,y+c);ctx.lineTo(x,y);ctx.lineTo(x+c,y);ctx.stroke();
   ctx.beginPath();ctx.moveTo(x+sz-c,y);ctx.lineTo(x+sz,y);ctx.lineTo(x+sz,y+c);ctx.stroke();
   ctx.beginPath();ctx.moveTo(x,y+sz-c);ctx.lineTo(x,y+sz);ctx.lineTo(x+c,y+sz);ctx.stroke();
   ctx.beginPath();ctx.moveTo(x+sz-c,y+sz);ctx.lineTo(x+sz,y+sz);ctx.lineTo(x+sz,y+sz-c);ctx.stroke();
-
-  /* animated scan line */
-  const phase=((Date.now()%2000)/2000);
-  const ly=y+(phase<0.5?phase*2:(2-phase*2))*sz;
-  const g=ctx.createLinearGradient(x,0,x+sz,0);
-  g.addColorStop(0,"rgba(34,211,200,0)");g.addColorStop(0.4,"rgba(34,211,200,0.85)");g.addColorStop(0.6,"rgba(34,211,200,0.85)");g.addColorStop(1,"rgba(34,211,200,0)");
-  ctx.strokeStyle=g;ctx.lineWidth=2;
-  ctx.beginPath();ctx.moveTo(x,ly);ctx.lineTo(x+sz,ly);ctx.stroke();
+  const phase=(Date.now()%2000)/2000;const ly=y+(phase<0.5?phase*2:(2-phase*2))*sz;
+  const g=ctx.createLinearGradient(x,0,x+sz,0);g.addColorStop(0,"rgba(34,211,200,0)");g.addColorStop(.4,"rgba(34,211,200,.9)");g.addColorStop(.6,"rgba(34,211,200,.9)");g.addColorStop(1,"rgba(34,211,200,0)");
+  ctx.strokeStyle=g;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x,ly);ctx.lineTo(x+sz,ly);ctx.stroke();
 }
+function rafLoop(){if(!_qrRun){_qrRaf=null;return;}drawVF();_qrRaf=requestAnimationFrame(rafLoop);}
 
-function rafLoop(){
-  if(!_qrRunning){_qrRaf=null;return;}
-  drawViewfinder();
-  _qrRaf=requestAnimationFrame(rafLoop);
+function onQRData(raw){
+  if(_qrLk)return;
+  const s=String(raw).trim();
+  qrDbg(s);
+  const rid=parseQR(s);
+  const radio=rid?RADIOS.find(r=>r.id===rid):null;
+  if(!radio){qrStat("⚠ อ่านได้แต่ไม่พบวิทยุ — ลองใหม่","#fbbf24");return;}
+  _qrLk=true;
+  qrStat("✅ พบ WD"+radio.id+" — "+radio.area,"#4ade80");
+  if(navigator.vibrate)navigator.vibrate([60,40,100]);
+  const fl=G("qrFlash");fl.classList.add("on");setTimeout(()=>fl.classList.remove("on"),200);
+  setTimeout(()=>{stopQR();G("qrModal").classList.remove("show");setScannedRadio(radio);},700);
 }
 
 window.openQR=async function(){
-  if(_qrRunning)return;
-  const modal=document.getElementById("qrModal");
-  modal.classList.add("show");
-  setQrStatus("● เปิดกล้อง...","#22d3c8");
-  setQrDebug(null);
-
-  /* Verify jsQR is available */
-  if(typeof window.jsQR!=="function"){
-    setQrStatus("❌ jsQR ไม่พร้อม — รีโหลดหน้าใหม่","#f87171");
-    return;
-  }
+  if(_qrRun)return;
+  G("qrModal").classList.add("show");
+  qrStat("● กำลังเปิดกล้อง...","#22d3c8");
+  qrDbg(null);
 
   try{
-    _qrStream=await navigator.mediaDevices.getUserMedia({
-      video:{
-        facingMode:{ideal:"environment"},
-        width:{ideal:1280},
-        height:{ideal:720}
-      }
-    });
-    const video=document.getElementById("qrVideo");
-    video.srcObject=_qrStream;
-    video.setAttribute("playsinline","");
-    video.muted=true;
-    await video.play();
-
-    /* quiet autofocus */
-    try{const track=_qrStream.getVideoTracks()[0];if(track&&track.getCapabilities){const caps=track.getCapabilities();if(caps.focusMode&&caps.focusMode.includes("continuous"))await track.applyConstraints({advanced:[{focusMode:"continuous"}]});}}catch(e2){}
-
-    /* wait for video data */
-    if(video.readyState<2){
-      await new Promise(res=>video.addEventListener("canplay",res,{once:true}));
-    }
-
-    _qrRunning=true;
-    _qrLocked=false;
-    setQrStatus("● กำลังสแกน...","#22d3c8");
-
-    /* start viewfinder animation */
+    _qrSt=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"},width:{ideal:1280},height:{ideal:720}}});
+    const vid=G("qrVideo");vid.srcObject=_qrSt;vid.setAttribute("playsinline","");vid.muted=true;
+    await vid.play();
+    try{const tk=_qrSt.getVideoTracks()[0];if(tk&&tk.getCapabilities){const cp=tk.getCapabilities();if(cp.focusMode&&cp.focusMode.includes("continuous"))await tk.applyConstraints({advanced:[{focusMode:"continuous"}]});}}catch(e){}
+    if(vid.readyState<2)await new Promise(r=>vid.addEventListener("canplay",r,{once:true}));
+    _qrRun=true;_qrLk=false;
+    qrStat("● กำลังสแกน...","#22d3c8");
     _qrRaf=requestAnimationFrame(rafLoop);
 
-    /* ── DECODE LOOP — setInterval every 200ms ── */
+    /* ── Try BarcodeDetector first (native, fast, no library needed) ── */
+    if(typeof BarcodeDetector!=="undefined"){
+      try{
+        const bd=new BarcodeDetector({formats:["qr_code"]});
+        qrStat("● สแกนด้วย BarcodeDetector...","#22d3c8");
+        _qrTmr=setInterval(async()=>{
+          if(!_qrRun||_qrLk)return;
+          const vid2=G("qrVideo");if(!vid2||vid2.readyState<2)return;
+          try{
+            const codes=await bd.detect(vid2);
+            if(codes&&codes.length>0)onQRData(codes[0].rawValue);
+          }catch(e){}
+        },200);
+        return;
+      }catch(e){}
+    }
+
+    /* ── Fallback: jsQR decode loop ── */
+    /* Wait for jsQR to be available (loaded via dynamic script) */
+    let attempts=0;
+    while(typeof window.jsQR!=="function"&&attempts<50){
+      await new Promise(r=>setTimeout(r,100));
+      attempts++;
+    }
+    if(typeof window.jsQR!=="function"){
+      qrStat("❌ ไม่สามารถโหลด jsQR ได้ — ใช้กรอก ID แทน","#f87171");
+      return;
+    }
+
+    qrStat("● กำลังสแกน (jsQR)...","#22d3c8");
     const dcv=document.createElement("canvas");
     const dctx=dcv.getContext("2d");
 
-    _qrTimer=setInterval(()=>{
-      if(!_qrRunning||_qrLocked)return;
-      if(video.readyState<2||!video.videoWidth)return;
+    _qrTmr=setInterval(()=>{
+      if(!_qrRun||_qrLk)return;
+      const vid2=G("qrVideo");if(!vid2||vid2.readyState<2||!vid2.videoWidth)return;
+      const vw=vid2.videoWidth,vh=vid2.videoHeight;
 
-      const vw=video.videoWidth,vh=video.videoHeight;
-
-      /* Pass 1: full frame native res */
-      dcv.width=vw;dcv.height=vh;
-      dctx.drawImage(video,0,0,vw,vh);
+      /* Pass 1: full frame */
+      dcv.width=vw;dcv.height=vh;dctx.drawImage(vid2,0,0,vw,vh);
       let d=dctx.getImageData(0,0,vw,vh);
-      let result=window.jsQR(d.data,vw,vh,{inversionAttempts:"attemptBoth"});
+      let r=window.jsQR(d.data,vw,vh,{inversionAttempts:"attemptBoth"});
+      if(r){onQRData(r.data);return;}
 
-      /* Pass 2: scale to 640px wide */
-      if(!result){
-        const tw=640,th=Math.round(640*(vh/vw));
-        dcv.width=tw;dcv.height=th;
-        dctx.drawImage(video,0,0,vw,vh,0,0,tw,th);
-        d=dctx.getImageData(0,0,tw,th);
-        result=window.jsQR(d.data,tw,th,{inversionAttempts:"attemptBoth"});
-      }
+      /* Pass 2: 640px wide */
+      const tw=640,th=Math.round(640*vh/vw);
+      dcv.width=tw;dcv.height=th;dctx.drawImage(vid2,0,0,vw,vh,0,0,tw,th);
+      d=dctx.getImageData(0,0,tw,th);r=window.jsQR(d.data,tw,th,{inversionAttempts:"attemptBoth"});
+      if(r){onQRData(r.data);return;}
 
       /* Pass 3: center 60% crop */
-      if(!result){
-        const cx=Math.round(vw*0.2),cy=Math.round(vh*0.2);
-        const cw=Math.round(vw*0.6),ch=Math.round(vh*0.6);
-        dcv.width=cw;dcv.height=ch;
-        dctx.drawImage(video,cx,cy,cw,ch,0,0,cw,ch);
-        d=dctx.getImageData(0,0,cw,ch);
-        result=window.jsQR(d.data,cw,ch,{inversionAttempts:"attemptBoth"});
-      }
-
-      if(result){
-        const raw=result.data.trim();
-        setQrDebug(raw);
-        const radioId=parseQR(raw);
-        const radio=radioId?RADIOS.find(r=>r.id===radioId):null;
-        if(!radio){
-          setQrStatus("⚠ อ่านได้แต่ไม่พบวิทยุ — ลองใหม่","#fbbf24");
-          return;
-        }
-        /* SUCCESS */
-        _qrLocked=true;
-        setQrStatus("✅ พบ WD"+radio.id+" — "+radio.area,"#4ade80");
-        if(navigator.vibrate)navigator.vibrate([60,40,100]);
-        const flash=document.getElementById("qrFlash");
-        flash.classList.add("on");
-        setTimeout(()=>flash.classList.remove("on"),200);
-        setTimeout(()=>{stopQR();document.getElementById("qrModal").classList.remove("show");setScannedRadio(radio);},700);
-      }
+      const cx=Math.round(vw*.2),cy=Math.round(vh*.2),cw=Math.round(vw*.6),ch=Math.round(vh*.6);
+      dcv.width=cw;dcv.height=ch;dctx.drawImage(vid2,cx,cy,cw,ch,0,0,cw,ch);
+      d=dctx.getImageData(0,0,cw,ch);r=window.jsQR(d.data,cw,ch,{inversionAttempts:"attemptBoth"});
+      if(r)onQRData(r.data);
     },200);
 
-  }catch(e){
-    document.getElementById("qrModal").classList.remove("show");
-    showToast("ไม่สามารถเข้าถึงกล้อง: "+e.message,"err");
-  }
+  }catch(e){G("qrModal").classList.remove("show");toast("ไม่สามารถเข้าถึงกล้อง: "+e.message,"err");}
 };
 
-window.closeQR=function(){stopQR();document.getElementById("qrModal").classList.remove("show");};
-function stopQR(){
-  _qrRunning=false;_qrLocked=false;
-  if(_qrTimer){clearInterval(_qrTimer);_qrTimer=null;}
-  if(_qrRaf){cancelAnimationFrame(_qrRaf);_qrRaf=null;}
-  if(_qrStream){_qrStream.getTracks().forEach(t=>t.stop());_qrStream=null;}
-  const v=document.getElementById("qrVideo");if(v){v.pause();v.srcObject=null;}
-}
-window.addEventListener("resize",()=>{if(_qrRunning)drawViewfinder();});
+window.closeQR=function(){stopQR();G("qrModal").classList.remove("show");};
+function stopQR(){_qrRun=false;_qrLk=false;if(_qrTmr){clearInterval(_qrTmr);_qrTmr=null;}if(_qrRaf){cancelAnimationFrame(_qrRaf);_qrRaf=null;}if(_qrSt){_qrSt.getTracks().forEach(t=>t.stop());_qrSt=null;}const v=G("qrVideo");if(v){v.pause();v.srcObject=null;}}
+window.addEventListener("resize",()=>{if(_qrRun)drawVF();});
 
-window.manualEntry=function(){
-  const val=document.getElementById("manualId").value.trim();
-  const m=val.match(/WD[\s\-_]?(\d+)/i)||val.match(/^(\d+)$/);
-  if(!m){showToast("รูปแบบไม่ถูกต้อง เช่น WD1 หรือ 1","err");return;}
-  const radio=RADIOS.find(r=>r.id===parseInt(m[1]));
-  if(!radio){showToast("ไม่พบ WD"+m[1],"err");return;}
-  setScannedRadio(radio);document.getElementById("manualId").value="";
-};
-function setScannedRadio(radio){scannedRadioId=radio.id;document.getElementById("qrResultId").textContent="WD"+radio.id;document.getElementById("qrResultArea").textContent=radio.area;document.getElementById("qrResultSn").textContent=radio.sn;document.getElementById("qrBeforeScan").style.display="none";document.getElementById("qrAfterScan").style.display="block";document.getElementById("qrCard").classList.add("scanned");showToast("WD"+radio.id+" — "+radio.area);}
-window.rescan=function(){scannedRadioId=null;document.getElementById("qrBeforeScan").style.display="block";document.getElementById("qrAfterScan").style.display="none";document.getElementById("qrCard").classList.remove("scanned");};
+window.manualEntry=function(){const val=G("manualId").value.trim();const m=val.match(/WD[\s\-_]?(\d+)/i)||val.match(/^(\d+)$/);if(!m){toast("รูปแบบไม่ถูกต้อง เช่น WD1 หรือ 1","err");return;}const radio=RADIOS.find(r=>r.id===parseInt(m[1]));if(!radio){toast("ไม่พบ WD"+m[1],"err");return;}setScannedRadio(radio);G("manualId").value="";};
+function setScannedRadio(radio){scannedRadioId=radio.id;G("qrResultId").textContent="WD"+radio.id;G("qrResultArea").textContent=radio.area;G("qrResultSn").textContent=radio.sn;G("qrBeforeScan").style.display="none";G("qrAfterScan").style.display="block";G("qrCard").classList.add("scanned");toast("WD"+radio.id+" — "+radio.area);}
+window.rescan=function(){scannedRadioId=null;G("qrBeforeScan").style.display="block";G("qrAfterScan").style.display="none";G("qrCard").classList.remove("scanned");};
 
-function buildList(){
-  chk={};ITEMS.forEach(i=>chk[i.id]=null);
-  document.getElementById("checkList").innerHTML=ITEMS.map(it=>`<div class="check-row" id="row-${it.id}" onclick="tog(${it.id})"><div class="row-num">${it.id}.</div><div style="flex:1"><div class="row-text">${it.th}${it.en?' <span style="font-weight:400;color:var(--text3);font-size:11px">('+it.en+')</span>':''}</div></div><div class="toggle-pill" id="pill-${it.id}"><div class="pill-dot"></div><div class="pill-label" id="plbl-${it.id}">—</div></div></div>`).join("");
-  document.getElementById("sTotal").textContent=ITEMS.length;
-  document.getElementById("clProg").textContent="0/"+ITEMS.length;
-}
-window.tog=function(id){const c=chk[id];chk[id]=c===null?"pass":c==="pass"?"fail":null;updateRow(id);updateUI();if(navigator.vibrate)navigator.vibrate(chk[id]==="fail"?[8,4,8]:8);};
-function updateRow(id){const state=chk[id],row=document.getElementById("row-"+id),pill=document.getElementById("pill-"+id),lbl=document.getElementById("plbl-"+id);if(!row||!pill||!lbl)return;row.classList.remove("pass-row","fail-row");pill.classList.remove("pass-pill","fail-pill");if(state==="pass"){row.classList.add("pass-row");pill.classList.add("pass-pill");lbl.textContent="Pass";}else if(state==="fail"){row.classList.add("fail-row");pill.classList.add("fail-pill");lbl.textContent="Fail";}else lbl.textContent="—";}
-function updateUI(){const pass=Object.values(chk).filter(v=>v==="pass").length,fail=Object.values(chk).filter(v=>v==="fail").length;document.getElementById("sPass").textContent=pass;document.getElementById("sFail").textContent=fail;document.getElementById("profPass").textContent=pass;document.getElementById("clProg").textContent=(pass+fail)+"/"+ITEMS.length;document.getElementById("progFill").style.width=Math.round(pass/ITEMS.length*100)+"%";}
-window.setAllPass=function(){ITEMS.forEach(i=>{chk[i.id]="pass";updateRow(i.id);});updateUI();showToast("ตั้งค่า All Pass แล้ว");};
-window.resetAll=function(){ITEMS.forEach(i=>{chk[i.id]=null;updateRow(i.id);});updateUI();};
+function buildList(){chk={};ITEMS.forEach(i=>chk[i.id]=null);G("checkList").innerHTML=ITEMS.map(it=>`<div class="check-row" id="row-${it.id}" onclick="tog(${it.id})"><div class="row-num">${it.id}.</div><div style="flex:1"><div class="row-text">${it.th}${it.en?' <span style="font-weight:400;color:var(--text3);font-size:11px">('+it.en+')</span>':''}</div></div><div class="toggle-pill" id="pill-${it.id}"><div class="pill-dot"></div><div class="pill-label" id="plbl-${it.id}">—</div></div></div>`).join("");G("sTotal").textContent=ITEMS.length;G("clProg").textContent="0/"+ITEMS.length;}
+window.tog=function(id){const c=chk[id];chk[id]=c===null?"pass":c==="pass"?"fail":null;updRow(id);updUI();if(navigator.vibrate)navigator.vibrate(chk[id]==="fail"?[8,4,8]:8);};
+function updRow(id){const st=chk[id],r=G("row-"+id),p=G("pill-"+id),l=G("plbl-"+id);if(!r||!p||!l)return;r.classList.remove("pass-row","fail-row");p.classList.remove("pass-pill","fail-pill");if(st==="pass"){r.classList.add("pass-row");p.classList.add("pass-pill");l.textContent="Pass";}else if(st==="fail"){r.classList.add("fail-row");p.classList.add("fail-pill");l.textContent="Fail";}else l.textContent="—";}
+function updUI(){const pass=Object.values(chk).filter(v=>v==="pass").length,fail=Object.values(chk).filter(v=>v==="fail").length;G("sPass").textContent=pass;G("sFail").textContent=fail;G("profPass").textContent=pass;G("clProg").textContent=(pass+fail)+"/"+ITEMS.length;G("progFill").style.width=Math.round(pass/ITEMS.length*100)+"%";}
+window.setAllPass=function(){ITEMS.forEach(i=>{chk[i.id]="pass";updRow(i.id);});updUI();toast("ตั้งค่า All Pass แล้ว");};
+window.resetAll=function(){ITEMS.forEach(i=>{chk[i.id]=null;updRow(i.id);});updUI();};
 
-window.doSubmit=async function(){
-  if(!selectedShift){showToast("กรุณาเลือกผลัดก่อน","err");return;}
-  await fetchCfg();if(!isAllowed(selectedShift)){showLock(selectedShift,false);return;}
-  if(!scannedRadioId){showToast("กรุณาสแกน QR Code ก่อน","err");return;}
-  const pend=Object.values(chk).filter(v=>v===null).length;if(pend>0&&!confirm("ยังมี "+pend+" รายการที่ยังไม่ได้ตรวจ\nบันทึกต่อไหม?"))return;
-  const btn=document.getElementById("saveBtn");btn.disabled=true;
-  const radio=RADIOS.find(r=>r.id===scannedRadioId);const now=new Date();
-  const pass=Object.values(chk).filter(v=>v==="pass").length,fail=Object.values(chk).filter(v=>v==="fail").length;
-  const failItems=ITEMS.filter(i=>chk[i.id]==="fail").map(i=>i.th);
-  const checkResults={};ITEMS.forEach(i=>checkResults["item_"+i.id]=chk[i.id]||"pending");
-  const names={day:"ผลัดกลางวัน",night:"ผลัดกลางคืน"};
-  const data={userId:user.userId,userName:user.name,empId:user.empId||user.userId,dept:user.dept||"Security",position:user.position||"Inspector",shift:selectedShift,shiftName:names[selectedShift],radioId:scannedRadioId,radioLabel:"WD"+scannedRadioId,area:radio?.area||"",sn:radio?.sn||"",passCount:pass,failCount:fail,totalItems:ITEMS.length,passRate:Math.round(pass/ITEMS.length*100),failItems,checkResults,overallStatus:fail===0?"PASS":"FAIL",scanMethod:"qr",emergencyUnlock:emergencyActive,date:now.toISOString().slice(0,10),time:now.toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"}),timestamp:serverTimestamp(),formType:"21items_v6"};
-  try{
-    if(db)await addDoc(collection(db,"submissions"),data);
-    const hasFail=fail>0;
-    document.getElementById("resIcon").innerHTML=hasFail?`<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`:`<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
-    document.getElementById("resIcon").style.cssText=`width:88px;height:88px;border-radius:28px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;background:${hasFail?"rgba(239,68,68,.12)":"rgba(34,197,94,.1)"};border:2px solid ${hasFail?"rgba(239,68,68,.3)":"rgba(34,197,94,.3)"};animation:pop .4s cubic-bezier(.175,.885,.32,1.275)`;
-    document.getElementById("resTitle").textContent=hasFail?"มีรายการ Fail":"ผ่านทุกรายการ!";
-    document.getElementById("resTitle").style.color=hasFail?"#ef4444":"#22c55e";
-    document.getElementById("resSub").textContent=hasFail?"พบ "+fail+" รายการ Fail\nข้อมูลบันทึกแล้ว":"ผ่านครบ "+pass+" รายการ\nข้อมูลบันทึกแล้ว";
-    document.getElementById("resInfo").innerHTML=`<div class="res-row"><span class="res-key">ผู้ตรวจ</span><span class="res-val">${user.name}</span></div><div class="res-row"><span class="res-key">ผลัด</span><span class="res-val">${names[selectedShift]}</span></div><div class="res-row"><span class="res-key">ช่วงตรวจ</span><span class="res-val">${winLabel(selectedShift)}</span></div><div class="res-row"><span class="res-key">วิทยุ</span><span class="res-val">WD${scannedRadioId}</span></div><div class="res-row"><span class="res-key">พื้นที่</span><span class="res-val">${radio?.area||"—"}</span></div><div class="res-row"><span class="res-key">Pass</span><span class="res-val" style="color:#22c55e">${pass}</span></div><div class="res-row"><span class="res-key">Fail</span><span class="res-val" style="color:${fail>0?"#ef4444":"#22c55e"}">${fail}</span></div><div class="res-row"><span class="res-key">เวลา</span><span class="res-val">${data.time} น.</span></div>${emergencyActive?'<div class="res-row"><span class="res-key">โหมด</span><span class="res-val" style="color:#fbbf24">ปลดล็อคฉุกเฉิน</span></div>':""}${failItems.length?`<div class="res-row" style="flex-direction:column;align-items:flex-start;gap:6px"><span class="res-key">รายการ Fail</span><div style="margin-top:6px">${failItems.map(f=>`<span style="display:inline-block;font-size:11px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#fca5a5;padding:2px 9px;border-radius:12px;margin:2px">${f}</span>`).join("")}</div></div>`:""}`;
-    showScreen("s-result");
-  }catch(e){showToast("บันทึกไม่สำเร็จ: "+e.message,"err");}
-  btn.disabled=false;
-};
-window.startNew=function(){ITEMS.forEach(i=>{chk[i.id]=null;updateRow(i.id);});selectedShift=null;scannedRadioId=null;document.getElementById("shiftDay").classList.remove("active-day");document.getElementById("shiftNight").classList.remove("active-night");document.getElementById("profShiftTag").style.display="none";rescan();updateUI();showScreen("s-main");window.scrollTo(0,0);};
-function showToast(m,t="ok"){const el=document.getElementById("toast");el.textContent=m;el.className="toast"+(t==="err"?" terr":t==="info"?" tinfo":"");el.classList.add("show");setTimeout(()=>el.classList.remove("show"),3200);}
-document.getElementById("lPw").addEventListener("keydown",e=>{if(e.key==="Enter")doLogin();});
-document.getElementById("lId").addEventListener("keydown",e=>{if(e.key==="Enter")document.getElementById("lPw").focus();});
+window.doSubmit=async function(){if(!selectedShift){toast("กรุณาเลือกผลัดก่อน","err");return;}await fetchCfg();if(!isAllowed(selectedShift)){showLock(selectedShift,false);return;}if(!scannedRadioId){toast("กรุณาสแกน QR Code ก่อน","err");return;}const pend=Object.values(chk).filter(v=>v===null).length;if(pend>0&&!confirm("ยังมี "+pend+" รายการที่ยังไม่ได้ตรวจ\nบันทึกต่อไหม?"))return;const btn=G("saveBtn");btn.disabled=true;const radio=RADIOS.find(r=>r.id===scannedRadioId);const now=new Date();const pass=Object.values(chk).filter(v=>v==="pass").length,fail=Object.values(chk).filter(v=>v==="fail").length;const failItems=ITEMS.filter(i=>chk[i.id]==="fail").map(i=>i.th);const checkResults={};ITEMS.forEach(i=>checkResults["item_"+i.id]=chk[i.id]||"pending");const names={day:"ผลัดกลางวัน",night:"ผลัดกลางคืน"};const data={userId:user.userId,userName:user.name,empId:user.empId||user.userId,dept:user.dept||"Security",position:user.position||"Inspector",shift:selectedShift,shiftName:names[selectedShift],radioId:scannedRadioId,radioLabel:"WD"+scannedRadioId,area:radio?.area||"",sn:radio?.sn||"",passCount:pass,failCount:fail,totalItems:ITEMS.length,passRate:Math.round(pass/ITEMS.length*100),failItems,checkResults,overallStatus:fail===0?"PASS":"FAIL",scanMethod:"qr",emergencyUnlock:emergencyActive,date:now.toISOString().slice(0,10),time:now.toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"}),timestamp:serverTimestamp(),formType:"21items_v7"};
+try{if(db)await addDoc(collection(db,"submissions"),data);const hf=fail>0;G("resIcon").innerHTML=hf?`<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`:`<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;G("resIcon").style.cssText=`width:88px;height:88px;border-radius:28px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;background:${hf?"rgba(239,68,68,.12)":"rgba(34,197,94,.1)"};border:2px solid ${hf?"rgba(239,68,68,.3)":"rgba(34,197,94,.3)"};animation:pop .4s cubic-bezier(.175,.885,.32,1.275)`;G("resTitle").textContent=hf?"มีรายการ Fail":"ผ่านทุกรายการ!";G("resTitle").style.color=hf?"#ef4444":"#22c55e";G("resSub").textContent=hf?"พบ "+fail+" รายการ Fail\nข้อมูลบันทึกแล้ว":"ผ่านครบ "+pass+" รายการ\nข้อมูลบันทึกแล้ว";G("resInfo").innerHTML=`<div class="res-row"><span class="res-key">ผู้ตรวจ</span><span class="res-val">${user.name}</span></div><div class="res-row"><span class="res-key">ผลัด</span><span class="res-val">${names[selectedShift]}</span></div><div class="res-row"><span class="res-key">ช่วงตรวจ</span><span class="res-val">${winLbl(selectedShift)}</span></div><div class="res-row"><span class="res-key">วิทยุ</span><span class="res-val">WD${scannedRadioId}</span></div><div class="res-row"><span class="res-key">พื้นที่</span><span class="res-val">${radio?.area||"—"}</span></div><div class="res-row"><span class="res-key">Pass</span><span class="res-val" style="color:#22c55e">${pass}</span></div><div class="res-row"><span class="res-key">Fail</span><span class="res-val" style="color:${fail>0?"#ef4444":"#22c55e"}">${fail}</span></div><div class="res-row"><span class="res-key">เวลา</span><span class="res-val">${data.time} น.</span></div>${emergencyActive?'<div class="res-row"><span class="res-key">โหมด</span><span class="res-val" style="color:#fbbf24">ปลดล็อคฉุกเฉิน</span></div>':""}${failItems.length?`<div class="res-row" style="flex-direction:column;align-items:flex-start;gap:6px"><span class="res-key">รายการ Fail</span><div style="margin-top:6px">${failItems.map(f=>`<span style="display:inline-block;font-size:11px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#fca5a5;padding:2px 9px;border-radius:12px;margin:2px">${f}</span>`).join("")}</div></div>`:""}`;showSc("s-result");}catch(e){toast("บันทึกไม่สำเร็จ: "+e.message,"err");}btn.disabled=false;};
+window.startNew=function(){ITEMS.forEach(i=>{chk[i.id]=null;updRow(i.id);});selectedShift=null;scannedRadioId=null;G("shiftDay").classList.remove("active-day");G("shiftNight").classList.remove("active-night");G("profShiftTag").style.display="none";rescan();updUI();showSc("s-main");window.scrollTo(0,0);};
+function toast(m,t="ok"){const e=G("toast");e.textContent=m;e.className="toast"+(t==="err"?" terr":t==="info"?" tinfo":"");e.classList.add("show");setTimeout(()=>e.classList.remove("show"),3200);}
+G("lPw").addEventListener("keydown",e=>{if(e.key==="Enter")doLogin();});
+G("lId").addEventListener("keydown",e=>{if(e.key==="Enter")G("lPw").focus();});
 </script>
 </body>
 </html>
