@@ -20,14 +20,11 @@
 html{scroll-behavior:smooth}
 body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--on-surface);min-height:100vh;-webkit-font-smoothing:antialiased}
 .material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;vertical-align:middle}
-
 .screen{display:none}.screen.active{display:block}
 .screen-full{display:none;min-height:100vh;align-items:center;justify-content:center;padding:20px;background:var(--bg)}
 .screen-full.active{display:flex}
-
 .neu{background:var(--bg);box-shadow:-6px -6px 12px var(--shadow-light),6px 6px 12px var(--shadow-dark);border-radius:16px}
 .neu-inset{background:#E2E8F0;box-shadow:inset -3px -3px 6px var(--shadow-light),inset 3px 3px 6px #CBD5E1;border-radius:10px}
-
 /* LOGIN */
 .login-wrap{width:100%;max-width:400px}
 .login-card{background:var(--bg);box-shadow:-12px -12px 24px var(--shadow-light),12px 12px 24px var(--shadow-dark);border-radius:28px;padding:40px 32px}
@@ -51,7 +48,6 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--on-surfac
 .btn-warning{background:linear-gradient(135deg,#EA580C,#fb923c);color:#fff;box-shadow:0 4px 14px rgba(234,88,12,.28)}
 .btn-full{width:100%;justify-content:center}
 .btn-sm{padding:8px 14px;font-size:12px;border-radius:9px}
-
 /* LOCKED */
 .locked-wrap{width:100%;max-width:420px}
 .locked-card{background:var(--bg);box-shadow:-12px -12px 24px var(--shadow-light),12px 12px 24px var(--shadow-dark);border-radius:28px;padding:36px 32px;text-align:center}
@@ -69,8 +65,6 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--on-surfac
 @keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(74,222,128,.4)}70%{opacity:.7;box-shadow:0 0 0 5px rgba(74,222,128,0)}}
 .clock-display{font-family:'Manrope',sans-serif;font-size:36px;font-weight:900;letter-spacing:-2px;color:var(--on-surface);margin-bottom:4px}
 .next-window{font-size:12px;color:var(--outline);font-weight:600;margin-bottom:20px}
-
-/* LATE REQUEST */
 .late-req-panel{background:var(--bg);box-shadow:-5px -5px 10px var(--shadow-light),5px 5px 10px var(--shadow-dark);border-radius:18px;padding:20px;margin-top:16px;text-align:left}
 .late-req-title{font-family:'Manrope',sans-serif;font-size:13px;font-weight:800;color:var(--on-surface);margin-bottom:12px;display:flex;align-items:center;gap:7px}
 .late-req-status{border-radius:12px;padding:14px 16px;margin-bottom:14px;display:flex;align-items:flex-start;gap:10px}
@@ -84,8 +78,7 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--on-surfac
 .textarea-neu{width:100%;background:#E2E8F0;box-shadow:inset -3px -3px 6px var(--shadow-light),inset 3px 3px 6px #CBD5E1;border:none;border-radius:10px;padding:11px 14px;font-size:13px;font-family:'Sarabun',sans-serif;color:var(--on-surface);outline:none;resize:none;line-height:1.6;min-height:80px;transition:box-shadow .2s}
 .textarea-neu:focus{box-shadow:inset -3px -3px 6px var(--shadow-light),inset 3px 3px 6px #a8b4c4,0 0 0 2px rgba(0,88,190,.2)}
 .char-count{font-size:10px;color:var(--outline);text-align:right;margin-top:3px}
-
-/* MAIN FORM */
+/* MAIN */
 .app-topbar{height:54px;background:rgba(246,250,254,.9);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.4);box-shadow:0 2px 8px rgba(0,0,0,.06);display:flex;align-items:center;justify-content:space-between;padding:0 16px;position:sticky;top:0;z-index:40}
 .topbar-brand{display:flex;align-items:center;gap:9px}
 .topbar-logo{width:30px;height:30px;background:var(--primary);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff}
@@ -95,7 +88,6 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--on-surfac
 .content-area{padding:16px;max-width:520px;margin:0 auto}
 .section-card{background:var(--bg);box-shadow:-5px -5px 10px var(--shadow-light),5px 5px 10px var(--shadow-dark);border-radius:18px;padding:18px;margin-bottom:14px}
 .section-title{font-family:'Manrope',sans-serif;font-size:13px;font-weight:800;color:var(--primary);margin-bottom:14px;display:flex;align-items:center;gap:7px}
-
 /* RADIO INFO */
 .radio-info-card{background:linear-gradient(135deg,#001840 0%,#0d2d78 55%,#1a56cc 100%);border-radius:16px;padding:16px 18px;color:#fff;margin-bottom:14px;position:relative;overflow:hidden}
 .radio-info-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#2266FF,#00E5D1)}
@@ -103,7 +95,6 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--on-surfac
 .radio-area{font-size:13px;color:rgba(255,255,255,.75);margin-top:4px}
 .radio-sn{font-size:11px;color:rgba(255,255,255,.45);margin-top:2px;font-family:monospace}
 .radio-badge{font-size:8px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:2px 8px;border-radius:9px;background:rgba(34,197,94,.18);border:1px solid rgba(34,197,94,.4);color:#4ade80;display:inline-block;margin-top:6px}
-
 /* CHECKLIST */
 .cl-item{background:var(--bg);box-shadow:-3px -3px 7px var(--shadow-light),3px 3px 7px var(--shadow-dark);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:12px;margin-bottom:8px;transition:all .18s;cursor:pointer}
 .cl-item:hover{transform:translateY(-1px)}
@@ -123,7 +114,6 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--on-surfac
 .cl-item-note{padding:0 14px 12px;display:none}
 .cl-item-note.show{display:block}
 .note-input{width:100%;background:#E2E8F0;box-shadow:inset -2px -2px 5px var(--shadow-light),inset 2px 2px 5px #CBD5E1;border:none;border-radius:8px;padding:8px 12px;font-size:12px;font-family:'Sarabun',sans-serif;color:var(--on-surface);outline:none;resize:none;min-height:56px;line-height:1.5}
-
 /* SUMMARY */
 .summary-strip{display:flex;gap:9px;margin-bottom:14px;flex-wrap:wrap}
 .sum-pill{flex:1;min-width:70px;background:var(--bg);box-shadow:-3px -3px 6px var(--shadow-light),3px 3px 6px var(--shadow-dark);border-radius:11px;padding:10px 8px;text-align:center}
@@ -131,14 +121,10 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--on-surfac
 .sum-lbl{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--outline)}
 .progress-bar{height:8px;background:#E2E8F0;border-radius:4px;overflow:hidden;margin-bottom:6px}
 .progress-fill{height:100%;background:linear-gradient(90deg,#0058be,#37B1D3,#3AE4C9);border-radius:4px;transition:width .5s ease}
-
 /* SHIFT BADGE */
 .shift-badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;padding:6px 14px;border-radius:18px}
 .badge-day{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.28);color:#b45309}
 .badge-night{background:rgba(124,58,237,.09);border:1px solid rgba(124,58,237,.22);color:#7c3aed}
-.badge-ok{background:rgba(22,163,74,.08);border:1px solid rgba(22,163,74,.2);color:#16a34a}
-.badge-err{background:rgba(186,26,26,.07);border:1px solid rgba(186,26,26,.2);color:#b91c1c}
-
 /* SUCCESS */
 .success-wrap{width:100%;max-width:420px;text-align:center}
 .success-icon{width:72px;height:72px;background:linear-gradient(135deg,#16a34a,#4ADE80);border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 6px 20px rgba(22,163,74,.3);animation:popIn .4s cubic-bezier(.34,1.56,.64,1)}
@@ -150,15 +136,12 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--on-surfac
 .result-row:last-child{border:none}
 .result-lbl{font-size:11px;color:var(--outline);font-weight:600}
 .result-val{font-size:13px;font-weight:700;color:var(--on-surface)}
-
-/* QR SCANNER — NEW */
+/* QR SCANNER */
 .scan-area{background:linear-gradient(135deg,rgba(0,88,190,.04),rgba(0,88,190,.02));border:2px dashed rgba(0,88,190,.25);border-radius:14px;padding:24px 16px;text-align:center;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
 .scan-area:hover{border-color:rgba(0,88,190,.4);background:rgba(0,88,190,.05)}
-.scan-area.scanning{border-color:var(--primary);border-style:solid;padding:0;background:#000}
-.scan-icon{font-size:40px;margin-bottom:8px;color:var(--primary)}
 .scan-sub{font-size:12px;color:var(--secondary)}
 .qr-video-wrap{position:relative;width:100%;border-radius:12px;overflow:hidden;background:#000}
-.qr-video-wrap video{width:100%;display:block;max-height:260px;object-fit:cover}
+.qr-video-wrap video{width:100%;display:block;max-height:280px;object-fit:cover}
 .qr-overlay{position:absolute;inset:0;pointer-events:none}
 .qr-corner{position:absolute;width:36px;height:36px;border-color:#4ADE80;border-style:solid;border-width:0}
 .qr-corner.tl{top:16px;left:16px;border-top-width:3px;border-left-width:3px;border-radius:4px 0 0 0}
@@ -167,26 +150,33 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--on-surfac
 .qr-corner.br{bottom:16px;right:16px;border-bottom-width:3px;border-right-width:3px;border-radius:0 0 4px 0}
 .qr-scan-line{position:absolute;left:16px;right:16px;height:2px;background:linear-gradient(90deg,transparent,#4ADE80,transparent);animation:scanLine 2s ease-in-out infinite}
 @keyframes scanLine{0%{top:20%;opacity:1}50%{top:75%;opacity:1}100%{top:20%;opacity:0}}
-.qr-hint{position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:11px;color:rgba(255,255,255,.8);font-weight:600;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.qr-hint{position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:11px;color:rgba(255,255,255,.9);font-weight:700;background:rgba(0,0,0,.35);padding:4px 0}
 .qr-stop-btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:10px;background:rgba(186,26,26,.12);border:1px solid rgba(186,26,26,.25);color:#ba1a1a;font-size:12px;font-weight:700;font-family:'Sarabun',sans-serif;cursor:pointer;border-radius:0 0 12px 12px;border-top:none}
 .qr-stop-btn:hover{background:rgba(186,26,26,.2)}
-.qr-detected-flash{position:absolute;inset:0;background:rgba(74,222,128,.25);animation:flash .4s ease;pointer-events:none}
-@keyframes flash{0%{opacity:0}30%{opacity:1}100%{opacity:0}}
-
-.manual-input-wrap{margin-top:14px;position:relative}
-
-/* MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
-.modal-overlay.show{display:flex}
-.modal-box{background:var(--bg);box-shadow:-10px -10px 20px var(--shadow-light),10px 10px 20px var(--shadow-dark);border-radius:22px;padding:28px;max-width:380px;width:100%;animation:modalIn .28s ease}
-@keyframes modalIn{from{opacity:0;transform:scale(.96) translateY(-8px)}to{opacity:1;transform:none}}
-.modal-icon-wrap{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
-.modal-title{font-family:'Manrope',sans-serif;font-size:17px;font-weight:800;margin-bottom:7px}
-.modal-body-text{font-size:13px;color:var(--secondary);line-height:1.6;margin-bottom:16px}
-.modal-footer{display:flex;gap:8px;margin-top:6px}
-
+.qr-detected-flash{position:absolute;inset:0;background:rgba(74,222,128,.3);animation:flash .5s ease;pointer-events:none;border-radius:12px}
+@keyframes flash{0%{opacity:0}25%{opacity:1}100%{opacity:0}}
+/* DEBUG PANEL */
+.debug-panel{background:rgba(0,0,0,.06);border:1px dashed rgba(0,88,190,.2);border-radius:10px;padding:10px 12px;margin-top:10px;font-size:11px;color:var(--secondary);display:none}
+.debug-panel.show{display:block}
+.debug-raw{font-family:monospace;font-size:12px;color:var(--primary);font-weight:700;word-break:break-all;margin-top:4px}
+/* QR scanned info */
+.qr-scanned-info{background:rgba(22,163,74,.07);border:1px solid rgba(22,163,74,.2);border-radius:9px;padding:9px 13px;margin-top:10px;font-size:12px;color:#16a34a;font-weight:700;display:flex;align-items:center;gap:6px}
+/* SHIFT BUTTONS */
+.shift-btn-wrap{display:flex;gap:9px}
+.shift-option-btn{flex:1;background:var(--bg);box-shadow:-3px -3px 7px var(--shadow-light),3px 3px 7px var(--shadow-dark);border:2px solid transparent;border-radius:12px;padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.shift-option-btn:not(:disabled):hover{transform:translateY(-1px)}
+.shift-option-btn.active-day{border-color:#f59e0b;background:rgba(245,158,11,.08)}
+.shift-option-btn.active-night{border-color:#7c3aed;background:rgba(124,58,237,.09)}
+.shift-option-btn:disabled{opacity:0.38;cursor:not-allowed;transform:none !important;filter:grayscale(0.4)}
+.shift-btn-label{font-size:12px;font-weight:700}
+.shift-btn-time{font-size:9px;color:var(--outline)}
+.shift-locked-badge{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:700;letter-spacing:.5px;padding:2px 7px;border-radius:8px;background:rgba(186,26,26,.08);border:1px solid rgba(186,26,26,.2);color:#ba1a1a;margin-top:3px}
+.shift-active-badge{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:700;letter-spacing:.5px;padding:2px 7px;border-radius:8px;margin-top:3px}
+.shift-active-badge.day-active{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);color:#b45309}
+.shift-active-badge.night-active{background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25);color:#7c3aed}
+.proceed-btn-wrap{margin-top:14px}
 /* TOAST */
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);border-radius:13px;padding:11px 20px;font-size:13px;font-weight:700;z-index:9999;transition:transform .3s ease;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,.12)}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);border-radius:13px;padding:11px 20px;font-size:13px;font-weight:700;z-index:9999;transition:transform .3s ease;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,.12);max-width:90vw;white-space:normal;text-align:center}
 .toast.show{transform:translateX(-50%) translateY(0)}
 .toast-success{background:rgba(220,252,231,.97);border:1px solid #86efac;color:#15803d}
 .toast-error{background:rgba(254,226,226,.97);border:1px solid #fca5a5;color:#b91c1c}
@@ -232,22 +222,22 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--on-surfac
         </div>
       </div>
       <div id="lockedIconWrap" class="locked-icon day-icon">
-        <span class="material-symbols-outlined" id="lockedIconSymbol" style="font-size:36px;color:#b45309">lock_clock</span>
+        <span class="material-symbols-outlined" style="font-size:36px;color:#b45309">lock_clock</span>
       </div>
-      <div class="locked-title" id="lockedTitle">นอกเวลาตรวจสอบ</div>
-      <div class="locked-sub" id="lockedSub">ขณะนี้ยังไม่ถึงช่วงเวลาตรวจ<br>กรุณารอหรือขอเปิดเวลาฉุกเฉิน</div>
-      <div id="shiftChipWrap" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:16px">
+      <div class="locked-title">นอกเวลาตรวจสอบ</div>
+      <div class="locked-sub">ขณะนี้ยังไม่ถึงช่วงเวลาตรวจ<br>กรุณารอหรือขอเปิดเวลาฉุกเฉิน</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:16px">
         <div class="shift-time-chip chip-day">
           <span class="material-symbols-outlined" style="font-size:16px">wb_sunny</span>
-          <span id="dayWindowChip">07:30–10:00</span>
+          <span id="dayWindowChip">07:30–19:30</span>
         </div>
         <div class="shift-time-chip chip-night">
           <span class="material-symbols-outlined" style="font-size:16px">nightlight</span>
-          <span id="nightWindowChip">19:30–22:00</span>
+          <span id="nightWindowChip">19:30–07:30</span>
         </div>
       </div>
       <div class="next-window" id="nextWindowText">หน้าต่างตรวจถัดไป: กำลังคำนวณ...</div>
-      <div class="late-req-panel" id="lateReqPanel">
+      <div class="late-req-panel">
         <div class="late-req-title">
           <span class="material-symbols-outlined" style="font-size:18px;color:var(--orange)">schedule_send</span>
           ขอเปิดเวลาตรวจฉุกเฉิน
@@ -259,7 +249,7 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--on-surfac
             </div>
             <div>
               <div class="late-req-status-title">รอการอนุมัติ</div>
-              <div class="late-req-status-sub" id="pendingSubText">คำขอถูกส่งไปยัง Admin แล้ว<br>กรุณารอการอนุมัติ</div>
+              <div class="late-req-status-sub" id="pendingSubText">คำขอถูกส่งไปยัง Admin แล้ว</div>
             </div>
           </div>
           <div class="late-req-status approved" id="lateStatusApproved" style="display:none">
@@ -270,7 +260,6 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--on-surfac
               <div class="late-req-status-title">ได้รับการอนุมัติแล้ว!</div>
               <div class="late-req-status-sub">สามารถทำการตรวจสอบได้ทันที</div>
               <div class="late-countdown" id="lateCountdown">00:00:00</div>
-              <div style="font-size:10px;color:var(--outline);margin-top:2px">เหลือเวลา</div>
             </div>
           </div>
           <div class="late-req-status rejected" id="lateStatusRejected" style="display:none">
@@ -299,7 +288,7 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--on-surfac
           </div>
           <div class="form-group" style="margin-bottom:6px">
             <label class="form-label">เหตุผล <span style="color:var(--error)">*</span></label>
-            <textarea id="lateReason" class="textarea-neu" placeholder="อธิบายเหตุผลที่ไม่สามารถตรวจในเวลาปกติได้ (อย่างน้อย 10 ตัวอักษร)" maxlength="300" oninput="updateCharCount()"></textarea>
+            <textarea id="lateReason" class="textarea-neu" placeholder="อธิบายเหตุผล (อย่างน้อย 10 ตัวอักษร)" maxlength="300" oninput="updateCharCount()"></textarea>
             <div class="char-count"><span id="reasonLen">0</span>/300</div>
           </div>
           <button class="btn btn-warning btn-full" onclick="submitLateRequest()">
@@ -334,85 +323,96 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--on-surfac
     </div>
   </div>
 
-  <div class="content-area" id="formArea">
+  <div class="content-area">
     <!-- Step 1 -->
-    <div id="step1" class="step">
+    <div id="step1">
+      <!-- QR SCAN -->
       <div class="section-card">
         <div class="section-title">
           <span class="material-symbols-outlined" style="font-size:18px">qr_code_scanner</span>
-          สแกน QR Code
+          สแกน QR Code บนวิทยุ
         </div>
 
-        <!-- Idle state -->
+        <!-- Idle -->
         <div id="scanIdle" class="scan-area" onclick="startQRScan()">
-          <div class="scan-icon">
-            <span class="material-symbols-outlined" style="font-size:48px;color:var(--primary)">qr_code_2</span>
-          </div>
-          <div style="font-size:14px;font-weight:700;color:var(--primary);margin-bottom:4px">แสกน QR บนวิทยุ</div>
-          <div class="scan-sub">แตะเพื่อเปิดกล้องสแกน QR Code</div>
+          <span class="material-symbols-outlined" style="font-size:52px;color:var(--primary);display:block;margin-bottom:8px">qr_code_2</span>
+          <div style="font-size:14px;font-weight:700;color:var(--primary);margin-bottom:4px">แตะเพื่อสแกน QR Code</div>
+          <div class="scan-sub">จ่อกล้องไปที่ QR Code บนวิทยุ</div>
         </div>
 
-        <!-- Active scanner -->
+        <!-- Active -->
         <div id="scanActive" style="display:none;border-radius:14px;overflow:hidden;box-shadow:0 4px 20px rgba(0,88,190,.18)">
           <div class="qr-video-wrap">
             <video id="qrVideo" playsinline autoplay muted></video>
             <canvas id="qrCanvas" style="display:none"></canvas>
             <div class="qr-overlay">
-              <div class="qr-corner tl"></div>
-              <div class="qr-corner tr"></div>
-              <div class="qr-corner bl"></div>
-              <div class="qr-corner br"></div>
+              <div class="qr-corner tl"></div><div class="qr-corner tr"></div>
+              <div class="qr-corner bl"></div><div class="qr-corner br"></div>
               <div class="qr-scan-line"></div>
             </div>
-            <div class="qr-hint">🔍 จ่อ QR Code บนวิทยุ</div>
+            <div class="qr-hint">จ่อ QR Code บนวิทยุให้อยู่กลางกรอบ</div>
           </div>
           <button class="qr-stop-btn" onclick="stopQRScan()">
             <span class="material-symbols-outlined" style="font-size:16px">close</span>ยกเลิกการสแกน
           </button>
         </div>
 
-        <!-- QR detected flash -->
-        <div id="qrFlash" style="display:none"></div>
-
-        <div class="manual-input-wrap">
-          <label class="form-label" style="margin-bottom:6px">หมายเลข WD (กรอกเอง)</label>
-          <div style="display:flex;gap:8px">
-            <input id="manualRadioInput" class="form-input" type="number" min="1" max="99" placeholder="เช่น 1, 5, 12, 36" style="flex:1">
-            <button class="btn btn-primary btn-sm" onclick="onRadioSelect()">
-              <span class="material-symbols-outlined" style="font-size:15px">arrow_forward</span>
-            </button>
-          </div>
+        <!-- Scanned result -->
+        <div id="qrScannedInfo" style="display:none" class="qr-scanned-info">
+          <span class="material-symbols-outlined" style="font-size:18px">check_circle</span>
+          <span>สแกนได้: <strong id="qrScannedLabel">—</strong></span>
+          <button onclick="resetQRScan()" style="margin-left:auto;background:none;border:none;cursor:pointer;color:#16a34a;font-size:11px;font-weight:700;display:flex;align-items:center;gap:3px">
+            <span class="material-symbols-outlined" style="font-size:14px">refresh</span>สแกนใหม่
+          </button>
         </div>
 
-        <div id="qrAutoFillInfo" style="display:none;background:rgba(0,88,190,.06);border:1px solid rgba(0,88,190,.16);border-radius:9px;padding:9px 13px;margin-top:10px;font-size:12px;color:var(--primary);font-weight:600">
-          <span class="material-symbols-outlined" style="font-size:14px">qr_code_scanner</span>
-          สแกน QR แล้ว: <strong id="qrAutoFillLabel">—</strong>
+        <!-- Debug panel: shows raw QR data to help diagnose format -->
+        <div class="debug-panel" id="debugPanel">
+          <div style="font-weight:700;color:var(--outline)">QR Raw Data:</div>
+          <div class="debug-raw" id="debugRaw">—</div>
+          <div style="margin-top:6px;font-size:10px;color:var(--outline)">ถ้าสแกนไม่ผ่าน กรุณาแจ้งข้อมูลด้านบนให้ผู้ดูแลระบบ</div>
+        </div>
+
+        <!-- Proceed -->
+        <div id="proceedBtnWrap" style="display:none;margin-top:14px">
+          <button class="btn btn-success btn-full" onclick="onRadioSelect()">
+            <span class="material-symbols-outlined" style="font-size:17px">arrow_forward</span>ดำเนินการตรวจสอบ
+          </button>
         </div>
       </div>
 
-      <div class="section-card" id="shiftSelectCard">
+      <!-- SHIFT SELECT -->
+      <div class="section-card">
         <div class="section-title">
           <span class="material-symbols-outlined" style="font-size:18px">schedule</span>
           ผลัดการตรวจ
+          <span id="shiftTimeNowBadge" style="margin-left:auto;font-size:10px;font-weight:700;padding:2px 9px;border-radius:9px;background:rgba(0,88,190,.08);color:var(--primary)">กำลังตรวจสอบ...</span>
         </div>
-        <div style="display:flex;gap:9px">
-          <button class="btn btn-secondary btn-full" id="shiftDayBtn" onclick="selectShift('day')" style="flex-direction:column;gap:4px;padding:14px 10px">
+        <div class="shift-btn-wrap">
+          <button class="shift-option-btn" id="shiftDayBtn" onclick="selectShift('day')" disabled>
             <span class="material-symbols-outlined" style="font-size:22px;color:#b45309">wb_sunny</span>
-            <span style="font-size:12px;color:#b45309;font-weight:700">กลางวัน</span>
-            <span style="font-size:9px;color:var(--outline)" id="dayShiftTime">07:30–19:30</span>
+            <span class="shift-btn-label" style="color:#b45309">กลางวัน</span>
+            <span class="shift-btn-time" id="dayShiftTime">07:30–19:30</span>
+            <span id="dayShiftBadge" class="shift-locked-badge">
+              <span class="material-symbols-outlined" style="font-size:10px">lock</span>นอกเวลา
+            </span>
           </button>
-          <button class="btn btn-secondary btn-full" id="shiftNightBtn" onclick="selectShift('night')" style="flex-direction:column;gap:4px;padding:14px 10px">
+          <button class="shift-option-btn" id="shiftNightBtn" onclick="selectShift('night')" disabled>
             <span class="material-symbols-outlined" style="font-size:22px;color:#7c3aed">nightlight</span>
-            <span style="font-size:12px;color:#7c3aed;font-weight:700">กลางคืน</span>
-            <span style="font-size:9px;color:var(--outline)" id="nightShiftTime">19:30–07:30</span>
+            <span class="shift-btn-label" style="color:#7c3aed">กลางคืน</span>
+            <span class="shift-btn-time" id="nightShiftTime">19:30–07:30</span>
+            <span id="nightShiftBadge" class="shift-locked-badge">
+              <span class="material-symbols-outlined" style="font-size:10px">lock</span>นอกเวลา
+            </span>
           </button>
         </div>
+        <div id="shiftInfoMsg" style="margin-top:10px;font-size:11px;color:var(--secondary);text-align:center;line-height:1.6;display:none"></div>
       </div>
     </div>
 
     <!-- Step 2 -->
-    <div id="step2" class="step" style="display:none">
-      <div class="radio-info-card" id="radioInfoCard">
+    <div id="step2" style="display:none">
+      <div class="radio-info-card">
         <div style="display:flex;align-items:flex-start;justify-content:space-between">
           <div>
             <div class="radio-wd" id="radioWdLabel">WD—</div>
@@ -427,7 +427,7 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--on-surfac
         </div>
       </div>
 
-      <div class="summary-strip" id="summaryStrip">
+      <div class="summary-strip">
         <div class="sum-pill"><div class="sum-val" id="sumPass" style="color:#16a34a">0</div><div class="sum-lbl">Pass</div></div>
         <div class="sum-pill"><div class="sum-val" id="sumFail" style="color:#ba1a1a">0</div><div class="sum-lbl">Fail</div></div>
         <div class="sum-pill"><div class="sum-val" id="sumLeft" style="color:#924700">0</div><div class="sum-lbl">ค้าง</div></div>
@@ -437,8 +437,7 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--on-surfac
 
       <div class="section-card">
         <div class="section-title">
-          <span class="material-symbols-outlined" style="font-size:18px">checklist</span>
-          รายการตรวจสอบ
+          <span class="material-symbols-outlined" style="font-size:18px">checklist</span>รายการตรวจสอบ
           <span id="clTotal" style="margin-left:auto;font-size:10px;font-weight:700;padding:2px 8px;border-radius:9px;background:rgba(0,88,190,.08);color:var(--primary)">0 รายการ</span>
         </div>
         <div id="checklistItems"></div>
@@ -446,8 +445,7 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--on-surfac
 
       <div class="section-card">
         <div class="section-title">
-          <span class="material-symbols-outlined" style="font-size:18px">edit_note</span>
-          หมายเหตุเพิ่มเติม
+          <span class="material-symbols-outlined" style="font-size:18px">edit_note</span>หมายเหตุเพิ่มเติม
         </div>
         <textarea id="overallNote" class="textarea-neu" placeholder="หมายเหตุรวม (ถ้ามี)"></textarea>
       </div>
@@ -488,15 +486,13 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--on-surfac
   </div>
 </div>
 
-<!-- TOAST -->
 <div id="toast" class="toast toast-success">สำเร็จ</div>
 
-<!-- jsQR library from cdnjs -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jsqr/1.4.0/jsQR.min.js"></script>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, doc, getDoc, getDocs, setDoc, addDoc, query, orderBy, onSnapshot, where, updateDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, collection, doc, getDoc, getDocs, addDoc, query, orderBy, onSnapshot, where, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCBSvlRDbhibsNIgqNRd9UB5fdnm8g-G2A",
@@ -508,7 +504,7 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const db  = getFirestore(app);
 
 // ── STATE ──
 let currentUser = null;
@@ -517,211 +513,299 @@ let SHIFT_CFG = {
   night: { shiftStart:'19:30', shiftEnd:'07:30', inspStart:'19:30', inspEnd:'22:00', emergencyUnlock:false, emergencyUntil:null }
 };
 let CHECKLIST = [];
-let RADIOS = [];
-let selectedRadio = null;
-let selectedShift = null;
+let RADIOS    = [];
+let selectedRadio  = null;
+let selectedShift  = null;
+let scannedRadioNum = null;
 let checklistState = {};
-let lateRequestId = null;
+let lateRequestId     = null;
 let lateRequestStatus = null;
-let lateRequestData = null;
-let _clockTimer = null;
-let _lateWatcher = null;
-let _scfgUnsub = null;
+let lateRequestData   = null;
+let _clockTimer       = null;
+let _lateWatcher      = null;
+let _scfgUnsub        = null;
+let _shiftRefreshTimer = null;
 
-// ── QR SCANNER STATE ──
-let qrStream = null;
+// QR state
+let qrStream    = null;
 let qrAnimFrame = null;
-let qrDetected = false;
+let qrDetected  = false;
+let qrFrameSkip = 0; // process every N frames for performance
 
 // ── HELPERS ──
-function el(id) { return document.getElementById(id); }
+function el(id){ return document.getElementById(id); }
 window.el = el;
-function todayStr() { return new Date().toISOString().slice(0,10); }
-function nowTS() { return new Date().toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); }
-function timeToMinutes(t) { const [h,m] = (t||'00:00').split(':').map(Number); return h*60+m; }
-function nowMinutes() { const n = new Date(); return n.getHours()*60+n.getMinutes(); }
+function todayStr(){ return new Date().toISOString().slice(0,10); }
+function nowTS(){ return new Date().toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); }
+function timeToMinutes(t){ const [h,m]=(t||'00:00').split(':').map(Number); return h*60+m; }
+function nowMinutes(){ const n=new Date(); return n.getHours()*60+n.getMinutes(); }
 
-function isInWindow(start, end) {
-  const t = nowMinutes(), s = timeToMinutes(start), e = timeToMinutes(end);
-  if (s <= e) return t >= s && t < e;
-  return t >= s || t < e;
+function isInShift(k){
+  const cfg=SHIFT_CFG[k];
+  return isInWindow(cfg.shiftStart||(k==='day'?'07:30':'19:30'), cfg.shiftEnd||(k==='day'?'19:30':'07:30'));
+}
+function isInWindow(start,end){
+  const t=nowMinutes(), s=timeToMinutes(start), e=timeToMinutes(end);
+  if(s<=e) return t>=s&&t<e;
+  return t>=s||t<e;
+}
+function isEmergencyUnlocked(shift){
+  const cfg=SHIFT_CFG[shift];
+  if(!cfg.emergencyUnlock||!cfg.emergencyUntil) return false;
+  return Date.now()<new Date(cfg.emergencyUntil).getTime();
 }
 
-function isEmergencyUnlocked(shift) {
-  const cfg = SHIFT_CFG[shift];
-  if (!cfg.emergencyUnlock || !cfg.emergencyUntil) return false;
-  return Date.now() < new Date(cfg.emergencyUntil).getTime();
-}
-
-let _toastTimer = null;
-function showToast(msg, type='success') {
-  const t = el('toast');
-  if (!t) return;
-  t.className = 'toast toast-' + type;
-  t.textContent = msg;
+let _toastTimer=null;
+function showToast(msg,type='success'){
+  const t=el('toast');
+  if(!t) return;
+  t.className='toast toast-'+type;
+  t.textContent=msg;
   t.classList.add('show');
   clearTimeout(_toastTimer);
-  _toastTimer = setTimeout(() => t.classList.remove('show'), 3200);
+  _toastTimer=setTimeout(()=>t.classList.remove('show'),4000);
 }
 
-// ── QR SCANNER FUNCTIONS ──
-window.startQRScan = async function() {
-  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-    showToast('เบราว์เซอร์นี้ไม่รองรับการใช้กล้อง', 'error');
-    return;
+// ── QR PARSE — robust multi-format ──
+// Accepts: plain number "1","12", "WD1","WD 1","WD-1","wd1",
+//          URL with ?radio=, ?id=, ?code=, ?wd=, ?wdid=, path segments,
+//          JSON {"id":1}, {"radio":1}, {"wd":1}
+function parseRadioFromQR(raw){
+  if(!raw||!raw.trim()) return null;
+  const str = raw.trim();
+
+  // 1. Plain integer
+  if(/^\d+$/.test(str)){
+    const n=parseInt(str,10);
+    return (n>=1&&n<=999)?n:null;
   }
-  try {
-    qrDetected = false;
-    const constraints = {
-      video: {
-        facingMode: { ideal: 'environment' },
-        width: { ideal: 1280 },
-        height: { ideal: 720 }
+
+  // 2. WD prefix patterns: WD1, WD 1, WD-1, wd1, Wd-01
+  const wdMatch = str.match(/^[Ww][Dd][\s\-_#]?(\d{1,3})$/);
+  if(wdMatch){
+    const n=parseInt(wdMatch[1],10);
+    return (n>=1&&n<=999)?n:null;
+  }
+
+  // 3. URL
+  try{
+    const url = new URL(str);
+    const p   = url.searchParams;
+    // Check common param names
+    const paramKeys = ['radio','id','code','wd','wdid','radioId','radio_id','no'];
+    for(const k of paramKeys){
+      const v = p.get(k);
+      if(v){
+        const n=parseInt(v.replace(/\D/g,''),10);
+        if(n>=1&&n<=999) return n;
       }
-    };
-    qrStream = await navigator.mediaDevices.getUserMedia(constraints);
-    const video = el('qrVideo');
-    video.srcObject = qrStream;
-    await video.play();
-    el('scanIdle').style.display = 'none';
-    el('scanActive').style.display = 'block';
-    showToast('เปิดกล้องสำเร็จ — จ่อ QR Code', 'info');
-    tickQR();
-  } catch(err) {
-    let msg = 'ไม่สามารถเปิดกล้องได้';
-    if (err.name === 'NotAllowedError') msg = 'กรุณาอนุญาตการเข้าถึงกล้องในเบราว์เซอร์';
-    else if (err.name === 'NotFoundError') msg = 'ไม่พบกล้องในอุปกรณ์นี้';
-    else if (err.name === 'NotReadableError') msg = 'กล้องถูกใช้งานโดยแอปอื่นอยู่';
-    showToast(msg, 'error');
-    console.error('QR Camera error:', err);
-  }
-};
+    }
+    // Path: last numeric segment e.g. /radios/5 or /wd/12
+    const parts = url.pathname.split('/').filter(Boolean);
+    for(let i=parts.length-1;i>=0;i--){
+      // try WD prefix in path
+      const wdP = parts[i].match(/^[Ww][Dd][\s\-_#]?(\d{1,3})$/);
+      if(wdP){ const n=parseInt(wdP[1],10); if(n>=1&&n<=999) return n; }
+      // plain number in path
+      if(/^\d+$/.test(parts[i])){
+        const n=parseInt(parts[i],10);
+        if(n>=1&&n<=999) return n;
+      }
+    }
+  }catch(e){}
 
-window.stopQRScan = function() {
-  if (qrAnimFrame) { cancelAnimationFrame(qrAnimFrame); qrAnimFrame = null; }
-  if (qrStream) { qrStream.getTracks().forEach(t => t.stop()); qrStream = null; }
-  const video = el('qrVideo');
-  if (video) { video.srcObject = null; }
-  el('scanActive').style.display = 'none';
-  el('scanIdle').style.display = 'block';
-  qrDetected = false;
-};
+  // 4. JSON object
+  try{
+    const obj=JSON.parse(str);
+    const jsonKeys=['radio','id','wd','wdid','radioId','radio_id','no','num'];
+    for(const k of jsonKeys){
+      if(obj[k]!==undefined){
+        const n=parseInt(String(obj[k]).replace(/\D/g,''),10);
+        if(n>=1&&n<=999) return n;
+      }
+    }
+  }catch(e){}
 
-function tickQR() {
-  if (!qrStream || qrDetected) return;
-  const video = el('qrVideo');
-  const canvas = el('qrCanvas');
-  if (!video || !canvas) return;
-  if (video.readyState !== video.HAVE_ENOUGH_DATA) {
-    qrAnimFrame = requestAnimationFrame(tickQR);
-    return;
+  // 5. Contains WD pattern anywhere in string
+  const embeddedWd = str.match(/[Ww][Dd][\s\-_#]?(\d{1,3})/);
+  if(embeddedWd){
+    const n=parseInt(embeddedWd[1],10);
+    if(n>=1&&n<=999) return n;
   }
-  const ctx = canvas.getContext('2d');
-  canvas.width  = video.videoWidth;
-  canvas.height = video.videoHeight;
-  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  if (typeof jsQR !== 'undefined') {
-    const code = jsQR(imageData.data, imageData.width, imageData.height, { inversionAttempts: 'dontInvert' });
-    if (code && code.data) {
-      qrDetected = true;
-      handleQRResult(code.data);
-      return;
+
+  // 6. Any standalone number in the string (last resort)
+  const allNums = str.match(/\b(\d{1,3})\b/g);
+  if(allNums){
+    // Pick first that is 1-999
+    for(const ns of allNums){
+      const n=parseInt(ns,10);
+      if(n>=1&&n<=999) return n;
     }
   }
-  qrAnimFrame = requestAnimationFrame(tickQR);
+
+  return null;
 }
 
-function handleQRResult(rawData) {
-  // Extract radio number from QR data
-  // Supports: plain number "12", "WD12", URL with ?radio=12, ?id=12, ?code=12
-  let num = 0;
-  let display = rawData;
+// ── QR SCANNER ──
+window.startQRScan = async function(){
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){
+    showToast('เบราว์เซอร์ไม่รองรับกล้อง','error'); return;
+  }
+  try{
+    qrDetected=false; qrFrameSkip=0;
+    qrStream = await navigator.mediaDevices.getUserMedia({
+      video:{ facingMode:{ideal:'environment'}, width:{ideal:1280}, height:{ideal:720} }
+    });
+    const video=el('qrVideo');
+    video.srcObject=qrStream;
+    await video.play();
+    el('scanIdle').style.display='none';
+    el('scanActive').style.display='block';
+    el('qrScannedInfo').style.display='none';
+    el('debugPanel').classList.remove('show');
+    showToast('เปิดกล้องสำเร็จ — จ่อ QR Code ให้อยู่กลางกรอบ','info');
+    tickQR();
+  }catch(err){
+    let msg='ไม่สามารถเปิดกล้องได้';
+    if(err.name==='NotAllowedError') msg='กรุณาอนุญาตการใช้กล้องในเบราว์เซอร์';
+    else if(err.name==='NotFoundError') msg='ไม่พบกล้องในอุปกรณ์';
+    else if(err.name==='NotReadableError') msg='กล้องถูกแอปอื่นใช้งานอยู่';
+    showToast(msg,'error');
+  }
+};
 
-  try {
-    const url = new URL(rawData);
-    const p = url.searchParams;
-    const val = p.get('radio') || p.get('id') || p.get('code');
-    if (val) { num = parseInt(val.replace(/\D/g,'')); display = val; }
-    else { num = parseInt(url.pathname.replace(/\D/g,'')); }
-  } catch(e) {
-    // Not a URL — try plain text
-    num = parseInt(rawData.replace(/\D/g,''));
-    display = rawData;
+window.stopQRScan = function(){
+  if(qrAnimFrame){ cancelAnimationFrame(qrAnimFrame); qrAnimFrame=null; }
+  if(qrStream){ qrStream.getTracks().forEach(t=>t.stop()); qrStream=null; }
+  const v=el('qrVideo'); if(v) v.srcObject=null;
+  el('scanActive').style.display='none';
+  if(!scannedRadioNum) el('scanIdle').style.display='block';
+  qrDetected=false;
+};
+
+window.resetQRScan = function(){
+  scannedRadioNum=null;
+  el('qrScannedInfo').style.display='none';
+  el('proceedBtnWrap').style.display='none';
+  el('debugPanel').classList.remove('show');
+  el('scanIdle').style.display='block';
+  el('scanActive').style.display='none';
+};
+
+function tickQR(){
+  if(!qrStream||qrDetected){ return; }
+  const video=el('qrVideo'), canvas=el('qrCanvas');
+  if(!video||!canvas){ return; }
+
+  // Skip frames to reduce CPU load on mobile
+  qrFrameSkip++;
+  if(qrFrameSkip < 3){ qrAnimFrame=requestAnimationFrame(tickQR); return; }
+  qrFrameSkip=0;
+
+  if(video.readyState!==video.HAVE_ENOUGH_DATA){
+    qrAnimFrame=requestAnimationFrame(tickQR); return;
+  }
+  const ctx=canvas.getContext('2d');
+  canvas.width=video.videoWidth;
+  canvas.height=video.videoHeight;
+  ctx.drawImage(video,0,0,canvas.width,canvas.height);
+  const imageData=ctx.getImageData(0,0,canvas.width,canvas.height);
+
+  if(typeof jsQR==='undefined'){
+    showToast('jsQR library ไม่โหลด กรุณา reload','error');
+    stopQRScan(); return;
   }
 
-  if (!num || num < 1 || num > 999) {
-    showToast('QR Code ไม่ถูกต้อง: ' + rawData.slice(0,30), 'error');
-    qrDetected = false;
-    qrAnimFrame = requestAnimationFrame(tickQR);
+  // Try both normal and inverted
+  let code = jsQR(imageData.data,imageData.width,imageData.height,{inversionAttempts:'attemptBoth'});
+
+  if(code&&code.data){
+    qrDetected=true;
+    handleQRResult(code.data);
     return;
   }
+  qrAnimFrame=requestAnimationFrame(tickQR);
+}
+
+function handleQRResult(rawData){
+  console.log('[QR] Raw data:', rawData);
 
   // Flash effect
-  const video = el('qrVideo');
-  if (video) {
-    const flash = document.createElement('div');
-    flash.className = 'qr-detected-flash';
+  const video=el('qrVideo');
+  if(video&&video.parentNode){
+    const flash=document.createElement('div');
+    flash.className='qr-detected-flash';
     video.parentNode.appendChild(flash);
-    setTimeout(() => flash.remove(), 500);
+    setTimeout(()=>flash.remove(),600);
   }
-
-  // Vibrate if supported
-  if (navigator.vibrate) navigator.vibrate([80, 40, 80]);
+  if(navigator.vibrate) navigator.vibrate([80,40,80]);
 
   stopQRScan();
 
-  // Fill input
-  el('manualRadioInput').value = num;
-  el('qrAutoFillInfo').style.display = 'block';
-  el('qrAutoFillLabel').textContent = display + ' → WD' + num;
-  showToast('✅ สแกน QR สำเร็จ: WD' + num, 'success');
+  // Show debug raw data always (helps diagnose issues)
+  el('debugRaw').textContent = rawData.length>120 ? rawData.slice(0,120)+'…' : rawData;
+  el('debugPanel').classList.add('show');
 
-  // Auto-proceed if shift already selected
-  if (selectedShift) {
-    setTimeout(() => onRadioSelect(), 600);
+  const num = parseRadioFromQR(rawData);
+
+  if(!num){
+    // Could not parse — show raw and ask user to report
+    showToast('อ่าน QR ได้แต่แปลงหมายเลขวิทยุไม่ได้ — ดูข้อมูล QR ด้านล่าง','error');
+    el('scanIdle').style.display='block';
+    qrDetected=false;
+    return;
+  }
+
+  scannedRadioNum=num;
+  el('scanIdle').style.display='none';
+  el('qrScannedInfo').style.display='flex';
+  el('qrScannedLabel').textContent='WD'+num;
+  showToast('สแกน QR สำเร็จ: WD'+num,'success');
+
+  if(selectedShift){
+    el('proceedBtnWrap').style.display='block';
+    setTimeout(()=>onRadioSelect(),700);
+  }else{
+    el('proceedBtnWrap').style.display='block';
+    showToast('กรุณาเลือกผลัดด้านล่าง','warn');
   }
 }
 
-// expose globally for HTML onclick
-window.startQRScan = window.startQRScan;
-window.stopQRScan  = window.stopQRScan;
-
 // ── INIT ──
-async function loadShiftConfig() {
-  try {
-    const snap = await getDoc(doc(db, 'shiftConfig', 'main'));
-    if (snap.exists()) {
-      const d = snap.data();
-      if (d.day) Object.assign(SHIFT_CFG.day, d.day);
-      if (d.night) Object.assign(SHIFT_CFG.night, d.night);
+async function loadShiftConfig(){
+  try{
+    const snap=await getDoc(doc(db,'shiftConfig','main'));
+    if(snap.exists()){
+      const d=snap.data();
+      if(d.day)   Object.assign(SHIFT_CFG.day,d.day);
+      if(d.night) Object.assign(SHIFT_CFG.night,d.night);
     }
-  } catch(e) { console.error(e); }
+  }catch(e){ console.error(e); }
 }
 
-function watchShiftConfig() {
-  if (_scfgUnsub) _scfgUnsub();
-  _scfgUnsub = onSnapshot(doc(db, 'shiftConfig', 'main'), snap => {
-    if (!snap.exists()) return;
-    const d = snap.data();
-    if (d.day) Object.assign(SHIFT_CFG.day, d.day);
-    if (d.night) Object.assign(SHIFT_CFG.night, d.night);
-    el('dayWindowChip').textContent  = SHIFT_CFG.day.inspStart  + '–' + SHIFT_CFG.day.inspEnd;
-    el('nightWindowChip').textContent = SHIFT_CFG.night.inspStart + '–' + SHIFT_CFG.night.inspEnd;
-    el('dayShiftTime').textContent   = SHIFT_CFG.day.shiftStart  + '–' + SHIFT_CFG.day.shiftEnd;
-    el('nightShiftTime').textContent = SHIFT_CFG.night.shiftStart + '–' + SHIFT_CFG.night.shiftEnd;
+function watchShiftConfig(){
+  if(_scfgUnsub) _scfgUnsub();
+  _scfgUnsub=onSnapshot(doc(db,'shiftConfig','main'),snap=>{
+    if(!snap.exists()) return;
+    const d=snap.data();
+    if(d.day)   Object.assign(SHIFT_CFG.day,d.day);
+    if(d.night) Object.assign(SHIFT_CFG.night,d.night);
+    el('dayWindowChip').textContent   = SHIFT_CFG.day.inspStart+'–'+SHIFT_CFG.day.inspEnd;
+    el('nightWindowChip').textContent = SHIFT_CFG.night.inspStart+'–'+SHIFT_CFG.night.inspEnd;
+    el('dayShiftTime').textContent    = SHIFT_CFG.day.shiftStart+'–'+SHIFT_CFG.day.shiftEnd;
+    el('nightShiftTime').textContent  = SHIFT_CFG.night.shiftStart+'–'+SHIFT_CFG.night.shiftEnd;
+    updateShiftButtons();
     checkWindowAccess();
-    if (lateRequestStatus === 'approved') renderLateApproved();
   });
 }
 
-async function loadChecklist() {
-  try {
-    const snap = await getDocs(query(collection(db, 'checklistItems'), orderBy('id')));
-    if (!snap.empty) {
-      CHECKLIST = snap.docs.map(d => ({ id:d.data().id, th:d.data().th, en:d.data().en, enabled:d.data().enabled!==false })).filter(x=>x.enabled);
-    } else {
-      CHECKLIST = [
+async function loadChecklist(){
+  try{
+    const snap=await getDocs(query(collection(db,'checklistItems'),orderBy('id')));
+    if(!snap.empty){
+      CHECKLIST=snap.docs.map(d=>({id:d.data().id,th:d.data().th,en:d.data().en,enabled:d.data().enabled!==false})).filter(x=>x.enabled);
+    }else{
+      CHECKLIST=[
         {id:1,th:'เสาอากาศ',en:'Antenna',enabled:true},
         {id:2,th:'แบตเตอรี่',en:'Battery',enabled:true},
         {id:3,th:'ปุ่มกดพูด (PTT)',en:'PTT Button',enabled:true},
@@ -745,335 +829,282 @@ async function loadChecklist() {
         {id:21,th:'เอกสารประกอบ',en:'Documentation',enabled:true},
       ];
     }
-  } catch(e) { console.error(e); }
+  }catch(e){ console.error(e); }
 }
 
-async function loadRadios() {
-  try {
-    const snap = await getDocs(collection(db, 'radioItems'));
-    RADIOS = snap.docs.map(d => ({docId:d.id, ...d.data()})).sort((a,b)=>(Number(a.id)||0)-(Number(b.id)||0));
-  } catch(e) { console.error(e); }
+async function loadRadios(){
+  try{
+    const snap=await getDocs(collection(db,'radioItems'));
+    RADIOS=snap.docs.map(d=>({docId:d.id,...d.data()})).sort((a,b)=>(Number(a.id)||0)-(Number(b.id)||0));
+  }catch(e){ console.error(e); }
 }
 
 // ── LOGIN ──
-window.doLogin = async function() {
-  const uid = el('loginId').value.trim();
-  const pw  = el('loginPw').value.trim();
-  el('loginErr').style.display = 'none';
-  if (!uid || !pw) { showLoginErr('กรุณากรอกข้อมูลให้ครบ'); return; }
-  try {
-    const snap = await getDocs(collection(db, 'radioUsers'));
-    let found = null;
-    snap.forEach(d => { if (d.data().userId === uid) found = d.data(); });
-    if (!found) { showLoginErr('ไม่พบรหัสผู้ใช้'); return; }
-    if (found.password !== pw) { showLoginErr('รหัสผ่านไม่ถูกต้อง'); return; }
-    if (!found.enabled) { showLoginErr('บัญชีถูกระงับสิทธิ์'); return; }
-    currentUser = found;
-    await Promise.all([loadShiftConfig(), loadChecklist(), loadRadios()]);
+window.doLogin = async function(){
+  const uid=el('loginId').value.trim(), pw=el('loginPw').value.trim();
+  el('loginErr').style.display='none';
+  if(!uid||!pw){ showLoginErr('กรุณากรอกข้อมูลให้ครบ'); return; }
+  try{
+    const snap=await getDocs(collection(db,'radioUsers'));
+    let found=null;
+    snap.forEach(d=>{ if(d.data().userId===uid) found=d.data(); });
+    if(!found){ showLoginErr('ไม่พบรหัสผู้ใช้'); return; }
+    if(found.password!==pw){ showLoginErr('รหัสผ่านไม่ถูกต้อง'); return; }
+    if(!found.enabled){ showLoginErr('บัญชีถูกระงับสิทธิ์'); return; }
+    currentUser=found;
+    await Promise.all([loadShiftConfig(),loadChecklist(),loadRadios()]);
     watchShiftConfig();
-    initFromURL();
-  } catch(e) { showLoginErr('เกิดข้อผิดพลาด: ' + e.message); }
+    initApp();
+  }catch(e){ showLoginErr('เกิดข้อผิดพลาด: '+e.message); }
 };
+function showLoginErr(msg){ const e=el('loginErr'); e.textContent=msg; e.style.display='block'; }
 
-function showLoginErr(msg) {
-  const e = el('loginErr');
-  e.textContent = msg;
-  e.style.display = 'block';
+function initApp(){
+  updateShiftButtons();
+  const dayActive=isInShift('day')||isEmergencyUnlocked('day');
+  const nightActive=isInShift('night')||isEmergencyUnlocked('night');
+  if(dayActive&&!nightActive) selectShiftSilent('day');
+  else if(nightActive&&!dayActive) selectShiftSilent('night');
+  checkWindowAccess();
+  if(_shiftRefreshTimer) clearInterval(_shiftRefreshTimer);
+  _shiftRefreshTimer=setInterval(()=>{ updateShiftButtons(); checkWindowAccess(); },60000);
 }
 
-// ── QR URL AUTO-FILL ──
-function initFromURL() {
-  const params = new URLSearchParams(window.location.search);
-  const radioParam = params.get('radio') || params.get('id') || params.get('code');
-  if (radioParam) {
-    const num = parseInt(radioParam.replace(/\D/g,''));
-    if (num > 0) {
-      el('manualRadioInput').value = num;
-      el('qrAutoFillInfo').style.display = 'block';
-      el('qrAutoFillLabel').textContent = radioParam;
+// ── SHIFT BUTTONS ──
+function updateShiftButtons(){
+  const dayOk   = isInShift('day')  ||isEmergencyUnlocked('day');
+  const nightOk = isInShift('night')||isEmergencyUnlocked('night');
+  const dayBtn=el('shiftDayBtn'), nightBtn=el('shiftNightBtn');
+  const dayBadge=el('dayShiftBadge'), nightBadge=el('nightShiftBadge');
+  const nowBadge=el('shiftTimeNowBadge'), infoMsg=el('shiftInfoMsg');
+
+  function setBtnState(btn,badge,allowed,isDay){
+    btn.disabled=!allowed;
+    if(allowed){
+      badge.className='shift-active-badge '+(isDay?'day-active':'night-active');
+      badge.innerHTML='<span class="material-symbols-outlined" style="font-size:10px">check_circle</span>เปิดอยู่';
+    }else{
+      badge.className='shift-locked-badge';
+      badge.innerHTML='<span class="material-symbols-outlined" style="font-size:10px">lock</span>นอกเวลา';
     }
   }
-  const nm = nowMinutes();
-  const ss = timeToMinutes(SHIFT_CFG.night.shiftStart || '19:30');
-  const isNight = (nm >= ss || nm < 7*60+30);
-  selectShiftSilent(isNight ? 'night' : 'day');
-  checkWindowAccess();
+  setBtnState(dayBtn,dayBadge,dayOk,true);
+  setBtnState(nightBtn,nightBadge,nightOk,false);
+
+  // Active highlight
+  dayBtn.classList.toggle('active-day',  selectedShift==='day'  &&dayOk);
+  nightBtn.classList.toggle('active-night',selectedShift==='night'&&nightOk);
+
+  // Top badge
+  if(nowBadge){
+    if(dayOk&&!nightOk){ nowBadge.textContent='☀ ผลัดกลางวัน'; nowBadge.style.background='rgba(245,158,11,.12)'; nowBadge.style.color='#b45309'; }
+    else if(nightOk&&!dayOk){ nowBadge.textContent='🌙 ผลัดกลางคืน'; nowBadge.style.background='rgba(124,58,237,.1)'; nowBadge.style.color='#7c3aed'; }
+    else if(dayOk&&nightOk){ nowBadge.textContent='☀🌙 ทั้งสองผลัด'; nowBadge.style.background='rgba(0,88,190,.08)'; nowBadge.style.color='var(--primary)'; }
+    else{ nowBadge.textContent='นอกเวลาตรวจ'; nowBadge.style.background='rgba(186,26,26,.07)'; nowBadge.style.color='#b91c1c'; }
+  }
+  if(infoMsg){
+    if(!dayOk&&!nightOk){
+      infoMsg.style.display='block';
+      infoMsg.innerHTML=`นอกเวลาผลัดทั้งสอง — กลางวัน ${SHIFT_CFG.day.shiftStart} น. / กลางคืน ${SHIFT_CFG.night.shiftStart} น.`;
+    }else{ infoMsg.style.display='none'; }
+  }
 }
 
 // ── WINDOW ACCESS CHECK ──
-function checkWindowAccess() {
-  if (!currentUser) return;
-  const dayOpen   = isInWindow(SHIFT_CFG.day.inspStart,   SHIFT_CFG.day.inspEnd);
-  const nightOpen = isInWindow(SHIFT_CFG.night.inspStart, SHIFT_CFG.night.inspEnd);
-  const dayEmerg  = isEmergencyUnlocked('day');
-  const nightEmerg = isEmergencyUnlocked('night');
+function checkWindowAccess(){
+  if(!currentUser) return;
+  const dayOpen  =isInWindow(SHIFT_CFG.day.inspStart,  SHIFT_CFG.day.inspEnd);
+  const nightOpen=isInWindow(SHIFT_CFG.night.inspStart,SHIFT_CFG.night.inspEnd);
+  const dayE=isEmergencyUnlocked('day'), nightE=isEmergencyUnlocked('night');
 
-  if (lateRequestStatus === 'approved' && lateRequestData?.expiresAt) {
-    const now = Date.now();
-    const exp = new Date(lateRequestData.expiresAt).getTime();
-    if (now < exp) { showMainApp(); return; }
-    else { lateRequestStatus = null; lateRequestData = null; }
+  if(lateRequestStatus==='approved'&&lateRequestData?.expiresAt){
+    if(Date.now()<new Date(lateRequestData.expiresAt).getTime()){ showMainApp(); return; }
+    else{ lateRequestStatus=null; lateRequestData=null; }
   }
-
-  if (dayOpen || nightOpen || dayEmerg || nightEmerg) { showMainApp(); }
-  else { showLockedScreen(); startClock(); checkExistingLateRequest(); }
+  if(dayOpen||nightOpen||dayE||nightE){ showMainApp(); }
+  else{ showLockedScreen(); startClock(); checkExistingLateRequest(); }
 }
 
-function showMainApp() {
-  stopQRScan();
-  hideAllScreens();
-  el('mainApp').style.display = 'block';
-  el('mainApp').classList.add('active');
-  el('topbarUser').textContent = currentUser.name || currentUser.userId;
-  el('topbarDate').textContent = new Date().toLocaleDateString('th-TH');
-  stopClock();
+function showMainApp(){
+  stopQRScan(); hideAllScreens();
+  el('mainApp').style.display='block'; el('mainApp').classList.add('active');
+  el('topbarUser').textContent=currentUser.name||currentUser.userId;
+  updateShiftButtons(); stopClock();
 }
-
-function showLockedScreen() {
+function showLockedScreen(){
   hideAllScreens();
-  el('lockedScreen').style.display = 'flex';
-  el('lockedScreen').classList.add('active');
-  el('dayWindowChip').textContent  = (SHIFT_CFG.day.inspStart||'07:30')  + '–' + (SHIFT_CFG.day.inspEnd||'10:00');
-  el('nightWindowChip').textContent = (SHIFT_CFG.night.inspStart||'19:30') + '–' + (SHIFT_CFG.night.inspEnd||'22:00');
+  el('lockedScreen').style.display='flex'; el('lockedScreen').classList.add('active');
+  el('dayWindowChip').textContent  =(SHIFT_CFG.day.inspStart||'07:30')+'–'+(SHIFT_CFG.day.inspEnd||'10:00');
+  el('nightWindowChip').textContent=(SHIFT_CFG.night.inspStart||'19:30')+'–'+(SHIFT_CFG.night.inspEnd||'22:00');
   updateNextWindow();
 }
-
-function hideAllScreens() {
-  ['loginScreen','lockedScreen','mainApp','successScreen'].forEach(id => {
-    const e = el(id);
-    if (!e) return;
-    e.style.display = 'none';
-    e.classList.remove('active');
+function hideAllScreens(){
+  ['loginScreen','lockedScreen','mainApp','successScreen'].forEach(id=>{
+    const e=el(id); if(!e) return; e.style.display='none'; e.classList.remove('active');
   });
 }
 
 // ── CLOCK ──
-function startClock() {
+function startClock(){
   stopClock();
-  function tick() {
-    const t = new Date().toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-    const c = el('lockedClock');
-    if (c) c.textContent = t;
-    if (lateRequestStatus === 'approved' && lateRequestData?.expiresAt) {
-      const rem = Math.max(0, Math.floor((new Date(lateRequestData.expiresAt).getTime() - Date.now()) / 1000));
-      if (rem === 0) { lateRequestStatus = null; lateRequestData = null; checkWindowAccess(); return; }
-      const h = Math.floor(rem/3600), m = Math.floor((rem%3600)/60), s = rem%60;
-      const cd = el('lateCountdown');
-      if (cd) cd.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  function tick(){
+    const c=el('lockedClock'); if(c) c.textContent=new Date().toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    if(lateRequestStatus==='approved'&&lateRequestData?.expiresAt){
+      const rem=Math.max(0,Math.floor((new Date(lateRequestData.expiresAt).getTime()-Date.now())/1000));
+      if(rem===0){ lateRequestStatus=null; lateRequestData=null; checkWindowAccess(); return; }
+      const cd=el('lateCountdown');
+      if(cd) cd.textContent=`${String(Math.floor(rem/3600)).padStart(2,'0')}:${String(Math.floor((rem%3600)/60)).padStart(2,'0')}:${String(rem%60).padStart(2,'0')}`;
     }
-    if (new Date().getSeconds() % 30 === 0) checkWindowAccess();
+    if(new Date().getSeconds()%30===0) checkWindowAccess();
   }
-  tick();
-  _clockTimer = setInterval(tick, 1000);
+  tick(); _clockTimer=setInterval(tick,1000);
 }
+function stopClock(){ if(_clockTimer){ clearInterval(_clockTimer); _clockTimer=null; } }
 
-function stopClock() {
-  if (_clockTimer) { clearInterval(_clockTimer); _clockTimer = null; }
-}
-
-function updateNextWindow() {
-  const now = nowMinutes();
-  const windows = [
-    { label:'กลางวัน', start: timeToMinutes(SHIFT_CFG.day.inspStart||'07:30') },
-    { label:'กลางคืน', start: timeToMinutes(SHIFT_CFG.night.inspStart||'19:30') },
-  ];
-  let next = null, minDiff = Infinity;
-  windows.forEach(w => {
-    let diff = w.start - now;
-    if (diff <= 0) diff += 24*60;
-    if (diff < minDiff) { minDiff = diff; next = w; }
-  });
-  const h = Math.floor(minDiff/60), m = minDiff%60;
-  const txt = el('nextWindowText');
-  if (txt && next) { txt.textContent = `หน้าต่างถัดไป: ${next.label} (ใน ${h > 0 ? h+'ชม. ':''}${m}นาที)`; }
+function updateNextWindow(){
+  const now=nowMinutes();
+  const windows=[{label:'กลางวัน',start:timeToMinutes(SHIFT_CFG.day.inspStart||'07:30')},{label:'กลางคืน',start:timeToMinutes(SHIFT_CFG.night.inspStart||'19:30')}];
+  let next=null,minDiff=Infinity;
+  windows.forEach(w=>{ let d=w.start-now; if(d<=0) d+=24*60; if(d<minDiff){minDiff=d;next=w;} });
+  const h=Math.floor(minDiff/60),m=minDiff%60;
+  const txt=el('nextWindowText');
+  if(txt&&next) txt.textContent=`หน้าต่างถัดไป: ${next.label} (ใน ${h>0?h+'ชม. ':''}${m}นาที)`;
 }
 
 // ── LATE REQUEST ──
-async function checkExistingLateRequest() {
-  if (!currentUser || !db) return;
-  try {
-    const q = query(collection(db,'lateRequests'), where('userId','==',currentUser.userId), where('date','==',todayStr()), orderBy('requestedAt','desc'));
-    const snap = await getDocs(q);
-    if (snap.empty) { renderNoLateRequest(); watchLateRequest(null); return; }
-    const latest = snap.docs[0];
-    lateRequestId = latest.id;
-    lateRequestData = latest.data();
-    lateRequestStatus = lateRequestData.status;
-    renderLateRequestStatus();
-    watchLateRequest(lateRequestId);
-  } catch(e) { console.error(e); }
+async function checkExistingLateRequest(){
+  if(!currentUser) return;
+  try{
+    const q=query(collection(db,'lateRequests'),where('userId','==',currentUser.userId),where('date','==',todayStr()),orderBy('requestedAt','desc'));
+    const snap=await getDocs(q);
+    if(snap.empty){ renderNoLateRequest(); watchLateRequest(null); return; }
+    const latest=snap.docs[0];
+    lateRequestId=latest.id; lateRequestData=latest.data(); lateRequestStatus=lateRequestData.status;
+    renderLateRequestStatus(); watchLateRequest(lateRequestId);
+  }catch(e){ console.error(e); }
 }
-
-function watchLateRequest(docId) {
-  if (_lateWatcher) { _lateWatcher(); _lateWatcher = null; }
-  if (!docId) return;
-  _lateWatcher = onSnapshot(doc(db, 'lateRequests', docId), snap => {
-    if (!snap.exists()) return;
-    lateRequestData = snap.data();
-    lateRequestStatus = lateRequestData.status;
+function watchLateRequest(docId){
+  if(_lateWatcher){ _lateWatcher(); _lateWatcher=null; }
+  if(!docId) return;
+  _lateWatcher=onSnapshot(doc(db,'lateRequests',docId),snap=>{
+    if(!snap.exists()) return;
+    lateRequestData=snap.data(); lateRequestStatus=lateRequestData.status;
     renderLateRequestStatus();
-    if (lateRequestStatus === 'approved') showToast('✅ คำขอได้รับการอนุมัติแล้ว! กดเริ่มตรวจสอบ', 'success');
+    if(lateRequestStatus==='approved') showToast('✅ อนุมัติแล้ว! กดเริ่มตรวจสอบ','success');
   });
 }
-
-function renderNoLateRequest() {
-  el('lateStatusWrap').style.display = 'none';
-  el('lateReqForm').style.display = 'block';
-}
-
-function renderLateRequestStatus() {
-  el('lateReqForm').style.display = 'none';
-  el('lateStatusWrap').style.display = 'block';
-  el('lateStatusPending').style.display  = 'none';
-  el('lateStatusApproved').style.display = 'none';
-  el('lateStatusRejected').style.display = 'none';
-  el('lateGoFormBtn').style.display  = 'none';
-  el('lateCancelBtn').style.display  = 'none';
-
-  if (lateRequestStatus === 'pending') {
-    el('lateStatusPending').style.display = 'flex';
-    el('lateCancelBtn').style.display     = 'flex';
-    const d = lateRequestData;
-    el('pendingSubText').textContent = `ส่งเมื่อ ${d?.requestedAt?.toDate?.()?.toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'}) || '—'} น.`;
-  } else if (lateRequestStatus === 'approved') {
-    el('lateStatusApproved').style.display = 'flex';
-    el('lateGoFormBtn').style.display      = 'flex';
-    renderLateApproved();
-    if (lateRequestData?.expiresAt) {
-      const rem = Math.floor((new Date(lateRequestData.expiresAt).getTime() - Date.now()) / 1000);
-      if (rem <= 0) { lateRequestStatus = null; lateRequestData = null; checkWindowAccess(); return; }
-      setTimeout(() => { if (lateRequestStatus === 'approved') checkWindowAccess(); }, 3000);
+function renderNoLateRequest(){ el('lateStatusWrap').style.display='none'; el('lateReqForm').style.display='block'; }
+function renderLateRequestStatus(){
+  el('lateReqForm').style.display='none'; el('lateStatusWrap').style.display='block';
+  ['lateStatusPending','lateStatusApproved','lateStatusRejected','lateGoFormBtn','lateCancelBtn'].forEach(id=>el(id).style.display='none');
+  if(lateRequestStatus==='pending'){
+    el('lateStatusPending').style.display='flex'; el('lateCancelBtn').style.display='flex';
+    el('pendingSubText').textContent=`ส่งเมื่อ ${lateRequestData?.requestedAt?.toDate?.()?.toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'})||'—'} น.`;
+  }else if(lateRequestStatus==='approved'){
+    el('lateStatusApproved').style.display='flex'; el('lateGoFormBtn').style.display='flex';
+    if(lateRequestData?.expiresAt){
+      const rem=Math.floor((new Date(lateRequestData.expiresAt).getTime()-Date.now())/1000);
+      if(rem<=0){ lateRequestStatus=null; lateRequestData=null; checkWindowAccess(); return; }
     }
-  } else if (lateRequestStatus === 'rejected') {
-    el('lateStatusRejected').style.display = 'flex';
-    const reason = lateRequestData?.rejectReason;
-    el('rejectedReason').textContent = reason ? `เหตุผล: ${reason}` : 'กรุณาติดต่อผู้ควบคุมงาน';
-    setTimeout(() => { el('lateReqForm').style.display = 'block'; }, 1000);
+  }else if(lateRequestStatus==='rejected'){
+    el('lateStatusRejected').style.display='flex';
+    const reason=lateRequestData?.rejectReason;
+    el('rejectedReason').textContent=reason?`เหตุผล: ${reason}`:'กรุณาติดต่อผู้ควบคุมงาน';
+    setTimeout(()=>{ el('lateReqForm').style.display='block'; },1000);
   }
 }
-
-function renderLateApproved() {
-  if (!lateRequestData?.expiresAt) return;
-  const rem = Math.max(0, Math.floor((new Date(lateRequestData.expiresAt).getTime() - Date.now()) / 1000));
-  const h = Math.floor(rem/3600), m = Math.floor((rem%3600)/60), s = rem%60;
-  const cd = el('lateCountdown');
-  if (cd) cd.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-}
-
-window.updateCharCount = function() {
-  const val = el('lateReason').value.length;
-  el('reasonLen').textContent = val;
-};
-
-window.submitLateRequest = async function() {
-  const reason = el('lateReason').value.trim();
-  const shift  = el('lateShiftSel').value;
-  if (reason.length < 10) { showToast('กรุณาระบุเหตุผลอย่างน้อย 10 ตัวอักษร', 'error'); return; }
-  try {
-    const docRef = await addDoc(collection(db, 'lateRequests'), {
-      userId: currentUser.userId, userName: currentUser.name || currentUser.userId,
-      shift, date: todayStr(), reason, status: 'pending',
-      requestedAt: serverTimestamp(), reviewedBy: null, reviewedAt: null, expiresAt: null,
-    });
-    lateRequestId = docRef.id; lateRequestStatus = 'pending';
-    lateRequestData = { userId: currentUser.userId, shift, date: todayStr(), reason, status: 'pending' };
+window.updateCharCount=function(){ el('reasonLen').textContent=el('lateReason').value.length; };
+window.submitLateRequest=async function(){
+  const reason=el('lateReason').value.trim(), shift=el('lateShiftSel').value;
+  if(reason.length<10){ showToast('กรุณาระบุเหตุผลอย่างน้อย 10 ตัวอักษร','error'); return; }
+  try{
+    const docRef=await addDoc(collection(db,'lateRequests'),{ userId:currentUser.userId,userName:currentUser.name||currentUser.userId,shift,date:todayStr(),reason,status:'pending',requestedAt:serverTimestamp(),reviewedBy:null,reviewedAt:null,expiresAt:null });
+    lateRequestId=docRef.id; lateRequestStatus='pending';
+    lateRequestData={userId:currentUser.userId,shift,date:todayStr(),reason,status:'pending'};
     renderLateRequestStatus(); watchLateRequest(docRef.id);
-    showToast('✅ ส่งคำขอแล้ว รอการอนุมัติจาก Admin', 'info');
-  } catch(e) { showToast('ส่งคำขอไม่สำเร็จ: ' + e.message, 'error'); }
+    showToast('✅ ส่งคำขอแล้ว รอการอนุมัติ','info');
+  }catch(e){ showToast('ส่งคำขอไม่สำเร็จ: '+e.message,'error'); }
 };
-
-window.cancelLateRequest = async function() {
-  if (!lateRequestId) return;
-  try {
-    await deleteDoc(doc(db, 'lateRequests', lateRequestId));
-    lateRequestId = null; lateRequestStatus = null; lateRequestData = null;
-    if (_lateWatcher) { _lateWatcher(); _lateWatcher = null; }
-    renderNoLateRequest(); showToast('ยกเลิกคำขอแล้ว', 'warn');
-  } catch(e) { showToast('ยกเลิกไม่สำเร็จ', 'error'); }
+window.cancelLateRequest=async function(){
+  if(!lateRequestId) return;
+  try{
+    await deleteDoc(doc(db,'lateRequests',lateRequestId));
+    lateRequestId=null; lateRequestStatus=null; lateRequestData=null;
+    if(_lateWatcher){ _lateWatcher(); _lateWatcher=null; }
+    renderNoLateRequest(); showToast('ยกเลิกคำขอแล้ว','warn');
+  }catch(e){ showToast('ยกเลิกไม่สำเร็จ','error'); }
 };
-
-window.enterApprovedForm = function() {
-  if (lateRequestStatus !== 'approved') return;
-  if (!lateRequestData?.expiresAt) return;
-  if (Date.now() > new Date(lateRequestData.expiresAt).getTime()) { showToast('หมดเวลาอนุมัติแล้ว', 'error'); return; }
-  if (lateRequestData.shift) selectShiftSilent(lateRequestData.shift);
+window.enterApprovedForm=function(){
+  if(lateRequestStatus!=='approved') return;
+  if(!lateRequestData?.expiresAt) return;
+  if(Date.now()>new Date(lateRequestData.expiresAt).getTime()){ showToast('หมดเวลาอนุมัติแล้ว','error'); return; }
+  if(lateRequestData.shift) selectShiftSilent(lateRequestData.shift);
   showMainApp();
 };
 
 // ── LOGOUT ──
-window.doLogout = function() {
-  stopQRScan();
-  currentUser = null; selectedRadio = null; selectedShift = null;
-  checklistState = {}; lateRequestId = null; lateRequestStatus = null; lateRequestData = null;
+window.doLogout=function(){
+  stopQRScan(); currentUser=null; selectedRadio=null; selectedShift=null; scannedRadioNum=null;
+  checklistState={}; lateRequestId=null; lateRequestStatus=null; lateRequestData=null;
   stopClock();
-  if (_lateWatcher)  { _lateWatcher(); _lateWatcher = null; }
-  if (_scfgUnsub)    { _scfgUnsub(); _scfgUnsub = null; }
+  if(_lateWatcher){ _lateWatcher(); _lateWatcher=null; }
+  if(_scfgUnsub){ _scfgUnsub(); _scfgUnsub=null; }
+  if(_shiftRefreshTimer){ clearInterval(_shiftRefreshTimer); _shiftRefreshTimer=null; }
   hideAllScreens();
-  el('loginScreen').style.display = 'flex';
-  el('loginScreen').classList.add('active');
-  el('loginId').value = '';
-  el('loginPw').value = '';
+  el('loginScreen').style.display='flex'; el('loginScreen').classList.add('active');
+  el('loginId').value=''; el('loginPw').value='';
 };
 
 // ── SHIFT SELECT ──
-function selectShiftSilent(shift) {
-  selectedShift = shift;
-  const db2 = el('shiftDayBtn'), nb = el('shiftNightBtn');
-  if (db2) { db2.style.background = shift === 'day'   ? 'rgba(245,158,11,.12)' : ''; db2.style.borderColor = shift === 'day' ? '#f59e0b' : ''; }
-  if (nb)  { nb.style.background  = shift === 'night' ? 'rgba(124,58,237,.1)'  : ''; nb.style.borderColor  = shift === 'night' ? '#7c3aed' : ''; }
+function selectShiftSilent(shift){
+  selectedShift=shift; updateShiftButtons();
+  if(scannedRadioNum) el('proceedBtnWrap').style.display='block';
 }
-window.selectShift = function(shift) { selectShiftSilent(shift); };
+window.selectShift=function(shift){
+  const btn=el(shift==='day'?'shiftDayBtn':'shiftNightBtn');
+  if(btn.disabled){ showToast('ผลัดนี้ยังไม่ถึงเวลา','warn'); return; }
+  selectShiftSilent(shift);
+  if(scannedRadioNum){ showToast('เลือกผลัดแล้ว กำลังดำเนินการ...','success'); setTimeout(()=>onRadioSelect(),600); }
+  else showToast('เลือกผลัด'+(shift==='day'?'กลางวัน':'กลางคืน')+' — กรุณาสแกน QR ด้านบน','info');
+};
 
 // ── RADIO SELECT ──
-window.onRadioSelect = function() {
-  const num = parseInt(el('manualRadioInput').value);
-  if (!num || num < 1) { showToast('กรุณากรอกหมายเลข WD ที่ถูกต้อง', 'error'); return; }
-  if (!selectedShift) { showToast('กรุณาเลือกผลัดก่อน', 'warn'); return; }
-  const r = RADIOS.find(x => x.id === num) || { id: num, area: 'WD' + num, sn: '', type: 'active' };
-  selectedRadio = r;
-  initChecklist();
-  goToStep2();
+window.onRadioSelect=function(){
+  if(!scannedRadioNum||scannedRadioNum<1){ showToast('กรุณาสแกน QR Code บนวิทยุก่อน','error'); return; }
+  if(!selectedShift){ showToast('กรุณาเลือกผลัดก่อน','warn'); return; }
+  const r=RADIOS.find(x=>x.id===scannedRadioNum)||{id:scannedRadioNum,area:'WD'+scannedRadioNum,sn:'',type:'active'};
+  selectedRadio=r; initChecklist(); goToStep2();
 };
 
-function goToStep2() {
-  el('step1').style.display = 'none';
-  el('step2').style.display = 'block';
-  const r = selectedRadio;
-  el('radioWdLabel').textContent   = 'WD' + r.id;
-  el('radioAreaLabel').textContent = r.area || '—';
-  el('radioSnLabel').textContent   = r.sn || '—';
-  el('radioTypeBadge').textContent = r.type === 'spare' ? 'สำรอง' : 'ใช้งาน';
-  el('selectedShiftBadge').className = 'shift-badge ' + (selectedShift === 'day' ? 'badge-day' : 'badge-night');
-  el('selectedShiftBadge').textContent = selectedShift === 'day' ? '☀ กลางวัน' : '🌙 กลางคืน';
-  el('topbarDate').textContent = new Date().toLocaleDateString('th-TH');
+function goToStep2(){
+  el('step1').style.display='none'; el('step2').style.display='block';
+  const r=selectedRadio;
+  el('radioWdLabel').textContent   ='WD'+r.id;
+  el('radioAreaLabel').textContent =r.area||'—';
+  el('radioSnLabel').textContent   =r.sn||'—';
+  el('radioTypeBadge').textContent =r.type==='spare'?'สำรอง':'ใช้งาน';
+  el('selectedShiftBadge').className='shift-badge '+(selectedShift==='day'?'badge-day':'badge-night');
+  el('selectedShiftBadge').textContent=selectedShift==='day'?'☀ กลางวัน':'🌙 กลางคืน';
+  el('topbarDate').textContent=new Date().toLocaleDateString('th-TH');
 }
-
-window.backToStep1 = function() {
-  el('step2').style.display = 'none';
-  el('step1').style.display = 'block';
-};
+window.backToStep1=function(){ el('step2').style.display='none'; el('step1').style.display='block'; };
 
 // ── CHECKLIST ──
-function initChecklist() {
-  checklistState = {};
-  CHECKLIST.forEach(item => { checklistState[item.id] = { result: null, note: '' }; });
+function initChecklist(){
+  checklistState={};
+  CHECKLIST.forEach(item=>{ checklistState[item.id]={result:null,note:''}; });
   renderChecklist();
 }
-
-function renderChecklist() {
-  const container = el('checklistItems');
-  if (!container) return;
-  el('clTotal').textContent = CHECKLIST.length + ' รายการ';
-  container.innerHTML = CHECKLIST.map(item => {
-    const st = checklistState[item.id] || { result: null, note: '' };
-    const cls = st.result === 'pass' ? 'pass' : st.result === 'fail' ? 'fail' : 'unset';
+function renderChecklist(){
+  const container=el('checklistItems'); if(!container) return;
+  el('clTotal').textContent=CHECKLIST.length+' รายการ';
+  container.innerHTML=CHECKLIST.map(item=>{
+    const st=checklistState[item.id]||{result:null,note:''};
+    const cls=st.result==='pass'?'pass':st.result==='fail'?'fail':'unset';
     return `
       <div class="cl-item ${cls}" id="clitem-${item.id}" onclick="toggleNote(${item.id})">
         <div class="cl-num">${item.id}</div>
-        <div class="cl-text">
-          <div class="cl-th">${item.th}</div>
-          <div class="cl-en">${item.en}</div>
-        </div>
+        <div class="cl-text"><div class="cl-th">${item.th}</div><div class="cl-en">${item.en}</div></div>
         <div class="cl-btns" onclick="event.stopPropagation()">
           <button class="cl-btn cl-btn-pass ${st.result==='pass'?'active-pass':''}" onclick="setResult(${item.id},'pass')">
             <span class="material-symbols-outlined" style="font-size:17px">check</span>
@@ -1089,107 +1120,67 @@ function renderChecklist() {
   }).join('');
   updateSummary();
 }
-
-window.setResult = function(id, result) {
-  if (!checklistState[id]) checklistState[id] = { result: null, note: '' };
-  checklistState[id].result = checklistState[id].result === result ? null : result;
+window.setResult=function(id,result){
+  if(!checklistState[id]) checklistState[id]={result:null,note:''};
+  checklistState[id].result=checklistState[id].result===result?null:result;
   renderChecklist();
 };
-
-window.toggleNote = function(id) {
-  const n = el('clnote-' + id);
-  if (n) n.classList.toggle('show');
-};
-
-window.setNote = function(id, val) {
-  if (checklistState[id]) checklistState[id].note = val;
-};
-
-function updateSummary() {
-  const vals = Object.values(checklistState);
-  const pass  = vals.filter(v => v.result === 'pass').length;
-  const fail  = vals.filter(v => v.result === 'fail').length;
-  const total = CHECKLIST.length;
-  const done  = pass + fail;
-  const pct   = total > 0 ? Math.round(done/total*100) : 0;
-  el('sumPass').textContent = pass;
-  el('sumFail').textContent = fail;
-  el('sumLeft').textContent = total - done;
-  el('sumPct').textContent  = pct + '%';
-  el('progressFill').style.width = pct + '%';
+window.toggleNote=function(id){ const n=el('clnote-'+id); if(n) n.classList.toggle('show'); };
+window.setNote=function(id,val){ if(checklistState[id]) checklistState[id].note=val; };
+function updateSummary(){
+  const vals=Object.values(checklistState);
+  const pass=vals.filter(v=>v.result==='pass').length, fail=vals.filter(v=>v.result==='fail').length;
+  const total=CHECKLIST.length, done=pass+fail, pct=total>0?Math.round(done/total*100):0;
+  el('sumPass').textContent=pass; el('sumFail').textContent=fail;
+  el('sumLeft').textContent=total-done; el('sumPct').textContent=pct+'%';
+  el('progressFill').style.width=pct+'%';
 }
 
 // ── SUBMIT ──
-window.submitForm = async function() {
-  const total = CHECKLIST.length;
-  const vals  = Object.values(checklistState);
-  const pass  = vals.filter(v => v.result === 'pass').length;
-  const fail  = vals.filter(v => v.result === 'fail').length;
-  const done  = pass + fail;
-  if (done < total) { showToast(`กรุณาตรวจสอบให้ครบ (ค้าง ${total - done} รายการ)`, 'warn'); return; }
-  const overall = fail > 0 ? 'FAIL' : 'PASS';
-  const note    = el('overallNote').value.trim();
-  const now     = new Date();
-  const data = {
-    userId: currentUser.userId, userName: currentUser.name || currentUser.userId,
-    shift: selectedShift, radioId: selectedRadio.id, area: selectedRadio.area || '',
-    sn: selectedRadio.sn || '', date: todayStr(), time: nowTS(), timestamp: now,
-    passCount: pass, failCount: fail, overallStatus: overall, overall, note,
-    scanMethod: el('qrAutoFillInfo').style.display !== 'none' ? 'qr' : 'manual',
-    formType: `${total}items`,
-    checklistResults: Object.entries(checklistState).map(([id, st]) => ({ id: Number(id), result: st.result, note: st.note })),
-    lateRequestId: lateRequestId || null,
+window.submitForm=async function(){
+  const total=CHECKLIST.length, vals=Object.values(checklistState);
+  const pass=vals.filter(v=>v.result==='pass').length, fail=vals.filter(v=>v.result==='fail').length;
+  const done=pass+fail;
+  if(done<total){ showToast(`กรุณาตรวจสอบให้ครบ (ค้าง ${total-done} รายการ)`,'warn'); return; }
+  const overall=fail>0?'FAIL':'PASS', note=el('overallNote').value.trim(), now=new Date();
+  const data={
+    userId:currentUser.userId,userName:currentUser.name||currentUser.userId,
+    shift:selectedShift,radioId:selectedRadio.id,area:selectedRadio.area||'',sn:selectedRadio.sn||'',
+    date:todayStr(),time:nowTS(),timestamp:now,passCount:pass,failCount:fail,overallStatus:overall,overall,note,
+    scanMethod:'qr',formType:`${total}items`,
+    checklistResults:Object.entries(checklistState).map(([id,st])=>({id:Number(id),result:st.result,note:st.note})),
+    lateRequestId:lateRequestId||null,
   };
-  try {
-    const btn = el('submitBtn');
-    btn.disabled = true;
-    btn.textContent = 'กำลังบันทึก...';
-    await addDoc(collection(db, 'submissions'), data);
-    el('resWd').textContent    = 'WD' + selectedRadio.id;
-    el('resShift').textContent = selectedShift === 'day' ? '☀ กลางวัน' : '🌙 กลางคืน';
-    el('resScore').textContent = `${pass} Pass / ${fail} Fail`;
-    el('resStatus').textContent = overall;
-    el('resStatus').style.color = overall === 'PASS' ? '#16a34a' : '#ba1a1a';
-    el('resTime').textContent   = nowTS();
-    hideAllScreens();
-    el('successScreen').style.display = 'flex';
-    el('successScreen').classList.add('active');
-  } catch(e) {
-    showToast('บันทึกไม่สำเร็จ: ' + e.message, 'error');
-    el('submitBtn').disabled = false;
-    el('submitBtn').innerHTML = '<span class="material-symbols-outlined" style="font-size:17px">send</span>บันทึกผลการตรวจ';
+  try{
+    const btn=el('submitBtn'); btn.disabled=true; btn.textContent='กำลังบันทึก...';
+    await addDoc(collection(db,'submissions'),data);
+    el('resWd').textContent   ='WD'+selectedRadio.id;
+    el('resShift').textContent=selectedShift==='day'?'☀ กลางวัน':'🌙 กลางคืน';
+    el('resScore').textContent=`${pass} Pass / ${fail} Fail`;
+    el('resStatus').textContent=overall; el('resStatus').style.color=overall==='PASS'?'#16a34a':'#ba1a1a';
+    el('resTime').textContent=nowTS();
+    hideAllScreens(); el('successScreen').style.display='flex'; el('successScreen').classList.add('active');
+  }catch(e){
+    showToast('บันทึกไม่สำเร็จ: '+e.message,'error');
+    el('submitBtn').disabled=false;
+    el('submitBtn').innerHTML='<span class="material-symbols-outlined" style="font-size:17px">send</span>บันทึกผลการตรวจ';
   }
 };
 
 // ── NEXT RADIO ──
-window.goNextRadio = function() {
-  selectedRadio = null; checklistState = {};
-  el('manualRadioInput').value = '';
-  el('qrAutoFillInfo').style.display = 'none';
-  el('step2').style.display = 'none';
-  el('step1').style.display = 'block';
-  el('overallNote').value = '';
-  hideAllScreens();
-  el('mainApp').style.display = 'block';
-  el('mainApp').classList.add('active');
+window.goNextRadio=function(){
+  selectedRadio=null; checklistState={}; scannedRadioNum=null;
+  el('qrScannedInfo').style.display='none'; el('proceedBtnWrap').style.display='none';
+  el('debugPanel').classList.remove('show');
+  el('scanIdle').style.display='block'; el('scanActive').style.display='none';
+  el('step2').style.display='none'; el('step1').style.display='block';
+  el('overallNote').value='';
+  hideAllScreens(); el('mainApp').style.display='block'; el('mainApp').classList.add('active');
 };
 
 // ── KEYBOARD ──
-el('loginPw').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
-el('loginId').addEventListener('keydown', e => { if (e.key === 'Enter') el('loginPw').focus(); });
-
-// ── AUTO-FILL FROM URL ──
-window.addEventListener('DOMContentLoaded', async () => {
-  await loadShiftConfig();
-  const params = new URLSearchParams(window.location.search);
-  const radioParam = params.get('radio') || params.get('id') || params.get('code');
-  if (radioParam) {
-    el('qrAutoFillInfo').style.display = 'block';
-    el('qrAutoFillLabel').textContent  = radioParam;
-    const num = parseInt(radioParam.replace(/\D/g,''));
-    if (num > 0) el('manualRadioInput').value = num;
-  }
-});
+el('loginPw').addEventListener('keydown',e=>{ if(e.key==='Enter') doLogin(); });
+el('loginId').addEventListener('keydown',e=>{ if(e.key==='Enter') el('loginPw').focus(); });
 </script>
 </body>
 </html>
