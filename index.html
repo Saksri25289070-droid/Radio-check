@@ -121,7 +121,6 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--on-surfac
 .result-row:last-child{border:none}
 .result-lbl{font-size:11px;color:var(--outline);font-weight:600}
 .result-val{font-size:13px;font-weight:700;color:var(--on-surface)}
-/* QR */
 .scan-area{background:linear-gradient(135deg,rgba(0,88,190,.04),rgba(0,88,190,.02));border:2px dashed rgba(0,88,190,.25);border-radius:14px;padding:24px 16px;text-align:center;cursor:pointer;transition:all .2s}
 .scan-area:hover{border-color:rgba(0,88,190,.4);background:rgba(0,88,190,.05)}
 .qr-video-wrap{position:relative;width:100%;border-radius:12px;overflow:hidden;background:#000}
@@ -139,12 +138,13 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--on-surfac
 .qr-detected-flash{position:absolute;inset:0;background:rgba(74,222,128,.3);animation:flash .5s ease;pointer-events:none}
 @keyframes flash{0%{opacity:0}25%{opacity:1}100%{opacity:0}}
 .qr-scanned-info{background:rgba(22,163,74,.07);border:1px solid rgba(22,163,74,.2);border-radius:9px;padding:9px 13px;margin-top:10px;font-size:12px;color:#16a34a;font-weight:700;display:flex;align-items:center;gap:6px}
+.qr-scanned-info.dup-warn{background:rgba(186,26,26,.07);border-color:rgba(186,26,26,.25);color:#b91c1c}
 .debug-panel{background:rgba(0,0,0,.05);border:1px dashed rgba(0,88,190,.2);border-radius:10px;padding:10px 12px;margin-top:10px;font-size:11px;color:var(--secondary);display:none}
 .debug-panel.show{display:block}
 .debug-raw{font-family:monospace;font-size:12px;color:var(--primary);font-weight:700;word-break:break-all;margin-top:4px}
-/* SHIFT BUTTONS */
+/* ── SHIFT BUTTONS ── */
 .shift-btn-wrap{display:flex;gap:9px}
-.shift-option-btn{flex:1;background:var(--bg);box-shadow:-3px -3px 7px var(--shadow-light),3px 3px 7px var(--shadow-dark);border:2px solid transparent;border-radius:12px;padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;transition:all .2s}
+.shift-option-btn{flex:1;background:var(--bg);box-shadow:-3px -3px 7px var(--shadow-light),3px 3px 7px var(--shadow-dark);border:2px solid transparent;border-radius:12px;padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;transition:all .2s;position:relative}
 .shift-option-btn:not(:disabled):hover{transform:translateY(-1px)}
 .shift-option-btn.active-day{border-color:#f59e0b;background:rgba(245,158,11,.08)}
 .shift-option-btn.active-night{border-color:#7c3aed;background:rgba(124,58,237,.09)}
@@ -154,16 +154,77 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--on-surfac
 .shift-active-badge{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:700;padding:2px 7px;border-radius:8px;margin-top:3px}
 .shift-active-badge.day-active{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);color:#b45309}
 .shift-active-badge.night-active{background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25);color:#7c3aed}
-/* TOAST */
+/* ── ✅ AUTO badge บนปุ่มผลัด ── */
+.auto-badge{position:absolute;top:-7px;right:8px;font-size:8px;font-weight:800;padding:2px 7px;border-radius:9px;background:linear-gradient(135deg,#2168FD,#3AE4C9);color:#fff;letter-spacing:.5px;box-shadow:0 2px 6px rgba(33,104,253,.35)}
+/* ── AUTO SHIFT INDICATOR ── */
+.auto-shift-info{display:flex;align-items:center;gap:8px;padding:9px 13px;border-radius:10px;margin-top:10px;font-size:11px;font-weight:600}
+.auto-shift-info.day-auto{background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.22);color:#b45309}
+.auto-shift-info.night-auto{background:rgba(124,58,237,.07);border:1px solid rgba(124,58,237,.2);color:#7c3aed}
+.auto-shift-info.no-shift{background:rgba(186,26,26,.06);border:1px solid rgba(186,26,26,.18);color:#b91c1c}
+/* ── DUP INLINE ── */
+.dup-inline-warn{background:linear-gradient(135deg,rgba(186,26,26,.09),rgba(186,26,26,.04));border:1.5px solid rgba(186,26,26,.3);border-radius:12px;padding:14px 16px;margin-top:10px;animation:warnPop .35s cubic-bezier(.34,1.56,.64,1)}
+@keyframes warnPop{from{transform:scale(.95);opacity:0}to{transform:scale(1);opacity:1}}
+.dup-warn-title{font-family:'Manrope',sans-serif;font-size:13px;font-weight:900;color:#ba1a1a;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.dup-warn-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px}
+.dup-warn-cell{background:var(--bg);box-shadow:-2px -2px 4px var(--shadow-light),2px 2px 4px var(--shadow-dark);border-radius:8px;padding:8px 10px}
+.dup-warn-lbl{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--outline);margin-bottom:2px}
+.dup-warn-val{font-size:12px;font-weight:700;color:var(--on-surface)}
+.dup-warn-note{font-size:11px;color:#924700;background:rgba(234,88,12,.06);border:1px solid rgba(234,88,12,.18);border-radius:8px;padding:8px 11px;line-height:1.5;display:flex;align-items:flex-start;gap:6px}
+/* ── DUP BLOCK ── */
+.dup-block-banner{background:linear-gradient(135deg,rgba(186,26,26,.08),rgba(186,26,26,.04));border:1.5px solid rgba(186,26,26,.3);border-radius:16px;padding:18px;margin-bottom:14px;position:relative;overflow:hidden}
+.dup-block-banner::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,#ba1a1a,#ef4444);border-radius:0 2px 2px 0}
+.dup-block-icon{width:48px;height:48px;border-radius:13px;background:rgba(186,26,26,.1);border:1px solid rgba(186,26,26,.18);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-bottom:12px}
+.dup-block-title{font-family:'Manrope',sans-serif;font-size:15px;font-weight:900;color:#ba1a1a;margin-bottom:6px}
+.dup-block-sub{font-size:12px;color:var(--secondary);line-height:1.6;margin-bottom:12px}
+.dup-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.dup-info-cell{background:var(--bg);box-shadow:-2px -2px 5px var(--shadow-light),2px 2px 5px var(--shadow-dark);border-radius:9px;padding:9px 11px}
+.dup-info-lbl{font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--outline);margin-bottom:3px}
+.dup-info-val{font-size:13px;font-weight:700;color:var(--on-surface)}
+.dup-admin-note{background:rgba(234,88,12,.06);border:1px solid rgba(234,88,12,.2);border-radius:9px;padding:10px 13px;font-size:11px;color:#924700;line-height:1.6;display:flex;align-items:flex-start;gap:7px}
+/* ── PENDING ── */
+.rt-badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;padding:4px 10px;border-radius:18px;background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.22);color:#16a34a;letter-spacing:.4px}
+.rt-dot{width:5px;height:5px;border-radius:50%;background:#4ADE80;animation:pulse 2s infinite;flex-shrink:0}
+.pending-kpi-row{display:flex;gap:8px;margin-bottom:12px}
+.pending-kpi{flex:1;background:var(--bg);box-shadow:-3px -3px 6px var(--shadow-light),3px 3px 6px var(--shadow-dark);border-radius:10px;padding:10px 8px;text-align:center}
+.pending-kpi-val{font-family:'Manrope',sans-serif;font-size:22px;font-weight:900;letter-spacing:-1px;margin-bottom:2px;transition:color .3s}
+.pending-kpi-lbl{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--outline)}
+.pending-progress-bar{height:7px;background:#E2E8F0;border-radius:4px;overflow:hidden;margin-bottom:12px;box-shadow:inset -1px -1px 3px var(--shadow-light),inset 1px 1px 3px #CBD5E1}
+.pending-progress-fill{height:100%;background:linear-gradient(90deg,#16a34a,#4ADE80);border-radius:4px;transition:width .6s cubic-bezier(.4,0,.2,1)}
+@keyframes countFlash{0%{transform:scale(1.35);opacity:.6}100%{transform:scale(1);opacity:1}}
+.count-flash{animation:countFlash .35s ease}
+.pending-tabs{display:flex;gap:4px;margin-bottom:14px;background:rgba(0,0,0,.04);border-radius:12px;padding:3px}
+.pending-tab{flex:1;padding:7px 8px;border:none;border-radius:10px;font-family:'Sarabun',sans-serif;font-size:11px;font-weight:600;color:var(--secondary);cursor:pointer;background:transparent;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:4px}
+.pending-tab.active{background:var(--bg);box-shadow:-2px -2px 5px var(--shadow-light),2px 2px 5px var(--shadow-dark);color:var(--primary);font-weight:700}
+.pending-tab-count{font-size:9px;font-weight:800;padding:1px 5px;border-radius:9px;background:rgba(0,88,190,.1);color:var(--primary)}
+.pending-tab-count.red{background:rgba(186,26,26,.1);color:#b91c1c}
+.pending-list-item{background:var(--bg);box-shadow:-3px -3px 6px var(--shadow-light),3px 3px 6px var(--shadow-dark);border-radius:10px;padding:10px 13px;margin-bottom:7px;display:flex;align-items:center;gap:10px;transition:all .2s}
+.pending-list-item.done{border-left:3px solid #16a34a}
+.pending-list-item.miss{border-left:3px solid var(--warning)}
+.pending-list-item.dup-highlight{border-left:3px solid #ba1a1a;background:rgba(186,26,26,.05)}
+.pending-wd{font-family:'Manrope',sans-serif;font-size:14px;font-weight:900;color:var(--primary);min-width:48px}
+.pending-area{flex:1;font-size:11px;color:var(--secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pending-badge{font-size:9px;font-weight:700;padding:2px 8px;border-radius:9px;white-space:nowrap}
+.pending-badge.done-badge{background:rgba(22,163,74,.08);border:1px solid rgba(22,163,74,.2);color:#16a34a}
+.pending-badge.miss-badge{background:rgba(146,71,0,.08);border:1px solid rgba(146,71,0,.2);color:#924700}
+.pending-badge.dup-badge{background:rgba(186,26,26,.09);border:1px solid rgba(186,26,26,.25);color:#b91c1c}
+.pending-insp{font-size:9px;color:var(--outline);white-space:nowrap;text-align:right}
+.pending-empty{text-align:center;padding:24px 16px;color:var(--outline)}
+.shift-label-pill{font-size:10px;font-weight:700;padding:3px 10px;border-radius:18px;white-space:nowrap}
+.shift-label-pill.day{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.28);color:#b45309}
+.shift-label-pill.night{background:rgba(124,58,237,.09);border:1px solid rgba(124,58,237,.22);color:#7c3aed}
+.conn-err-banner{background:rgba(186,26,26,.06);border:1px solid rgba(186,26,26,.2);border-radius:10px;padding:10px 13px;margin-bottom:12px;font-size:11px;color:#b91c1c;font-weight:600;display:none;align-items:center;gap:7px}
+.conn-err-banner.show{display:flex}
+/* ── TOAST ── */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);border-radius:13px;padding:11px 20px;font-size:13px;font-weight:700;z-index:9999;transition:transform .3s ease;box-shadow:0 4px 16px rgba(0,0,0,.12);max-width:88vw;text-align:center;line-height:1.4}
 .toast.show{transform:translateX(-50%) translateY(0)}
 .toast-success{background:rgba(220,252,231,.97);border:1px solid #86efac;color:#15803d}
 .toast-error{background:rgba(254,226,226,.97);border:1px solid #fca5a5;color:#b91c1c}
 .toast-warn{background:rgba(255,237,213,.97);border:1px solid #fdba74;color:#c2410c}
 .toast-info{background:rgba(219,234,254,.97);border:1px solid #93c5fd;color:#1d4ed8}
-/* Loading */
 .lib-loading{background:rgba(219,234,254,.97);border:1px solid #93c5fd;border-radius:12px;padding:12px 16px;font-size:12px;font-weight:700;color:#1d4ed8;text-align:center;margin-top:10px;display:none}
 .lib-loading.show{display:block}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin{animation:spin .8s linear infinite;display:inline-block}
 </style>
 </head>
 <body>
@@ -176,17 +237,9 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--on-surfac
       <div class="login-title">Radio Inspection</div>
       <div class="login-sub">ระบบตรวจสอบวิทยุสื่อสาร<br>WD Security — กรุณาเข้าสู่ระบบ</div>
       <div id="loginErr" style="background:rgba(186,26,26,.07);border:1px solid rgba(186,26,26,.2);border-radius:9px;padding:9px 13px;font-size:12px;font-weight:600;color:var(--error);margin-bottom:14px;display:none"></div>
-      <div class="form-group">
-        <label class="form-label">รหัสผู้ใช้</label>
-        <input id="loginId" class="form-input" type="text" placeholder="U001" autocomplete="off">
-      </div>
-      <div class="form-group">
-        <label class="form-label">รหัสผ่าน</label>
-        <input id="loginPw" class="form-input" type="password" placeholder="••••••••">
-      </div>
-      <button class="btn btn-primary btn-full" onclick="doLogin()">
-        <span class="material-symbols-outlined" style="font-size:17px">login</span>เข้าสู่ระบบ
-      </button>
+      <div class="form-group"><label class="form-label">รหัสผู้ใช้</label><input id="loginId" class="form-input" type="text" placeholder="U001" autocomplete="off"></div>
+      <div class="form-group"><label class="form-label">รหัสผ่าน</label><input id="loginPw" class="form-input" type="password" placeholder="••••••••"></div>
+      <button class="btn btn-primary btn-full" onclick="doLogin()"><span class="material-symbols-outlined" style="font-size:17px">login</span>เข้าสู่ระบบ</button>
     </div>
   </div>
 </div>
@@ -203,8 +256,8 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--on-surfac
       <div class="locked-title">นอกเวลาตรวจสอบ</div>
       <div class="locked-sub">ขณะนี้ยังไม่ถึงช่วงเวลาตรวจ<br>กรุณารอหรือขอเปิดเวลาฉุกเฉิน</div>
       <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:16px">
-        <div class="shift-time-chip chip-day"><span class="material-symbols-outlined" style="font-size:16px">wb_sunny</span><span id="dayWindowChip">07:30–19:30</span></div>
-        <div class="shift-time-chip chip-night"><span class="material-symbols-outlined" style="font-size:16px">nightlight</span><span id="nightWindowChip">19:30–07:30</span></div>
+        <div class="shift-time-chip chip-day"><span class="material-symbols-outlined" style="font-size:16px">wb_sunny</span><span id="dayWindowChip">07:30–10:00</span></div>
+        <div class="shift-time-chip chip-night"><span class="material-symbols-outlined" style="font-size:16px">nightlight</span><span id="nightWindowChip">19:30–22:00</span></div>
       </div>
       <div class="next-window" id="nextWindowText">กำลังคำนวณ...</div>
       <div class="late-req-panel">
@@ -226,18 +279,8 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--on-surfac
           <button class="btn btn-secondary btn-sm btn-full" id="lateCancelBtn" style="display:none;margin-top:8px" onclick="cancelLateRequest()"><span class="material-symbols-outlined" style="font-size:14px">close</span>ยกเลิกคำขอ</button>
         </div>
         <div id="lateReqForm">
-          <div class="form-group">
-            <label class="form-label">ผลัดที่ขอตรวจ</label>
-            <select id="lateShiftSel" class="form-select" style="font-size:13px;padding:9px 13px">
-              <option value="day">☀️ ผลัดกลางวัน (07:30–19:30)</option>
-              <option value="night">🌙 ผลัดกลางคืน (19:30–07:30)</option>
-            </select>
-          </div>
-          <div class="form-group" style="margin-bottom:6px">
-            <label class="form-label">เหตุผล <span style="color:var(--error)">*</span></label>
-            <textarea id="lateReason" class="textarea-neu" placeholder="อธิบายเหตุผล (อย่างน้อย 10 ตัวอักษร)" maxlength="300" oninput="updateCharCount()"></textarea>
-            <div class="char-count"><span id="reasonLen">0</span>/300</div>
-          </div>
+          <div class="form-group"><label class="form-label">ผลัดที่ขอตรวจ</label><select id="lateShiftSel" class="form-select" style="font-size:13px;padding:9px 13px"><option value="day">☀️ ผลัดกลางวัน (07:30–19:30)</option><option value="night">🌙 ผลัดกลางคืน (19:30–07:30)</option></select></div>
+          <div class="form-group" style="margin-bottom:6px"><label class="form-label">เหตุผล <span style="color:var(--error)">*</span></label><textarea id="lateReason" class="textarea-neu" placeholder="อธิบายเหตุผล (อย่างน้อย 10 ตัวอักษร)" maxlength="300" oninput="updateCharCount()"></textarea><div class="char-count"><span id="reasonLen">0</span>/300</div></div>
           <button class="btn btn-warning btn-full" onclick="submitLateRequest()"><span class="material-symbols-outlined" style="font-size:17px">schedule_send</span>ส่งคำขอเปิดเวลา</button>
         </div>
       </div>
@@ -261,6 +304,42 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--on-surfac
 
   <div class="content-area">
     <div id="step1">
+
+      <!-- PENDING PANEL -->
+      <div class="section-card" id="pendingPanel">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:8px;flex-wrap:wrap">
+          <div style="font-family:'Manrope',sans-serif;font-size:13px;font-weight:800;color:var(--primary);display:flex;align-items:center;gap:7px">
+            <span class="material-symbols-outlined" style="font-size:18px">pending_actions</span>สถานะการตรวจวันนี้
+          </div>
+          <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap">
+            <div class="rt-badge"><div class="rt-dot"></div>Real-time</div>
+            <span id="pendingShiftLabel" class="shift-label-pill day">☀ กลางวัน</span>
+          </div>
+        </div>
+        <div id="connErrBanner" class="conn-err-banner">
+          <span class="material-symbols-outlined" style="font-size:16px;flex-shrink:0">wifi_off</span>
+          <span id="connErrText">ไม่สามารถโหลดข้อมูลได้ — <button onclick="retrySubsWatcher()" style="background:none;border:none;cursor:pointer;color:#b91c1c;font-weight:700;font-family:'Sarabun',sans-serif;font-size:11px;text-decoration:underline">ลองใหม่</button></span>
+        </div>
+        <div class="pending-kpi-row">
+          <div class="pending-kpi"><div class="pending-kpi-val" id="pkpiTotal" style="color:var(--primary)">—</div><div class="pending-kpi-lbl">ทั้งหมด</div></div>
+          <div class="pending-kpi"><div class="pending-kpi-val" id="pkpiDone" style="color:#16a34a">0</div><div class="pending-kpi-lbl">ตรวจแล้ว</div></div>
+          <div class="pending-kpi"><div class="pending-kpi-val" id="pkpiLeft" style="color:#924700">—</div><div class="pending-kpi-lbl">ค้างตรวจ</div></div>
+          <div class="pending-kpi"><div class="pending-kpi-val" id="pkpiPct" style="color:var(--primary)">0%</div><div class="pending-kpi-lbl">เสร็จแล้ว</div></div>
+        </div>
+        <div class="pending-progress-bar"><div id="pendingProgressFill" class="pending-progress-fill" style="width:0%"></div></div>
+        <div class="pending-tabs">
+          <button class="pending-tab" id="ptabMiss" onclick="setPendingTab('miss')">
+            <span class="material-symbols-outlined" style="font-size:13px">error_outline</span>ค้างตรวจ <span class="pending-tab-count red" id="ptabMissCount">0</span>
+          </button>
+          <button class="pending-tab active" id="ptabDone" onclick="setPendingTab('done')">
+            <span class="material-symbols-outlined" style="font-size:13px">check_circle</span>ตรวจแล้ว <span class="pending-tab-count" id="ptabDoneCount">0</span>
+          </button>
+        </div>
+        <div id="pendingListWrap" style="max-height:260px;overflow-y:auto">
+          <div class="pending-empty"><span class="material-symbols-outlined spin" style="font-size:22px;display:block;margin-bottom:6px">sync</span>กำลังเชื่อมต่อ...</div>
+        </div>
+      </div>
+
       <!-- QR -->
       <div class="section-card">
         <div class="section-title"><span class="material-symbols-outlined" style="font-size:18px">qr_code_scanner</span>สแกน QR Code บนวิทยุ</div>
@@ -284,21 +363,37 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--on-surfac
           <button class="qr-stop-btn" onclick="stopQRScan()"><span class="material-symbols-outlined" style="font-size:16px">close</span>ยกเลิกการสแกน</button>
         </div>
         <div id="qrScannedInfo" style="display:none" class="qr-scanned-info">
-          <span class="material-symbols-outlined" style="font-size:18px">check_circle</span>
-          <span>สแกนได้: <strong id="qrScannedLabel">—</strong></span>
-          <button onclick="resetQRScan()" style="margin-left:auto;background:none;border:none;cursor:pointer;color:#16a34a;font-size:11px;font-weight:700;display:flex;align-items:center;gap:3px"><span class="material-symbols-outlined" style="font-size:14px">refresh</span>สแกนใหม่</button>
+          <span class="material-symbols-outlined" style="font-size:18px" id="qrScannedIcon">check_circle</span>
+          <span id="qrScannedText">สแกนได้: <strong id="qrScannedLabel">—</strong></span>
+          <button onclick="resetQRScan()" style="margin-left:auto;background:none;border:none;cursor:pointer;font-size:11px;font-weight:700;display:flex;align-items:center;gap:3px;color:inherit"><span class="material-symbols-outlined" style="font-size:14px">refresh</span>สแกนใหม่</button>
         </div>
-        <div class="debug-panel" id="debugPanel">
-          <div style="font-weight:700;color:var(--outline)">QR Raw Data (สำหรับแจ้งปัญหา):</div>
-          <div class="debug-raw" id="debugRaw">—</div>
+        <div id="dupInlineWarn" class="dup-inline-warn" style="display:none">
+          <div class="dup-warn-title"><span class="material-symbols-outlined" style="font-size:18px">warning</span>ตรวจซ้ำ! วิทยุเครื่องนี้ตรวจไปแล้วในผลัดนี้</div>
+          <div class="dup-warn-grid">
+            <div class="dup-warn-cell"><div class="dup-warn-lbl">ผู้ตรวจเดิม</div><div class="dup-warn-val" id="dwInspector">—</div></div>
+            <div class="dup-warn-cell"><div class="dup-warn-lbl">เวลาที่ตรวจ</div><div class="dup-warn-val" id="dwTime">—</div></div>
+            <div class="dup-warn-cell"><div class="dup-warn-lbl">ผลัด</div><div class="dup-warn-val" id="dwShift">—</div></div>
+            <div class="dup-warn-cell"><div class="dup-warn-lbl">ผลการตรวจ</div><div class="dup-warn-val" id="dwStatus">—</div></div>
+          </div>
+          <div class="dup-warn-note"><span class="material-symbols-outlined" style="font-size:15px;flex-shrink:0;margin-top:1px">info</span>ระบบบล็อกการตรวจซ้ำ กรุณาสแกนวิทยุเครื่องอื่น หรือติดต่อ Admin</div>
         </div>
+        <div class="debug-panel" id="debugPanel"><div style="font-weight:700;color:var(--outline)">QR Raw Data:</div><div class="debug-raw" id="debugRaw">—</div></div>
         <div id="proceedBtnWrap" style="display:none;margin-top:14px">
-          <button class="btn btn-success btn-full" onclick="onRadioSelect()"><span class="material-symbols-outlined" style="font-size:17px">arrow_forward</span>ดำเนินการตรวจสอบ</button>
+          <button class="btn btn-success btn-full" id="proceedBtn" onclick="onRadioSelect()"><span class="material-symbols-outlined" style="font-size:17px">arrow_forward</span>ดำเนินการตรวจสอบ</button>
         </div>
       </div>
-      <!-- SHIFT -->
+
+      <!-- ✅ SHIFT — auto select, ยังกดเปลี่ยนได้ -->
       <div class="section-card">
-        <div class="section-title"><span class="material-symbols-outlined" style="font-size:18px">schedule</span>ผลัดการตรวจ<span id="shiftTimeNowBadge" style="margin-left:auto;font-size:10px;font-weight:700;padding:2px 9px;border-radius:9px;background:rgba(0,88,190,.08);color:var(--primary)">กำลังตรวจสอบ...</span></div>
+        <div class="section-title">
+          <span class="material-symbols-outlined" style="font-size:18px">schedule</span>ผลัดการตรวจ
+          <span id="shiftTimeNowBadge" style="margin-left:auto;font-size:10px;font-weight:700;padding:2px 9px;border-radius:9px;background:rgba(0,88,190,.08);color:var(--primary)">กำลังตรวจสอบ...</span>
+        </div>
+        <!-- ✅ Auto-shift status indicator -->
+        <div id="autoShiftInfo" class="auto-shift-info day-auto" style="display:none;margin-bottom:12px">
+          <span class="material-symbols-outlined" style="font-size:16px;flex-shrink:0">auto_mode</span>
+          <span id="autoShiftText">เลือกผลัดกลางวันอัตโนมัติตามเวลา</span>
+        </div>
         <div class="shift-btn-wrap">
           <button class="shift-option-btn" id="shiftDayBtn" onclick="selectShift('day')" disabled>
             <span class="material-symbols-outlined" style="font-size:22px;color:#b45309">wb_sunny</span>
@@ -319,38 +414,53 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--on-surfac
 
     <!-- Step 2 -->
     <div id="step2" style="display:none">
-      <div class="radio-info-card">
-        <div style="display:flex;align-items:flex-start;justify-content:space-between">
-          <div>
-            <div class="radio-wd" id="radioWdLabel">WD—</div>
-            <div class="radio-area" id="radioAreaLabel">—</div>
-            <div class="radio-sn" id="radioSnLabel">—</div>
-            <div class="radio-badge" id="radioTypeBadge">ใช้งาน</div>
-          </div>
-          <div style="text-align:right">
-            <div id="selectedShiftBadge" class="shift-badge badge-day" style="margin-bottom:6px">☀ กลางวัน</div>
-            <div style="font-size:10px;color:rgba(255,255,255,.5);margin-top:4px" id="topbarDate">—</div>
+      <div id="dupBlockBanner" class="dup-block-banner" style="display:none">
+        <div class="dup-block-icon"><span class="material-symbols-outlined" style="font-size:26px;color:#ba1a1a">block</span></div>
+        <div class="dup-block-title">ตรวจสอบแล้ว — ไม่สามารถตรวจซ้ำได้</div>
+        <div class="dup-block-sub">วิทยุเครื่องนี้ถูกตรวจในผลัดนี้ไปแล้ว<br>กรุณาติดต่อ Admin หากต้องการแก้ไข</div>
+        <div class="dup-info-grid">
+          <div class="dup-info-cell"><div class="dup-info-lbl">ผู้ตรวจเดิม</div><div class="dup-info-val" id="dupInspector">—</div></div>
+          <div class="dup-info-cell"><div class="dup-info-lbl">เวลาที่ตรวจ</div><div class="dup-info-val" id="dupTime">—</div></div>
+          <div class="dup-info-cell"><div class="dup-info-lbl">ผลัด</div><div class="dup-info-val" id="dupShift">—</div></div>
+          <div class="dup-info-cell"><div class="dup-info-lbl">ผลการตรวจ</div><div class="dup-info-val" id="dupStatus">—</div></div>
+        </div>
+        <div class="dup-admin-note"><span class="material-symbols-outlined" style="font-size:16px;flex-shrink:0;margin-top:1px">info</span><span>หากเกิดข้อผิดพลาด กรุณาแจ้ง Admin เพื่อลบข้อมูลออกจากระบบ</span></div>
+        <button class="btn btn-secondary btn-sm btn-full" style="margin-top:14px" onclick="backToStep1()"><span class="material-symbols-outlined" style="font-size:15px">arrow_back</span>กลับเลือกวิทยุใหม่</button>
+      </div>
+      <div id="step2FormWrap">
+        <div class="radio-info-card">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between">
+            <div>
+              <div class="radio-wd" id="radioWdLabel">WD—</div>
+              <div class="radio-area" id="radioAreaLabel">—</div>
+              <div class="radio-sn" id="radioSnLabel">—</div>
+              <div class="radio-badge" id="radioTypeBadge">ใช้งาน</div>
+            </div>
+            <div style="text-align:right">
+              <div id="selectedShiftBadge" class="shift-badge badge-day" style="margin-bottom:6px">☀ กลางวัน</div>
+              <div style="font-size:10px;color:rgba(255,255,255,.5);margin-top:4px" id="topbarDate">—</div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="summary-strip">
-        <div class="sum-pill"><div class="sum-val" id="sumPass" style="color:#16a34a">0</div><div class="sum-lbl">Pass</div></div>
-        <div class="sum-pill"><div class="sum-val" id="sumFail" style="color:#ba1a1a">0</div><div class="sum-lbl">Fail</div></div>
-        <div class="sum-pill"><div class="sum-val" id="sumLeft" style="color:#924700">0</div><div class="sum-lbl">ค้าง</div></div>
-        <div class="sum-pill"><div class="sum-val" id="sumPct" style="color:var(--primary)">0%</div><div class="sum-lbl">Done</div></div>
-      </div>
-      <div class="progress-bar" style="margin-bottom:14px"><div id="progressFill" class="progress-fill" style="width:0%"></div></div>
-      <div class="section-card">
-        <div class="section-title"><span class="material-symbols-outlined" style="font-size:18px">checklist</span>รายการตรวจสอบ<span id="clTotal" style="margin-left:auto;font-size:10px;font-weight:700;padding:2px 8px;border-radius:9px;background:rgba(0,88,190,.08);color:var(--primary)">0 รายการ</span></div>
-        <div id="checklistItems"></div>
-      </div>
-      <div class="section-card">
-        <div class="section-title"><span class="material-symbols-outlined" style="font-size:18px">edit_note</span>หมายเหตุเพิ่มเติม</div>
-        <textarea id="overallNote" class="textarea-neu" placeholder="หมายเหตุรวม (ถ้ามี)"></textarea>
-      </div>
-      <div style="display:flex;gap:9px;margin-bottom:16px">
-        <button class="btn btn-secondary btn-sm" onclick="backToStep1()"><span class="material-symbols-outlined" style="font-size:15px">arrow_back</span>กลับ</button>
-        <button class="btn btn-success btn-full" id="submitBtn" onclick="submitForm()"><span class="material-symbols-outlined" style="font-size:17px">send</span>บันทึกผลการตรวจ</button>
+        <div class="summary-strip">
+          <div class="sum-pill"><div class="sum-val" id="sumPass" style="color:#16a34a">0</div><div class="sum-lbl">Pass</div></div>
+          <div class="sum-pill"><div class="sum-val" id="sumFail" style="color:#ba1a1a">0</div><div class="sum-lbl">Fail</div></div>
+          <div class="sum-pill"><div class="sum-val" id="sumLeft" style="color:#924700">0</div><div class="sum-lbl">ค้าง</div></div>
+          <div class="sum-pill"><div class="sum-val" id="sumPct" style="color:var(--primary)">0%</div><div class="sum-lbl">Done</div></div>
+        </div>
+        <div class="progress-bar" style="margin-bottom:14px"><div id="progressFill" class="progress-fill" style="width:0%"></div></div>
+        <div class="section-card">
+          <div class="section-title"><span class="material-symbols-outlined" style="font-size:18px">checklist</span>รายการตรวจสอบ<span id="clTotal" style="margin-left:auto;font-size:10px;font-weight:700;padding:2px 8px;border-radius:9px;background:rgba(0,88,190,.08);color:var(--primary)">0 รายการ</span></div>
+          <div id="checklistItems"></div>
+        </div>
+        <div class="section-card">
+          <div class="section-title"><span class="material-symbols-outlined" style="font-size:18px">edit_note</span>หมายเหตุเพิ่มเติม</div>
+          <textarea id="overallNote" class="textarea-neu" placeholder="หมายเหตุรวม (ถ้ามี)"></textarea>
+        </div>
+        <div style="display:flex;gap:9px;margin-bottom:16px">
+          <button class="btn btn-secondary btn-sm" onclick="backToStep1()"><span class="material-symbols-outlined" style="font-size:15px">arrow_back</span>กลับ</button>
+          <button class="btn btn-success btn-full" id="submitBtn" onclick="submitForm()"><span class="material-symbols-outlined" style="font-size:17px">send</span>บันทึกผลการตรวจ</button>
+        </div>
       </div>
     </div>
   </div>
@@ -376,50 +486,19 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--on-surfac
 
 <div id="toast" class="toast toast-success">สำเร็จ</div>
 
-<!-- jsQR: loaded dynamically with fallback mirrors -->
 <script>
-// ── jsQR dynamic loader with multiple CDN fallbacks ──
-window._jsqrReady = false;
-window._jsqrCallbacks = [];
-
-function onJsQRReady(cb){ if(window._jsqrReady) cb(); else window._jsqrCallbacks.push(cb); }
-
-function markJsQRReady(){
-  window._jsqrReady = true;
-  console.log('[jsQR] Loaded OK, typeof jsQR =', typeof jsQR);
-  const msg = document.getElementById('libLoadingMsg');
-  if(msg) msg.classList.remove('show');
-  window._jsqrCallbacks.forEach(cb => cb());
-  window._jsqrCallbacks = [];
-}
-
+window._jsqrReady=false;window._jsqrCallbacks=[];
+function onJsQRReady(cb){if(window._jsqrReady)cb();else window._jsqrCallbacks.push(cb);}
+function markJsQRReady(){window._jsqrReady=true;const m=document.getElementById('libLoadingMsg');if(m)m.classList.remove('show');window._jsqrCallbacks.forEach(cb=>cb());window._jsqrCallbacks=[];}
 (function loadJsQR(){
-  const msg = document.getElementById('libLoadingMsg');
-  if(msg) msg.classList.add('show');
-
-  const CDNs = [
-    'https://cdnjs.cloudflare.com/ajax/libs/jsqr/1.4.0/jsQR.min.js',
-    'https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js',
-    'https://unpkg.com/jsqr@1.4.0/dist/jsQR.js'
-  ];
-  let idx = 0;
-
+  const m=document.getElementById('libLoadingMsg');if(m)m.classList.add('show');
+  const CDNs=['https://cdnjs.cloudflare.com/ajax/libs/jsqr/1.4.0/jsQR.min.js','https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js','https://unpkg.com/jsqr@1.4.0/dist/jsQR.js'];
+  let idx=0;
   function tryNext(){
-    if(idx >= CDNs.length){
-      console.error('[jsQR] All CDNs failed');
-      if(msg){ msg.style.background='rgba(254,226,226,.97)'; msg.style.color='#b91c1c'; msg.style.borderColor='#fca5a5'; msg.textContent='ไม่สามารถโหลด QR Engine ได้ — ตรวจสอบอินเทอร์เน็ต'; msg.classList.add('show'); }
-      return;
-    }
-    const url = CDNs[idx++];
-    console.log('[jsQR] Trying CDN:', url);
-    const s = document.createElement('script');
-    s.src = url;
-    s.onload = function(){
-      if(typeof jsQR === 'function'){ markJsQRReady(); }
-      else{ console.warn('[jsQR] Loaded but jsQR not a function, trying next'); tryNext(); }
-    };
-    s.onerror = function(){ console.warn('[jsQR] CDN failed:', url); tryNext(); };
-    document.head.appendChild(s);
+    if(idx>=CDNs.length){const m2=document.getElementById('libLoadingMsg');if(m2){m2.style.background='rgba(254,226,226,.97)';m2.style.color='#b91c1c';m2.textContent='ไม่สามารถโหลด QR Engine';m2.classList.add('show');}return;}
+    const url=CDNs[idx++],s=document.createElement('script');s.src=url;
+    s.onload=function(){if(typeof jsQR==='function')markJsQRReady();else tryNext();};
+    s.onerror=function(){tryNext();};document.head.appendChild(s);
   }
   tryNext();
 })();
@@ -429,23 +508,23 @@ function markJsQRReady(){
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, collection, doc, getDoc, getDocs, addDoc, query, orderBy, onSnapshot, where, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCBSvlRDbhibsNIgqNRd9UB5fdnm8g-G2A",
-  authDomain: "building-access-control.firebaseapp.com",
-  projectId: "building-access-control",
-  storageBucket: "building-access-control.firebasestorage.app",
-  messagingSenderId: "492098937762",
-  appId: "1:492098937762:web:53c52cbbfd4cb030ad08fb"
-};
-const app = initializeApp(firebaseConfig);
-const db  = getFirestore(app);
+const firebaseConfig={apiKey:"AIzaSyCBSvlRDbhibsNIgqNRd9UB5fdnm8g-G2A",authDomain:"building-access-control.firebaseapp.com",projectId:"building-access-control",storageBucket:"building-access-control.firebasestorage.app",messagingSenderId:"492098937762",appId:"1:492098937762:web:53c52cbbfd4cb030ad08fb"};
+const app=initializeApp(firebaseConfig);
+const db=getFirestore(app);
 
-// ── STATE ──
-let currentUser=null, SHIFT_CFG={day:{shiftStart:'07:30',shiftEnd:'19:30',inspStart:'07:30',inspEnd:'10:00',emergencyUnlock:false,emergencyUntil:null},night:{shiftStart:'19:30',shiftEnd:'07:30',inspStart:'19:30',inspEnd:'22:00',emergencyUnlock:false,emergencyUntil:null}};
+let currentUser=null;
+let SHIFT_CFG={day:{shiftStart:'07:30',shiftEnd:'19:30',inspStart:'07:30',inspEnd:'10:00',emergencyUnlock:false,emergencyUntil:null},night:{shiftStart:'19:30',shiftEnd:'07:30',inspStart:'19:30',inspEnd:'22:00',emergencyUnlock:false,emergencyUntil:null}};
 let CHECKLIST=[],RADIOS=[],selectedRadio=null,selectedShift=null,scannedRadioNum=null,checklistState={};
 let lateRequestId=null,lateRequestStatus=null,lateRequestData=null;
 let _clockTimer=null,_lateWatcher=null,_scfgUnsub=null,_shiftRefreshTimer=null;
 let qrStream=null,qrAnimFrame=null,qrDetected=false,qrFrameSkip=0;
+let todaySubmissions=[];
+let _pendingTab='done';
+let _subUnsub=null;
+let _prevDone=-1,_prevLeft=-1;
+let _subsReady=false;
+let _highlightWD=null;
+let _subsRetryTimer=null;
 
 function el(id){return document.getElementById(id);}
 window.el=el;
@@ -456,299 +535,287 @@ function nowMinutes(){const n=new Date();return n.getHours()*60+n.getMinutes();}
 function isInShift(k){const c=SHIFT_CFG[k];return isInWindow(c.shiftStart||(k==='day'?'07:30':'19:30'),c.shiftEnd||(k==='day'?'19:30':'07:30'));}
 function isInWindow(s,e){const t=nowMinutes(),sv=timeToMinutes(s),ev=timeToMinutes(e);if(sv<=ev)return t>=sv&&t<ev;return t>=sv||t<ev;}
 function isEmergencyUnlocked(k){const c=SHIFT_CFG[k];if(!c.emergencyUnlock||!c.emergencyUntil)return false;return Date.now()<new Date(c.emergencyUntil).getTime();}
+function shiftMatch(subShift,targetShift){return targetShift==='day'?(subShift==='day'||subShift==='เช้า'):(subShift==='night'||subShift==='บ่าย');}
 
 let _tt=null;
 function showToast(msg,type='success'){const t=el('toast');if(!t)return;t.className='toast toast-'+type;t.textContent=msg;t.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('show'),4000);}
+function setKpiVal(elId,newVal,oldVal){const e=el(elId);if(!e)return;const txt=String(newVal);if(e.textContent!==txt){e.textContent=txt;if(oldVal>=0&&newVal!==oldVal){e.classList.remove('count-flash');void e.offsetWidth;e.classList.add('count-flash');setTimeout(()=>e.classList.remove('count-flash'),400);}}}
+function getDuplicateRecord(radioNum,shift){if(!radioNum||!shift)return null;return todaySubmissions.find(s=>Number(s.radioId)===radioNum&&shiftMatch(s.shift,shift))||null;}
 
-// ── QR PARSE ──
-function parseRadioFromQR(raw){
-  if(!raw||!raw.trim())return null;
-  const str=raw.trim();
-  if(/^\d+$/.test(str)){const n=parseInt(str,10);return(n>=1&&n<=999)?n:null;}
-  const wdM=str.match(/^[Ww][Dd][\s\-_#]?(\d{1,3})$/);
-  if(wdM){const n=parseInt(wdM[1],10);return(n>=1&&n<=999)?n:null;}
-  try{
-    const url=new URL(str);const p=url.searchParams;
-    for(const k of['radio','id','code','wd','wdid','radioId','radio_id','no']){
-      const v=p.get(k);if(v){const n=parseInt(v.replace(/\D/g,''),10);if(n>=1&&n<=999)return n;}
-    }
-    const parts=url.pathname.split('/').filter(Boolean);
-    for(let i=parts.length-1;i>=0;i--){
-      const wdP=parts[i].match(/^[Ww][Dd][\s\-_#]?(\d{1,3})$/);
-      if(wdP){const n=parseInt(wdP[1],10);if(n>=1&&n<=999)return n;}
-      if(/^\d+$/.test(parts[i])){const n=parseInt(parts[i],10);if(n>=1&&n<=999)return n;}
-    }
-  }catch(e){}
-  try{
-    const obj=JSON.parse(str);
-    for(const k of['radio','id','wd','wdid','radioId','radio_id','no','num']){
-      if(obj[k]!==undefined){const n=parseInt(String(obj[k]).replace(/\D/g,''),10);if(n>=1&&n<=999)return n;}
-    }
-  }catch(e){}
-  const emb=str.match(/[Ww][Dd][\s\-_#]?(\d{1,3})/);
-  if(emb){const n=parseInt(emb[1],10);if(n>=1&&n<=999)return n;}
-  const nums=str.match(/\b(\d{1,3})\b/g);
-  if(nums){for(const ns of nums){const n=parseInt(ns,10);if(n>=1&&n<=999)return n;}}
-  return null;
+// ══════════════════════════════════════════════
+// ✅ AUTO SHIFT SELECTION — Logic หลัก
+// ══════════════════════════════════════════════
+function detectAutoShift(){
+  const dayOk=isInShift('day')||isEmergencyUnlocked('day');
+  const nightOk=isInShift('night')||isEmergencyUnlocked('night');
+
+  if(dayOk && nightOk){
+    // ทั้งสองผลัดเปิด → เลือกตามว่าผลัดไหนใกล้สิ้นสุด
+    // (เช่น เพิ่งเข้าผลัดคืน แต่ยังอยู่ในช่วงตรวจวัน → เลือกวัน)
+    const dayInsp=isInWindow(SHIFT_CFG.day.inspStart,SHIFT_CFG.day.inspEnd);
+    const nightInsp=isInWindow(SHIFT_CFG.night.inspStart,SHIFT_CFG.night.inspEnd);
+    if(dayInsp&&!nightInsp)return'day';
+    if(nightInsp&&!dayInsp)return'night';
+    // ถ้าทั้งคู่ตรงหรือทั้งคู่ไม่ตรง → เลือกตาม shiftStart ล่าสุด
+    return isInShift('night')?'night':'day';
+  }
+  if(dayOk) return 'day';
+  if(nightOk) return 'night';
+  return null; // นอกเวลาทั้งหมด
 }
 
-// ── QR SCANNER ──
-window.startQRScan = async function(){
-  if(!window._jsqrReady){
-    showToast('QR Engine กำลังโหลด กรุณารอสักครู่...','warn');
-    onJsQRReady(()=>{ window.startQRScan(); });
-    return;
+// ── อัปเดต UI ตัว indicator ──
+function updateAutoShiftInfo(autoShift){
+  const infoEl=el('autoShiftInfo'),textEl=el('autoShiftText');
+  if(!infoEl)return;
+  if(!autoShift){infoEl.style.display='none';return;}
+  infoEl.style.display='flex';
+  if(autoShift==='day'){
+    infoEl.className='auto-shift-info day-auto';
+    textEl.textContent='เลือกผลัดกลางวันอัตโนมัติตามเวลา (กดเปลี่ยนได้)';
+  }else{
+    infoEl.className='auto-shift-info night-auto';
+    textEl.textContent='เลือกผลัดกลางคืนอัตโนมัติตามเวลา (กดเปลี่ยนได้)';
   }
-  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){
-    showToast('เบราว์เซอร์ไม่รองรับกล้อง กรุณาเปิดด้วย Chrome หรือ Safari','error');return;
-  }
-  try{
-    qrDetected=false;qrFrameSkip=0;
-    const constraints={video:{facingMode:{ideal:'environment'},width:{ideal:1280},height:{ideal:720}}};
-    qrStream=await navigator.mediaDevices.getUserMedia(constraints);
-    const video=el('qrVideo');
-    video.srcObject=qrStream;
-    video.setAttribute('playsinline','');
-    video.setAttribute('autoplay','');
-    video.setAttribute('muted','');
-    await video.play();
-    el('scanIdle').style.display='none';
-    el('scanActive').style.display='block';
-    el('qrScannedInfo').style.display='none';
-    el('debugPanel').classList.remove('show');
-    showToast('เปิดกล้องสำเร็จ — จ่อ QR Code','info');
-    tickQR();
-  }catch(err){
-    console.error('[Camera]',err.name,err.message);
-    let msg='ไม่สามารถเปิดกล้องได้';
-    if(err.name==='NotAllowedError'||err.name==='PermissionDeniedError') msg='กรุณาอนุญาตการใช้กล้องในเบราว์เซอร์แล้วลองใหม่';
-    else if(err.name==='NotFoundError') msg='ไม่พบกล้องในอุปกรณ์นี้';
-    else if(err.name==='NotReadableError'||err.name==='TrackStartError') msg='กล้องถูกแอปอื่นใช้งานอยู่';
-    else if(err.name==='OverconstrainedError') msg='กล้องไม่รองรับความละเอียดที่ต้องการ';
-    showToast(msg,'error');
-  }
-};
-
-window.stopQRScan=function(){
-  if(qrAnimFrame){cancelAnimationFrame(qrAnimFrame);qrAnimFrame=null;}
-  if(qrStream){qrStream.getTracks().forEach(t=>t.stop());qrStream=null;}
-  const v=el('qrVideo');if(v)v.srcObject=null;
-  el('scanActive').style.display='none';
-  if(!scannedRadioNum)el('scanIdle').style.display='block';
-  qrDetected=false;
-};
-
-window.resetQRScan=function(){
-  scannedRadioNum=null;
-  el('qrScannedInfo').style.display='none';
-  el('proceedBtnWrap').style.display='none';
-  el('debugPanel').classList.remove('show');
-  el('scanIdle').style.display='block';
-  el('scanActive').style.display='none';
-};
-
-function tickQR(){
-  if(!qrStream||qrDetected)return;
-  qrFrameSkip++;
-  if(qrFrameSkip<3){qrAnimFrame=requestAnimationFrame(tickQR);return;}
-  qrFrameSkip=0;
-  const video=el('qrVideo'),canvas=el('qrCanvas');
-  if(!video||!canvas){return;}
-  if(video.readyState!==video.HAVE_ENOUGH_DATA){qrAnimFrame=requestAnimationFrame(tickQR);return;}
-  const ctx=canvas.getContext('2d');
-  canvas.width=video.videoWidth;canvas.height=video.videoHeight;
-  ctx.drawImage(video,0,0,canvas.width,canvas.height);
-  const imageData=ctx.getImageData(0,0,canvas.width,canvas.height);
-  if(typeof jsQR!=='function'){
-    console.error('[QR] jsQR not a function');
-    showToast('QR Engine ไม่พร้อม กรุณา reload','error');
-    stopQRScan();return;
-  }
-  const code=jsQR(imageData.data,imageData.width,imageData.height,{inversionAttempts:'attemptBoth'});
-  if(code&&code.data){qrDetected=true;handleQRResult(code.data);return;}
-  qrAnimFrame=requestAnimationFrame(tickQR);
 }
+
+// ── เพิ่ม AUTO badge บนปุ่มที่ถูกเลือกอัตโนมัติ ──
+function updateAutoBadge(autoShift){
+  // ลบ badge เดิมทั้งหมด
+  document.querySelectorAll('.auto-badge').forEach(b=>b.remove());
+  if(!autoShift)return;
+  const btnId=autoShift==='day'?'shiftDayBtn':'shiftNightBtn';
+  const btn=el(btnId);
+  if(!btn)return;
+  const badge=document.createElement('span');
+  badge.className='auto-badge';
+  badge.textContent='AUTO';
+  btn.appendChild(badge);
+}
+// ══════════════════════════════════════════════
+
+function applyDupBlock(dup,num){const pb=el('proceedBtn');if(pb){pb.className='btn btn-danger btn-full';pb.style.opacity='.55';pb.style.cursor='not-allowed';pb.style.pointerEvents='none';pb.innerHTML='<span class="material-symbols-outlined" style="font-size:17px">block</span>ไม่สามารถตรวจซ้ำได้';}const st=dup.overallStatus||dup.overall||'—';el('dwInspector').textContent=dup.userName||dup.userId||'ไม่ระบุ';el('dwTime').textContent=dup.time||'—';el('dwShift').textContent=selectedShift==='day'?'☀ กลางวัน':'🌙 กลางคืน';el('dwStatus').textContent=st;el('dwStatus').style.color=/FAIL/i.test(st)?'#ba1a1a':'#16a34a';el('dupInlineWarn').style.display='block';const infoEl=el('qrScannedInfo');if(infoEl){infoEl.className='qr-scanned-info dup-warn';el('qrScannedIcon').textContent='warning';el('qrScannedText').innerHTML='ตรวจซ้ำ: <strong>WD'+num+'</strong> — ผลัดนี้ตรวจไปแล้ว';}if(navigator.vibrate)navigator.vibrate([200,100,200,100,200]);}
+function applyClear(num){const pb=el('proceedBtn');if(pb){pb.className='btn btn-success btn-full';pb.style.opacity='';pb.style.cursor='';pb.style.pointerEvents='';pb.innerHTML='<span class="material-symbols-outlined" style="font-size:17px">arrow_forward</span>ดำเนินการตรวจสอบ';}el('dupInlineWarn').style.display='none';const infoEl=el('qrScannedInfo');if(infoEl){infoEl.className='qr-scanned-info';el('qrScannedIcon').textContent='check_circle';el('qrScannedText').innerHTML='สแกนได้: <strong>WD'+num+'</strong>';}}
+
+// ── QR ──
+function parseRadioFromQR(raw){if(!raw||!raw.trim())return null;const str=raw.trim();if(/^\d+$/.test(str)){const n=parseInt(str,10);return(n>=1&&n<=999)?n:null;}const wdM=str.match(/^[Ww][Dd][\s\-_#]?(\d{1,3})$/);if(wdM){const n=parseInt(wdM[1],10);return(n>=1&&n<=999)?n:null;}try{const url=new URL(str);const p=url.searchParams;for(const k of['radio','id','code','wd','wdid','radioId','radio_id','no']){const v=p.get(k);if(v){const n=parseInt(v.replace(/\D/g,''),10);if(n>=1&&n<=999)return n;}}const parts=url.pathname.split('/').filter(Boolean);for(let i=parts.length-1;i>=0;i--){const wdP=parts[i].match(/^[Ww][Dd][\s\-_#]?(\d{1,3})$/);if(wdP){const n=parseInt(wdP[1],10);if(n>=1&&n<=999)return n;}if(/^\d+$/.test(parts[i])){const n=parseInt(parts[i],10);if(n>=1&&n<=999)return n;}}}catch(e){}try{const obj=JSON.parse(str);for(const k of['radio','id','wd','wdid','radioId','radio_id','no','num']){if(obj[k]!==undefined){const n=parseInt(String(obj[k]).replace(/\D/g,''),10);if(n>=1&&n<=999)return n;}}}catch(e){}const emb=str.match(/[Ww][Dd][\s\-_#]?(\d{1,3})/);if(emb){const n=parseInt(emb[1],10);if(n>=1&&n<=999)return n;}const nums=str.match(/\b(\d{1,3})\b/g);if(nums){for(const ns of nums){const n=parseInt(ns,10);if(n>=1&&n<=999)return n;}}return null;}
+window.startQRScan=async function(){if(!window._jsqrReady){showToast('QR Engine กำลังโหลด...','warn');onJsQRReady(()=>window.startQRScan());return;}if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){showToast('เบราว์เซอร์ไม่รองรับกล้อง','error');return;}try{qrDetected=false;qrFrameSkip=0;qrStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'},width:{ideal:1280},height:{ideal:720}}});const video=el('qrVideo');video.srcObject=qrStream;video.setAttribute('playsinline','');video.setAttribute('autoplay','');video.setAttribute('muted','');await video.play();el('scanIdle').style.display='none';el('scanActive').style.display='block';el('qrScannedInfo').style.display='none';el('dupInlineWarn').style.display='none';el('debugPanel').classList.remove('show');showToast('เปิดกล้องสำเร็จ','info');tickQR();}catch(err){let msg='ไม่สามารถเปิดกล้องได้';if(err.name==='NotAllowedError')msg='กรุณาอนุญาตการใช้กล้องก่อน';else if(err.name==='NotFoundError')msg='ไม่พบกล้องในอุปกรณ์';showToast(msg,'error');}};
+window.stopQRScan=function(){if(qrAnimFrame){cancelAnimationFrame(qrAnimFrame);qrAnimFrame=null;}if(qrStream){qrStream.getTracks().forEach(t=>t.stop());qrStream=null;}const v=el('qrVideo');if(v)v.srcObject=null;el('scanActive').style.display='none';if(!scannedRadioNum)el('scanIdle').style.display='block';qrDetected=false;};
+window.resetQRScan=function(){scannedRadioNum=null;_highlightWD=null;el('qrScannedInfo').style.display='none';el('proceedBtnWrap').style.display='none';el('dupInlineWarn').style.display='none';el('debugPanel').classList.remove('show');el('scanIdle').style.display='block';el('scanActive').style.display='none';renderPendingPanel();};
+function tickQR(){if(!qrStream||qrDetected)return;qrFrameSkip++;if(qrFrameSkip<3){qrAnimFrame=requestAnimationFrame(tickQR);return;}qrFrameSkip=0;const video=el('qrVideo'),canvas=el('qrCanvas');if(!video||!canvas)return;if(video.readyState!==video.HAVE_ENOUGH_DATA){qrAnimFrame=requestAnimationFrame(tickQR);return;}const ctx=canvas.getContext('2d');canvas.width=video.videoWidth;canvas.height=video.videoHeight;ctx.drawImage(video,0,0,canvas.width,canvas.height);const imageData=ctx.getImageData(0,0,canvas.width,canvas.height);if(typeof jsQR!=='function'){showToast('QR Engine ไม่พร้อม','error');stopQRScan();return;}const code=jsQR(imageData.data,imageData.width,imageData.height,{inversionAttempts:'attemptBoth'});if(code&&code.data){qrDetected=true;handleQRResult(code.data);return;}qrAnimFrame=requestAnimationFrame(tickQR);}
 
 function handleQRResult(rawData){
-  console.log('[QR] Raw:',rawData);
-  const v=el('qrVideo');
-  if(v&&v.parentNode){const f=document.createElement('div');f.className='qr-detected-flash';v.parentNode.appendChild(f);setTimeout(()=>f.remove(),600);}
+  const v=el('qrVideo');if(v&&v.parentNode){const f=document.createElement('div');f.className='qr-detected-flash';v.parentNode.appendChild(f);setTimeout(()=>f.remove(),600);}
   if(navigator.vibrate)navigator.vibrate([80,40,80]);
   stopQRScan();
-  el('debugRaw').textContent=rawData.length>120?rawData.slice(0,120)+'…':rawData;
-  el('debugPanel').classList.add('show');
+  el('debugRaw').textContent=rawData.length>120?rawData.slice(0,120)+'…':rawData;el('debugPanel').classList.add('show');
   const num=parseRadioFromQR(rawData);
-  if(!num){
-    showToast('อ่าน QR ได้แต่ไม่พบหมายเลขวิทยุ — ดู Raw Data ด้านล่าง','error');
-    el('scanIdle').style.display='block';qrDetected=false;return;
+  if(!num){showToast('อ่าน QR ได้แต่ไม่พบหมายเลขวิทยุ','error');el('scanIdle').style.display='block';qrDetected=false;return;}
+  scannedRadioNum=num;_highlightWD=num;
+  el('scanIdle').style.display='none';el('qrScannedInfo').style.display='flex';el('proceedBtnWrap').style.display='block';
+  renderPendingPanel();
+  const dup=selectedShift?getDuplicateRecord(num,selectedShift):null;
+  if(dup){
+    applyDupBlock(dup,num);
+    showToast('⚠️ WD'+num+' ตรวจไปแล้วในผลัดนี้ — บล็อก','error');
+    _pendingTab='done';el('ptabMiss').classList.remove('active');el('ptabDone').classList.add('active');
+    renderPendingPanel();
+    setTimeout(()=>{const pp=el('pendingPanel');if(pp)pp.scrollIntoView({behavior:'smooth',block:'nearest'});},100);
+  }else{
+    applyClear(num);
+    showToast('สแกน QR สำเร็จ: WD'+num,'success');
+    if(selectedShift)setTimeout(()=>onRadioSelect(),700);else showToast('กรุณารอระบบตรวจสอบผลัด...','warn');
   }
-  scannedRadioNum=num;
-  el('scanIdle').style.display='none';
-  el('qrScannedInfo').style.display='flex';
-  el('qrScannedLabel').textContent='WD'+num;
-  el('proceedBtnWrap').style.display='block';
-  showToast('สแกน QR สำเร็จ: WD'+num,'success');
-  if(selectedShift)setTimeout(()=>onRadioSelect(),700);
-  else showToast('กรุณาเลือกผลัดด้านล่าง','warn');
 }
 
-// ── FIREBASE INIT ──
-async function loadShiftConfig(){
-  try{const snap=await getDoc(doc(db,'shiftConfig','main'));if(snap.exists()){const d=snap.data();if(d.day)Object.assign(SHIFT_CFG.day,d.day);if(d.night)Object.assign(SHIFT_CFG.night,d.night);}}catch(e){console.error(e);}
-}
-function watchShiftConfig(){
-  if(_scfgUnsub)_scfgUnsub();
-  _scfgUnsub=onSnapshot(doc(db,'shiftConfig','main'),snap=>{
-    if(!snap.exists())return;const d=snap.data();
-    if(d.day)Object.assign(SHIFT_CFG.day,d.day);if(d.night)Object.assign(SHIFT_CFG.night,d.night);
-    el('dayWindowChip').textContent=SHIFT_CFG.day.inspStart+'–'+SHIFT_CFG.day.inspEnd;
-    el('nightWindowChip').textContent=SHIFT_CFG.night.inspStart+'–'+SHIFT_CFG.night.inspEnd;
-    el('dayShiftTime').textContent=SHIFT_CFG.day.shiftStart+'–'+SHIFT_CFG.day.shiftEnd;
-    el('nightShiftTime').textContent=SHIFT_CFG.night.shiftStart+'–'+SHIFT_CFG.night.shiftEnd;
-    updateShiftButtons();checkWindowAccess();
-  });
-}
-async function loadChecklist(){
+// ── FIREBASE ──
+async function loadShiftConfig(){try{const snap=await getDoc(doc(db,'shiftConfig','main'));if(snap.exists()){const d=snap.data();if(d.day)Object.assign(SHIFT_CFG.day,d.day);if(d.night)Object.assign(SHIFT_CFG.night,d.night);}}catch(e){console.error(e);}}
+function watchShiftConfig(){if(_scfgUnsub)_scfgUnsub();_scfgUnsub=onSnapshot(doc(db,'shiftConfig','main'),snap=>{if(!snap.exists())return;const d=snap.data();if(d.day)Object.assign(SHIFT_CFG.day,d.day);if(d.night)Object.assign(SHIFT_CFG.night,d.night);el('dayWindowChip').textContent=(SHIFT_CFG.day.inspStart||'07:30')+'–'+(SHIFT_CFG.day.inspEnd||'10:00');el('nightWindowChip').textContent=(SHIFT_CFG.night.inspStart||'19:30')+'–'+(SHIFT_CFG.night.inspEnd||'22:00');el('dayShiftTime').textContent=SHIFT_CFG.day.shiftStart+'–'+SHIFT_CFG.day.shiftEnd;el('nightShiftTime').textContent=SHIFT_CFG.night.shiftStart+'–'+SHIFT_CFG.night.shiftEnd;// ✅ re-run auto detect เมื่อ config เปลี่ยน
+updateShiftButtons();checkWindowAccess();});}
+async function loadChecklist(){try{const snap=await getDocs(query(collection(db,'checklistItems'),orderBy('id')));if(!snap.empty){CHECKLIST=snap.docs.map(d=>({id:d.data().id,th:d.data().th,en:d.data().en,enabled:d.data().enabled!==false})).filter(x=>x.enabled);}else{CHECKLIST=[{id:1,th:'เสาอากาศ',en:'Antenna',enabled:true},{id:2,th:'แบตเตอรี่',en:'Battery',enabled:true},{id:3,th:'ปุ่มกดพูด (PTT)',en:'PTT Button',enabled:true},{id:4,th:'ลำโพง',en:'Speaker',enabled:true},{id:5,th:'ไมโครโฟน',en:'Microphone',enabled:true},{id:6,th:'ปุ่มเลือกช่องสัญญาณ',en:'Channel Selector',enabled:true},{id:7,th:'ปุ่มปรับระดับเสียง',en:'Volume Knob',enabled:true},{id:8,th:'จอแสดงผล',en:'Display',enabled:true},{id:9,th:'ปุ่มฉุกเฉิน',en:'Emergency Button',enabled:true},{id:10,th:'สลักล็อกแบตเตอรี่',en:'Battery Latch',enabled:true},{id:11,th:'ตัวเครื่อง',en:'Body Condition',enabled:true},{id:12,th:'ขั้วต่ออุปกรณ์เสริม',en:'Accessory Connector',enabled:true},{id:13,th:'คลิปหนีบเข็มขัด',en:'Belt Clip',enabled:true},{id:14,th:'การกันน้ำ/ฝุ่น',en:'Seal Integrity',enabled:true},{id:15,th:'ฟังก์ชันการสแกน',en:'Scan Function',enabled:true},{id:16,th:'ฟังก์ชัน VOX',en:'VOX Function',enabled:true},{id:17,th:'การแจ้งเตือนแบตเตอรี่ต่ำ',en:'Low Battery Alert',enabled:true},{id:18,th:'สัญญาณไฟแสดงสถานะ',en:'LED Indicator',enabled:true},{id:19,th:'ซอฟต์แวร์เวอร์ชัน',en:'Software Version',enabled:true},{id:20,th:'การทำงานทั่วไป',en:'General Operation',enabled:true},{id:21,th:'เอกสารประกอบ',en:'Documentation',enabled:true}];}}catch(e){console.error(e);}}
+async function loadRadios(){try{const snap=await getDocs(collection(db,'radioItems'));RADIOS=snap.docs.map(d=>({docId:d.id,...d.data()})).sort((a,b)=>(Number(a.id)||0)-(Number(b.id)||0));renderPendingPanel();}catch(e){console.error(e);}}
+
+function startSubmissionsWatcher(){
+  if(_subUnsub)_subUnsub();if(_subsRetryTimer){clearTimeout(_subsRetryTimer);_subsRetryTimer=null;}
+  const today=todayStr();const connErr=el('connErrBanner');
+  _subsRetryTimer=setTimeout(()=>{if(!_subsReady){console.warn('[Subs] Timeout');if(connErr)connErr.classList.add('show');_subsReady=true;renderPendingPanel();}},8000);
   try{
-    const snap=await getDocs(query(collection(db,'checklistItems'),orderBy('id')));
-    if(!snap.empty){CHECKLIST=snap.docs.map(d=>({id:d.data().id,th:d.data().th,en:d.data().en,enabled:d.data().enabled!==false})).filter(x=>x.enabled);}
-    else{CHECKLIST=[{id:1,th:'เสาอากาศ',en:'Antenna',enabled:true},{id:2,th:'แบตเตอรี่',en:'Battery',enabled:true},{id:3,th:'ปุ่มกดพูด (PTT)',en:'PTT Button',enabled:true},{id:4,th:'ลำโพง',en:'Speaker',enabled:true},{id:5,th:'ไมโครโฟน',en:'Microphone',enabled:true},{id:6,th:'ปุ่มเลือกช่องสัญญาณ',en:'Channel Selector',enabled:true},{id:7,th:'ปุ่มปรับระดับเสียง',en:'Volume Knob',enabled:true},{id:8,th:'จอแสดงผล',en:'Display',enabled:true},{id:9,th:'ปุ่มฉุกเฉิน',en:'Emergency Button',enabled:true},{id:10,th:'สลักล็อกแบตเตอรี่',en:'Battery Latch',enabled:true},{id:11,th:'ตัวเครื่อง',en:'Body Condition',enabled:true},{id:12,th:'ขั้วต่ออุปกรณ์เสริม',en:'Accessory Connector',enabled:true},{id:13,th:'คลิปหนีบเข็มขัด',en:'Belt Clip',enabled:true},{id:14,th:'การกันน้ำ/ฝุ่น',en:'Seal Integrity',enabled:true},{id:15,th:'ฟังก์ชันการสแกน',en:'Scan Function',enabled:true},{id:16,th:'ฟังก์ชัน VOX',en:'VOX Function',enabled:true},{id:17,th:'การแจ้งเตือนแบตเตอรี่ต่ำ',en:'Low Battery Alert',enabled:true},{id:18,th:'สัญญาณไฟแสดงสถานะ',en:'LED Indicator',enabled:true},{id:19,th:'ซอฟต์แวร์เวอร์ชัน',en:'Software Version',enabled:true},{id:20,th:'การทำงานทั่วไป',en:'General Operation',enabled:true},{id:21,th:'เอกสารประกอบ',en:'Documentation',enabled:true}];}
-  }catch(e){console.error(e);}
+    _subUnsub=onSnapshot(query(collection(db,'submissions'),where('date','==',today)),(snap)=>{
+      if(_subsRetryTimer){clearTimeout(_subsRetryTimer);_subsRetryTimer=null;}
+      if(connErr)connErr.classList.remove('show');
+      todaySubmissions=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>{const ta=a.timestamp?.toMillis?.()??0,tb=b.timestamp?.toMillis?.()??0;return tb-ta;});
+      _subsReady=true;renderPendingPanel();
+      if(scannedRadioNum&&selectedShift&&el('step1')?.style.display!=='none'){const dup=getDuplicateRecord(scannedRadioNum,selectedShift);const pb=el('proceedBtn');if(dup&&pb&&pb.style.pointerEvents!=='none'){applyDupBlock(dup,scannedRadioNum);showToast('⚠️ WD'+scannedRadioNum+' มีการตรวจแล้วในผลัดนี้','error');}}
+    },(err)=>{
+      console.error('[Subs]',err.code,err.message);if(_subsRetryTimer){clearTimeout(_subsRetryTimer);_subsRetryTimer=null;}
+      if(connErr){connErr.classList.add('show');}
+      _subsReady=true;renderPendingPanel();
+    });
+  }catch(e){console.error('[Subs] setup:',e);if(connErr)connErr.classList.add('show');_subsReady=true;renderPendingPanel();}
 }
-async function loadRadios(){try{const snap=await getDocs(collection(db,'radioItems'));RADIOS=snap.docs.map(d=>({docId:d.id,...d.data()})).sort((a,b)=>(Number(a.id)||0)-(Number(b.id)||0));}catch(e){console.error(e);}}
+window.retrySubsWatcher=function(){const c=el('connErrBanner');if(c)c.classList.remove('show');_subsReady=false;_prevDone=-1;_prevLeft=-1;todaySubmissions=[];el('pendingListWrap').innerHTML='<div class="pending-empty"><span class="material-symbols-outlined spin" style="font-size:22px;display:block;margin-bottom:6px">sync</span>กำลังเชื่อมต่อใหม่...</div>';startSubmissionsWatcher();};
+
+function renderPendingPanel(){
+  if(!currentUser||!selectedShift)return;
+  const baseRadios=RADIOS.filter(r=>r.type==='active');
+  const total=baseRadios.length;
+  if(total>0){const te=el('pkpiTotal');if(te&&te.textContent==='—')te.textContent=String(total);}
+  if(!_subsReady){const wrap=el('pendingListWrap');if(wrap&&wrap.innerHTML.indexOf('sync')===-1)wrap.innerHTML='<div class="pending-empty"><span class="material-symbols-outlined spin" style="font-size:22px;display:block;margin-bottom:6px">sync</span>กำลังเชื่อมต่อ...</div>';return;}
+  if(!baseRadios.length){el('pendingListWrap').innerHTML='<div class="pending-empty">ไม่พบข้อมูลวิทยุ</div>';return;}
+  const shiftSubs=todaySubmissions.filter(s=>shiftMatch(s.shift,selectedShift));
+  const doneMap=new Map();shiftSubs.forEach(s=>doneMap.set(Number(s.radioId),s));
+  const done=doneMap.size,left=Math.max(0,total-done),pct=total>0?Math.round(done/total*100):0;
+  setKpiVal('pkpiTotal',total,-1);setKpiVal('pkpiDone',done,_prevDone);setKpiVal('pkpiLeft',left,_prevLeft);
+  const pctEl=el('pkpiPct');if(pctEl)pctEl.textContent=pct+'%';
+  const pf=el('pendingProgressFill');if(pf)pf.style.width=pct+'%';
+  const mc=el('ptabMissCount');if(mc)mc.textContent=left;const dc=el('ptabDoneCount');if(dc)dc.textContent=done;
+  const sl=el('pendingShiftLabel');if(sl){sl.textContent=selectedShift==='day'?'☀ กลางวัน':'🌙 กลางคืน';sl.className='shift-label-pill '+(selectedShift==='day'?'day':'night');}
+  _prevDone=done;_prevLeft=left;
+  const wrap=el('pendingListWrap');if(!wrap)return;
+  if(_pendingTab==='miss'){const missing=baseRadios.filter(r=>!doneMap.has(r.id));if(!missing.length){wrap.innerHTML='<div class="pending-empty"><span class="material-symbols-outlined" style="font-size:28px;color:#16a34a;display:block;margin-bottom:6px">check_circle</span><span style="font-size:12px;font-weight:700;color:#16a34a">ตรวจครบทุกเครื่องแล้ว!</span></div>';}else{wrap.innerHTML=missing.map(r=>{const isH=_highlightWD===r.id;return`<div class="pending-list-item miss${isH?' dup-highlight':''}"><div class="pending-wd" style="${isH?'color:#ba1a1a':''}">WD${r.id}</div><div class="pending-area">${r.area||'—'}</div><span class="pending-badge miss-badge">ค้างตรวจ</span></div>`;}).join('');}}
+  else{const doneList=[...doneMap.entries()].sort((a,b)=>a[0]-b[0]);if(!doneList.length){wrap.innerHTML='<div class="pending-empty"><span class="material-symbols-outlined" style="font-size:28px;display:block;margin-bottom:6px">hourglass_bottom</span>ยังไม่มีการตรวจในผลัดนี้</div>';}else{wrap.innerHTML=doneList.map(([id,s])=>{const r=RADIOS.find(x=>x.id===id)||{area:'—'};const isFail=/FAIL|ผิดปกติ/i.test(s.overallStatus||s.overall||'');const isH=_highlightWD===id;return`<div class="pending-list-item done${isH?' dup-highlight':''}"><div class="pending-wd" style="${isH?'color:#ba1a1a':''}">WD${id}</div><div class="pending-area">${s.area||r.area||'—'}</div>${isH?'<span class="pending-badge dup-badge">ตรวจซ้ำ!</span>':`<span class="pending-badge done-badge" style="${isFail?'background:rgba(186,26,26,.08);border-color:rgba(186,26,26,.2);color:#b91c1c':''}">${isFail?'FAIL':'PASS'}</span>`}<div class="pending-insp">${s.userName||s.userId||'—'}<br>${s.time||'—'}</div></div>`;}).join('');if(_highlightWD){setTimeout(()=>{const hw=wrap.querySelector('.dup-highlight');if(hw)hw.scrollIntoView({behavior:'smooth',block:'nearest'});},100);}}}
+}
+window.setPendingTab=function(tab){_pendingTab=tab;el('ptabMiss').classList.toggle('active',tab==='miss');el('ptabDone').classList.toggle('active',tab==='done');renderPendingPanel();};
 
 // ── LOGIN ──
 window.doLogin=async function(){
   const uid=el('loginId').value.trim(),pw=el('loginPw').value.trim();
   el('loginErr').style.display='none';
   if(!uid||!pw){showLoginErr('กรุณากรอกข้อมูลให้ครบ');return;}
-  try{
-    const snap=await getDocs(collection(db,'radioUsers'));let found=null;
-    snap.forEach(d=>{if(d.data().userId===uid)found=d.data();});
-    if(!found){showLoginErr('ไม่พบรหัสผู้ใช้');return;}
-    if(found.password!==pw){showLoginErr('รหัสผ่านไม่ถูกต้อง');return;}
-    if(!found.enabled){showLoginErr('บัญชีถูกระงับสิทธิ์');return;}
-    currentUser=found;
-    await Promise.all([loadShiftConfig(),loadChecklist(),loadRadios()]);
-    watchShiftConfig();initApp();
-  }catch(e){showLoginErr('เกิดข้อผิดพลาด: '+e.message);}
+  try{const snap=await getDocs(collection(db,'radioUsers'));let found=null;snap.forEach(d=>{if(d.data().userId===uid)found=d.data();});if(!found){showLoginErr('ไม่พบรหัสผู้ใช้');return;}if(found.password!==pw){showLoginErr('รหัสผ่านไม่ถูกต้อง');return;}if(!found.enabled){showLoginErr('บัญชีถูกระงับสิทธิ์');return;}currentUser=found;await Promise.all([loadShiftConfig(),loadChecklist(),loadRadios()]);watchShiftConfig();initApp();}catch(e){showLoginErr('เกิดข้อผิดพลาด: '+e.message);}
 };
 function showLoginErr(msg){const e=el('loginErr');e.textContent=msg;e.style.display='block';}
 
 function initApp(){
-  updateShiftButtons();
-  const da=isInShift('day')||isEmergencyUnlocked('day'),na=isInShift('night')||isEmergencyUnlocked('night');
-  if(da&&!na)selectShiftSilent('day');else if(na&&!da)selectShiftSilent('night');
+  updateShiftButtons(); // ✅ updateShiftButtons จะเรียก autoDetect ภายใน
   checkWindowAccess();
+  startSubmissionsWatcher();
   if(_shiftRefreshTimer)clearInterval(_shiftRefreshTimer);
+  // ✅ refresh ทุก 1 นาที — re-detect shift อัตโนมัติด้วย
   _shiftRefreshTimer=setInterval(()=>{updateShiftButtons();checkWindowAccess();},60000);
 }
 
-// ── SHIFT BUTTONS ──
+// ══════════════════════════════════════════════
+// ✅ updateShiftButtons — รวม auto-detect ไว้ใน function เดียว
+// ══════════════════════════════════════════════
 function updateShiftButtons(){
-  const dayOk=isInShift('day')||isEmergencyUnlocked('day'),nightOk=isInShift('night')||isEmergencyUnlocked('night');
+  const dayOk=isInShift('day')||isEmergencyUnlocked('day');
+  const nightOk=isInShift('night')||isEmergencyUnlocked('night');
   const db2=el('shiftDayBtn'),nb=el('shiftNightBtn'),dBadge=el('dayShiftBadge'),nBadge=el('nightShiftBadge'),nowB=el('shiftTimeNowBadge'),infoM=el('shiftInfoMsg');
+
   function setBtn(btn,badge,ok,isDay){
     btn.disabled=!ok;
     if(ok){badge.className='shift-active-badge '+(isDay?'day-active':'night-active');badge.innerHTML='<span class="material-symbols-outlined" style="font-size:10px">check_circle</span>เปิดอยู่';}
     else{badge.className='shift-locked-badge';badge.innerHTML='<span class="material-symbols-outlined" style="font-size:10px">lock</span>นอกเวลา';}
   }
   setBtn(db2,dBadge,dayOk,true);setBtn(nb,nBadge,nightOk,false);
+
+  // ── ✅ Auto detect ──
+  const autoShift=detectAutoShift();
+
+  // ── เลือกผลัดอัตโนมัติ ถ้าผู้ใช้ยังไม่ได้กดเลือกเอง
+  // (หรือถ้า selectedShift ปัจจุบันไม่ available อีกต่อไป)
+  if(autoShift){
+    const currentOk=selectedShift==='day'?dayOk:selectedShift==='night'?nightOk:false;
+    if(!selectedShift || !currentOk){
+      // auto-select
+      selectedShift=autoShift;
+      renderPendingPanel();
+    }
+  }
+
   db2.classList.toggle('active-day',selectedShift==='day'&&dayOk);
   nb.classList.toggle('active-night',selectedShift==='night'&&nightOk);
+
+  // ── update auto badge + info ──
+  updateAutoBadge(autoShift);
+  updateAutoShiftInfo(autoShift);
+
+  // ── topbar badge ──
   if(nowB){
     if(dayOk&&!nightOk){nowB.textContent='☀ ผลัดกลางวัน';nowB.style.background='rgba(245,158,11,.12)';nowB.style.color='#b45309';}
     else if(nightOk&&!dayOk){nowB.textContent='🌙 ผลัดกลางคืน';nowB.style.background='rgba(124,58,237,.1)';nowB.style.color='#7c3aed';}
     else if(dayOk&&nightOk){nowB.textContent='☀🌙 ทั้งสองผลัด';nowB.style.background='rgba(0,88,190,.08)';nowB.style.color='var(--primary)';}
     else{nowB.textContent='นอกเวลาตรวจ';nowB.style.background='rgba(186,26,26,.07)';nowB.style.color='#b91c1c';}
   }
-  if(infoM){if(!dayOk&&!nightOk){infoM.style.display='block';infoM.innerHTML=`นอกเวลาผลัดทั้งสอง — กลางวัน ${SHIFT_CFG.day.shiftStart} น. / กลางคืน ${SHIFT_CFG.night.shiftStart} น.`;}else infoM.style.display='none';}
+  if(infoM){if(!dayOk&&!nightOk){infoM.style.display='block';infoM.innerHTML='นอกเวลาผลัดทั้งสอง';}else infoM.style.display='none';}
 }
 
-// ── ACCESS CHECK ──
-function checkWindowAccess(){
-  if(!currentUser)return;
-  const dO=isInWindow(SHIFT_CFG.day.inspStart,SHIFT_CFG.day.inspEnd),nO=isInWindow(SHIFT_CFG.night.inspStart,SHIFT_CFG.night.inspEnd),dE=isEmergencyUnlocked('day'),nE=isEmergencyUnlocked('night');
-  if(lateRequestStatus==='approved'&&lateRequestData?.expiresAt){if(Date.now()<new Date(lateRequestData.expiresAt).getTime()){showMainApp();return;}else{lateRequestStatus=null;lateRequestData=null;}}
-  if(dO||nO||dE||nE)showMainApp();else{showLockedScreen();startClock();checkExistingLateRequest();}
-}
+function checkWindowAccess(){if(!currentUser)return;const dO=isInWindow(SHIFT_CFG.day.inspStart,SHIFT_CFG.day.inspEnd),nO=isInWindow(SHIFT_CFG.night.inspStart,SHIFT_CFG.night.inspEnd),dE=isEmergencyUnlocked('day'),nE=isEmergencyUnlocked('night');if(lateRequestStatus==='approved'&&lateRequestData?.expiresAt){if(Date.now()<new Date(lateRequestData.expiresAt).getTime()){showMainApp();return;}else{lateRequestStatus=null;lateRequestData=null;}}if(dO||nO||dE||nE)showMainApp();else{showLockedScreen();startClock();checkExistingLateRequest();}}
 function showMainApp(){stopQRScan();hideAllScreens();el('mainApp').style.display='block';el('mainApp').classList.add('active');el('topbarUser').textContent=currentUser.name||currentUser.userId;updateShiftButtons();stopClock();}
 function showLockedScreen(){hideAllScreens();el('lockedScreen').style.display='flex';el('lockedScreen').classList.add('active');el('dayWindowChip').textContent=(SHIFT_CFG.day.inspStart||'07:30')+'–'+(SHIFT_CFG.day.inspEnd||'10:00');el('nightWindowChip').textContent=(SHIFT_CFG.night.inspStart||'19:30')+'–'+(SHIFT_CFG.night.inspEnd||'22:00');updateNextWindow();}
 function hideAllScreens(){['loginScreen','lockedScreen','mainApp','successScreen'].forEach(id=>{const e=el(id);if(!e)return;e.style.display='none';e.classList.remove('active');});}
-
-function startClock(){
-  stopClock();
-  function tick(){
-    const c=el('lockedClock');if(c)c.textContent=new Date().toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-    if(lateRequestStatus==='approved'&&lateRequestData?.expiresAt){const rem=Math.max(0,Math.floor((new Date(lateRequestData.expiresAt).getTime()-Date.now())/1000));if(rem===0){lateRequestStatus=null;lateRequestData=null;checkWindowAccess();return;}const cd=el('lateCountdown');if(cd)cd.textContent=`${String(Math.floor(rem/3600)).padStart(2,'0')}:${String(Math.floor((rem%3600)/60)).padStart(2,'0')}:${String(rem%60).padStart(2,'0')}`;}
-    if(new Date().getSeconds()%30===0)checkWindowAccess();
-  }
-  tick();_clockTimer=setInterval(tick,1000);
-}
+function startClock(){stopClock();function tick(){const c=el('lockedClock');if(c)c.textContent=new Date().toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit',second:'2-digit'});if(lateRequestStatus==='approved'&&lateRequestData?.expiresAt){const rem=Math.max(0,Math.floor((new Date(lateRequestData.expiresAt).getTime()-Date.now())/1000));if(rem===0){lateRequestStatus=null;lateRequestData=null;checkWindowAccess();return;}const cd=el('lateCountdown');if(cd)cd.textContent=`${String(Math.floor(rem/3600)).padStart(2,'0')}:${String(Math.floor((rem%3600)/60)).padStart(2,'0')}:${String(rem%60).padStart(2,'0')}`;}if(new Date().getSeconds()%30===0)checkWindowAccess();}tick();_clockTimer=setInterval(tick,1000);}
 function stopClock(){if(_clockTimer){clearInterval(_clockTimer);_clockTimer=null;}}
 function updateNextWindow(){const now=nowMinutes();const ws=[{label:'กลางวัน',start:timeToMinutes(SHIFT_CFG.day.inspStart||'07:30')},{label:'กลางคืน',start:timeToMinutes(SHIFT_CFG.night.inspStart||'19:30')}];let next=null,min=Infinity;ws.forEach(w=>{let d=w.start-now;if(d<=0)d+=24*60;if(d<min){min=d;next=w;}});const h=Math.floor(min/60),m=min%60;const t=el('nextWindowText');if(t&&next)t.textContent=`หน้าต่างถัดไป: ${next.label} (ใน ${h>0?h+'ชม. ':''}${m}นาที)`;}
 
-// ── LATE REQUEST ──
-async function checkExistingLateRequest(){
-  if(!currentUser)return;
-  try{const q=query(collection(db,'lateRequests'),where('userId','==',currentUser.userId),where('date','==',todayStr()),orderBy('requestedAt','desc'));const snap=await getDocs(q);if(snap.empty){renderNoLateRequest();watchLateRequest(null);return;}const latest=snap.docs[0];lateRequestId=latest.id;lateRequestData=latest.data();lateRequestStatus=lateRequestData.status;renderLateRequestStatus();watchLateRequest(lateRequestId);}catch(e){console.error(e);}
-}
+async function checkExistingLateRequest(){if(!currentUser)return;try{const q=query(collection(db,'lateRequests'),where('userId','==',currentUser.userId),where('date','==',todayStr()),orderBy('requestedAt','desc'));const snap=await getDocs(q);if(snap.empty){renderNoLateRequest();watchLateRequest(null);return;}const latest=snap.docs[0];lateRequestId=latest.id;lateRequestData=latest.data();lateRequestStatus=lateRequestData.status;renderLateRequestStatus();watchLateRequest(lateRequestId);}catch(e){console.error(e);}}
 function watchLateRequest(docId){if(_lateWatcher){_lateWatcher();_lateWatcher=null;}if(!docId)return;_lateWatcher=onSnapshot(doc(db,'lateRequests',docId),snap=>{if(!snap.exists())return;lateRequestData=snap.data();lateRequestStatus=lateRequestData.status;renderLateRequestStatus();if(lateRequestStatus==='approved')showToast('✅ อนุมัติแล้ว! กดเริ่มตรวจสอบ','success');});}
 function renderNoLateRequest(){el('lateStatusWrap').style.display='none';el('lateReqForm').style.display='block';}
-function renderLateRequestStatus(){
-  el('lateReqForm').style.display='none';el('lateStatusWrap').style.display='block';
-  ['lateStatusPending','lateStatusApproved','lateStatusRejected','lateGoFormBtn','lateCancelBtn'].forEach(id=>el(id).style.display='none');
-  if(lateRequestStatus==='pending'){el('lateStatusPending').style.display='flex';el('lateCancelBtn').style.display='flex';el('pendingSubText').textContent=`ส่งเมื่อ ${lateRequestData?.requestedAt?.toDate?.()?.toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'})||'—'} น.`;}
-  else if(lateRequestStatus==='approved'){el('lateStatusApproved').style.display='flex';el('lateGoFormBtn').style.display='flex';if(lateRequestData?.expiresAt){const rem=Math.floor((new Date(lateRequestData.expiresAt).getTime()-Date.now())/1000);if(rem<=0){lateRequestStatus=null;lateRequestData=null;checkWindowAccess();return;}}}
-  else if(lateRequestStatus==='rejected'){el('lateStatusRejected').style.display='flex';el('rejectedReason').textContent=lateRequestData?.rejectReason?`เหตุผล: ${lateRequestData.rejectReason}`:'กรุณาติดต่อผู้ควบคุมงาน';setTimeout(()=>{el('lateReqForm').style.display='block';},1000);}
-}
+function renderLateRequestStatus(){el('lateReqForm').style.display='none';el('lateStatusWrap').style.display='block';['lateStatusPending','lateStatusApproved','lateStatusRejected','lateGoFormBtn','lateCancelBtn'].forEach(id=>el(id).style.display='none');if(lateRequestStatus==='pending'){el('lateStatusPending').style.display='flex';el('lateCancelBtn').style.display='flex';el('pendingSubText').textContent=`ส่งเมื่อ ${lateRequestData?.requestedAt?.toDate?.()?.toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'})||'—'} น.`;}else if(lateRequestStatus==='approved'){el('lateStatusApproved').style.display='flex';el('lateGoFormBtn').style.display='flex';}else if(lateRequestStatus==='rejected'){el('lateStatusRejected').style.display='flex';el('rejectedReason').textContent=lateRequestData?.rejectReason?`เหตุผล: ${lateRequestData.rejectReason}`:'กรุณาติดต่อผู้ควบคุมงาน';setTimeout(()=>{el('lateReqForm').style.display='block';},1000);}}
 window.updateCharCount=function(){el('reasonLen').textContent=el('lateReason').value.length;};
-window.submitLateRequest=async function(){
-  const reason=el('lateReason').value.trim(),shift=el('lateShiftSel').value;
-  if(reason.length<10){showToast('กรุณาระบุเหตุผลอย่างน้อย 10 ตัวอักษร','error');return;}
-  try{const docRef=await addDoc(collection(db,'lateRequests'),{userId:currentUser.userId,userName:currentUser.name||currentUser.userId,shift,date:todayStr(),reason,status:'pending',requestedAt:serverTimestamp(),reviewedBy:null,reviewedAt:null,expiresAt:null});lateRequestId=docRef.id;lateRequestStatus='pending';lateRequestData={userId:currentUser.userId,shift,date:todayStr(),reason,status:'pending'};renderLateRequestStatus();watchLateRequest(docRef.id);showToast('✅ ส่งคำขอแล้ว','info');}catch(e){showToast('ส่งคำขอไม่สำเร็จ: '+e.message,'error');}
-};
+window.submitLateRequest=async function(){const reason=el('lateReason').value.trim(),shift=el('lateShiftSel').value;if(reason.length<10){showToast('กรุณาระบุเหตุผลอย่างน้อย 10 ตัวอักษร','error');return;}try{const docRef=await addDoc(collection(db,'lateRequests'),{userId:currentUser.userId,userName:currentUser.name||currentUser.userId,shift,date:todayStr(),reason,status:'pending',requestedAt:serverTimestamp(),reviewedBy:null,reviewedAt:null,expiresAt:null});lateRequestId=docRef.id;lateRequestStatus='pending';lateRequestData={userId:currentUser.userId,shift,date:todayStr(),reason,status:'pending'};renderLateRequestStatus();watchLateRequest(docRef.id);showToast('✅ ส่งคำขอแล้ว','info');}catch(e){showToast('ส่งคำขอไม่สำเร็จ: '+e.message,'error');}};
 window.cancelLateRequest=async function(){if(!lateRequestId)return;try{await deleteDoc(doc(db,'lateRequests',lateRequestId));lateRequestId=null;lateRequestStatus=null;lateRequestData=null;if(_lateWatcher){_lateWatcher();_lateWatcher=null;}renderNoLateRequest();showToast('ยกเลิกคำขอแล้ว','warn');}catch(e){showToast('ยกเลิกไม่สำเร็จ','error');}};
-window.enterApprovedForm=function(){if(lateRequestStatus!=='approved')return;if(!lateRequestData?.expiresAt)return;if(Date.now()>new Date(lateRequestData.expiresAt).getTime()){showToast('หมดเวลาอนุมัติแล้ว','error');return;}if(lateRequestData.shift)selectShiftSilent(lateRequestData.shift);showMainApp();};
+window.enterApprovedForm=function(){if(lateRequestStatus!=='approved')return;if(!lateRequestData?.expiresAt)return;if(Date.now()>new Date(lateRequestData.expiresAt).getTime()){showToast('หมดเวลาอนุมัติแล้ว','error');return;}if(lateRequestData.shift)selectedShift=lateRequestData.shift;showMainApp();};
 
-// ── LOGOUT ──
-window.doLogout=function(){stopQRScan();currentUser=null;selectedRadio=null;selectedShift=null;scannedRadioNum=null;checklistState={};lateRequestId=null;lateRequestStatus=null;lateRequestData=null;stopClock();if(_lateWatcher){_lateWatcher();_lateWatcher=null;}if(_scfgUnsub){_scfgUnsub();_scfgUnsub=null;}if(_shiftRefreshTimer){clearInterval(_shiftRefreshTimer);_shiftRefreshTimer=null;}hideAllScreens();el('loginScreen').style.display='flex';el('loginScreen').classList.add('active');el('loginId').value='';el('loginPw').value='';};
+window.doLogout=function(){stopQRScan();currentUser=null;selectedRadio=null;selectedShift=null;scannedRadioNum=null;checklistState={};lateRequestId=null;lateRequestStatus=null;lateRequestData=null;todaySubmissions=[];_prevDone=-1;_prevLeft=-1;_subsReady=false;_highlightWD=null;stopClock();if(_lateWatcher){_lateWatcher();_lateWatcher=null;}if(_scfgUnsub){_scfgUnsub();_scfgUnsub=null;}if(_shiftRefreshTimer){clearInterval(_shiftRefreshTimer);_shiftRefreshTimer=null;}if(_subUnsub){_subUnsub();_subUnsub=null;}if(_subsRetryTimer){clearTimeout(_subsRetryTimer);_subsRetryTimer=null;}hideAllScreens();el('loginScreen').style.display='flex';el('loginScreen').classList.add('active');el('loginId').value='';el('loginPw').value='';};
 
-// ── SHIFT ──
-function selectShiftSilent(shift){selectedShift=shift;updateShiftButtons();if(scannedRadioNum)el('proceedBtnWrap').style.display='block';}
-window.selectShift=function(shift){const btn=el(shift==='day'?'shiftDayBtn':'shiftNightBtn');if(btn.disabled){showToast('ผลัดนี้ยังไม่ถึงเวลา','warn');return;}selectShiftSilent(shift);if(scannedRadioNum){showToast('เลือกผลัดแล้ว กำลังดำเนินการ...','success');setTimeout(()=>onRadioSelect(),600);}else showToast('เลือกผลัด'+(shift==='day'?'กลางวัน':'กลางคืน')+' — กรุณาสแกน QR ด้านบน','info');};
+// ── ✅ selectShift — ผู้ใช้กดเลือกเอง (override auto) ──
+window.selectShift=function(shift){
+  const btn=el(shift==='day'?'shiftDayBtn':'shiftNightBtn');
+  if(btn.disabled){showToast('ผลัดนี้ยังไม่ถึงเวลา','warn');return;}
+  selectedShift=shift;
+  // ── ลบ AUTO badge ออกเมื่อผู้ใช้เลือกเอง ──
+  document.querySelectorAll('.auto-badge').forEach(b=>b.remove());
+  const infoEl=el('autoShiftInfo'),textEl=el('autoShiftText');
+  if(infoEl){infoEl.style.display='flex';}
+  if(textEl)textEl.textContent='เลือกผลัด'+(shift==='day'?'กลางวัน':'กลางคืน')+' ด้วยตนเอง (กดเปลี่ยนได้)';
+  if(infoEl)infoEl.className='auto-shift-info '+(shift==='day'?'day-auto':'night-auto');
+  updateShiftBtnHighlight();
+  _prevDone=-1;_prevLeft=-1;renderPendingPanel();
+  if(scannedRadioNum){
+    const dup=getDuplicateRecord(scannedRadioNum,shift);
+    if(dup){applyDupBlock(dup,scannedRadioNum);showToast('⚠️ WD'+scannedRadioNum+' ตรวจไปแล้วในผลัดนี้','error');}
+    else{applyClear(scannedRadioNum);showToast('เลือกผลัด'+(shift==='day'?'กลางวัน':'กลางคืน'),'success');setTimeout(()=>onRadioSelect(),600);}
+  }else showToast('เลือกผลัด'+(shift==='day'?'กลางวัน':'กลางคืน'),'info');
+};
 
-// ── RADIO SELECT ──
-window.onRadioSelect=function(){if(!scannedRadioNum||scannedRadioNum<1){showToast('กรุณาสแกน QR Code บนวิทยุก่อน','error');return;}if(!selectedShift){showToast('กรุณาเลือกผลัดก่อน','warn');return;}const r=RADIOS.find(x=>x.id===scannedRadioNum)||{id:scannedRadioNum,area:'WD'+scannedRadioNum,sn:'',type:'active'};selectedRadio=r;initChecklist();goToStep2();};
-function goToStep2(){el('step1').style.display='none';el('step2').style.display='block';const r=selectedRadio;el('radioWdLabel').textContent='WD'+r.id;el('radioAreaLabel').textContent=r.area||'—';el('radioSnLabel').textContent=r.sn||'—';el('radioTypeBadge').textContent=r.type==='spare'?'สำรอง':'ใช้งาน';el('selectedShiftBadge').className='shift-badge '+(selectedShift==='day'?'badge-day':'badge-night');el('selectedShiftBadge').textContent=selectedShift==='day'?'☀ กลางวัน':'🌙 กลางคืน';el('topbarDate').textContent=new Date().toLocaleDateString('th-TH');}
-window.backToStep1=function(){el('step2').style.display='none';el('step1').style.display='block';};
-
-// ── CHECKLIST ──
-function initChecklist(){checklistState={};CHECKLIST.forEach(item=>{checklistState[item.id]={result:null,note:''};});renderChecklist();}
-function renderChecklist(){
-  const container=el('checklistItems');if(!container)return;
-  el('clTotal').textContent=CHECKLIST.length+' รายการ';
-  container.innerHTML=CHECKLIST.map(item=>{const st=checklistState[item.id]||{result:null,note:''};const cls=st.result==='pass'?'pass':st.result==='fail'?'fail':'unset';return `<div class="cl-item ${cls}" id="clitem-${item.id}" onclick="toggleNote(${item.id})"><div class="cl-num">${item.id}</div><div class="cl-text"><div class="cl-th">${item.th}</div><div class="cl-en">${item.en}</div></div><div class="cl-btns" onclick="event.stopPropagation()"><button class="cl-btn cl-btn-pass ${st.result==='pass'?'active-pass':''}" onclick="setResult(${item.id},'pass')"><span class="material-symbols-outlined" style="font-size:17px">check</span></button><button class="cl-btn cl-btn-fail ${st.result==='fail'?'active-fail':''}" onclick="setResult(${item.id},'fail')"><span class="material-symbols-outlined" style="font-size:17px">close</span></button></div></div><div class="cl-item-note ${st.result==='fail'?'show':''}" id="clnote-${item.id}"><textarea class="note-input" placeholder="บันทึกข้อบกพร่อง..." onchange="setNote(${item.id},this.value)">${st.note}</textarea></div>`;}).join('');
-  updateSummary();
+function updateShiftBtnHighlight(){
+  const dayOk=isInShift('day')||isEmergencyUnlocked('day'),nightOk=isInShift('night')||isEmergencyUnlocked('night');
+  el('shiftDayBtn').classList.toggle('active-day',selectedShift==='day'&&dayOk);
+  el('shiftNightBtn').classList.toggle('active-night',selectedShift==='night'&&nightOk);
 }
+
+window.onRadioSelect=function(){
+  if(!scannedRadioNum||scannedRadioNum<1){showToast('กรุณาสแกน QR Code ก่อน','error');return;}
+  if(!selectedShift){showToast('กรุณาเลือกผลัดก่อน','warn');return;}
+  const dup=getDuplicateRecord(scannedRadioNum,selectedShift);
+  const r=RADIOS.find(x=>x.id===scannedRadioNum)||{id:scannedRadioNum,area:'WD'+scannedRadioNum,sn:'',type:'active'};
+  selectedRadio=r;goToStep2();
+  if(dup){el('dupBlockBanner').style.display='block';el('step2FormWrap').style.display='none';const st=dup.overallStatus||dup.overall||'—';el('dupInspector').textContent=dup.userName||dup.userId||'ไม่ระบุ';el('dupTime').textContent=dup.time||'—';el('dupShift').textContent=selectedShift==='day'?'☀ กลางวัน':'🌙 กลางคืน';el('dupStatus').textContent=st;el('dupStatus').style.color=/FAIL/i.test(st)?'#ba1a1a':'#16a34a';showToast('ไม่สามารถตรวจซ้ำได้','error');}
+  else{el('dupBlockBanner').style.display='none';el('step2FormWrap').style.display='block';initChecklist();}
+};
+function goToStep2(){el('step1').style.display='none';el('step2').style.display='block';const r=selectedRadio;el('radioWdLabel').textContent='WD'+r.id;el('radioAreaLabel').textContent=r.area||'—';el('radioSnLabel').textContent=r.sn||'—';el('radioTypeBadge').textContent=r.type==='spare'?'สำรอง':'ใช้งาน';el('selectedShiftBadge').className='shift-badge '+(selectedShift==='day'?'badge-day':'badge-night');el('selectedShiftBadge').textContent=selectedShift==='day'?'☀ กลางวัน':'🌙 กลางคืน';el('topbarDate').textContent=new Date().toLocaleDateString('th-TH');}
+window.backToStep1=function(){el('step2').style.display='none';el('step1').style.display='block';el('dupBlockBanner').style.display='none';el('step2FormWrap').style.display='block';};
+
+function initChecklist(){checklistState={};CHECKLIST.forEach(item=>{checklistState[item.id]={result:null,note:''};});renderChecklist();}
+function renderChecklist(){const container=el('checklistItems');if(!container)return;el('clTotal').textContent=CHECKLIST.length+' รายการ';container.innerHTML=CHECKLIST.map(item=>{const st=checklistState[item.id]||{result:null,note:''};const cls=st.result==='pass'?'pass':st.result==='fail'?'fail':'unset';return`<div class="cl-item ${cls}" id="clitem-${item.id}" onclick="toggleNote(${item.id})"><div class="cl-num">${item.id}</div><div class="cl-text"><div class="cl-th">${item.th}</div><div class="cl-en">${item.en}</div></div><div class="cl-btns" onclick="event.stopPropagation()"><button class="cl-btn cl-btn-pass ${st.result==='pass'?'active-pass':''}" onclick="setResult(${item.id},'pass')"><span class="material-symbols-outlined" style="font-size:17px">check</span></button><button class="cl-btn cl-btn-fail ${st.result==='fail'?'active-fail':''}" onclick="setResult(${item.id},'fail')"><span class="material-symbols-outlined" style="font-size:17px">close</span></button></div></div><div class="cl-item-note ${st.result==='fail'?'show':''}" id="clnote-${item.id}"><textarea class="note-input" placeholder="บันทึกข้อบกพร่อง..." onchange="setNote(${item.id},this.value)">${st.note}</textarea></div>`;}).join('');updateSummary();}
 window.setResult=function(id,result){if(!checklistState[id])checklistState[id]={result:null,note:''};checklistState[id].result=checklistState[id].result===result?null:result;renderChecklist();};
 window.toggleNote=function(id){const n=el('clnote-'+id);if(n)n.classList.toggle('show');};
 window.setNote=function(id,val){if(checklistState[id])checklistState[id].note=val;};
 function updateSummary(){const vals=Object.values(checklistState);const pass=vals.filter(v=>v.result==='pass').length,fail=vals.filter(v=>v.result==='fail').length,total=CHECKLIST.length,done=pass+fail,pct=total>0?Math.round(done/total*100):0;el('sumPass').textContent=pass;el('sumFail').textContent=fail;el('sumLeft').textContent=total-done;el('sumPct').textContent=pct+'%';el('progressFill').style.width=pct+'%';}
 
-// ── SUBMIT ──
 window.submitForm=async function(){
-  const total=CHECKLIST.length,vals=Object.values(checklistState);
-  const pass=vals.filter(v=>v.result==='pass').length,fail=vals.filter(v=>v.result==='fail').length,done=pass+fail;
+  const dup=getDuplicateRecord(scannedRadioNum,selectedShift);if(dup){showToast('ตรวจซ้ำไม่ได้ — ระบบบล็อก','error');return;}
+  const total=CHECKLIST.length,vals=Object.values(checklistState);const pass=vals.filter(v=>v.result==='pass').length,fail=vals.filter(v=>v.result==='fail').length,done=pass+fail;
   if(done<total){showToast(`กรุณาตรวจสอบให้ครบ (ค้าง ${total-done} รายการ)`,'warn');return;}
   const overall=fail>0?'FAIL':'PASS',note=el('overallNote').value.trim(),now=new Date();
   const data={userId:currentUser.userId,userName:currentUser.name||currentUser.userId,shift:selectedShift,radioId:selectedRadio.id,area:selectedRadio.area||'',sn:selectedRadio.sn||'',date:todayStr(),time:nowTS(),timestamp:now,passCount:pass,failCount:fail,overallStatus:overall,overall,note,scanMethod:'qr',formType:`${total}items`,checklistResults:Object.entries(checklistState).map(([id,st])=>({id:Number(id),result:st.result,note:st.note})),lateRequestId:lateRequestId||null};
   try{const btn=el('submitBtn');btn.disabled=true;btn.textContent='กำลังบันทึก...';await addDoc(collection(db,'submissions'),data);el('resWd').textContent='WD'+selectedRadio.id;el('resShift').textContent=selectedShift==='day'?'☀ กลางวัน':'🌙 กลางคืน';el('resScore').textContent=`${pass} Pass / ${fail} Fail`;el('resStatus').textContent=overall;el('resStatus').style.color=overall==='PASS'?'#16a34a':'#ba1a1a';el('resTime').textContent=nowTS();hideAllScreens();el('successScreen').style.display='flex';el('successScreen').classList.add('active');}
-  catch(e){showToast('บันทึกไม่สำเร็จ: '+e.message,'error');el('submitBtn').disabled=false;el('submitBtn').innerHTML='<span class="material-symbols-outlined" style="font-size:17px">send</span>บันทึกผลการตรวจ';}
+  catch(e){showToast('บันทึกไม่สำเร็จ: '+e.message,'error');const btn=el('submitBtn');btn.disabled=false;btn.innerHTML='<span class="material-symbols-outlined" style="font-size:17px">send</span>บันทึกผลการตรวจ';}
 };
 
-// ── NEXT RADIO ──
-window.goNextRadio=function(){selectedRadio=null;checklistState={};scannedRadioNum=null;el('qrScannedInfo').style.display='none';el('proceedBtnWrap').style.display='none';el('debugPanel').classList.remove('show');el('scanIdle').style.display='block';el('scanActive').style.display='none';el('step2').style.display='none';el('step1').style.display='block';el('overallNote').value='';hideAllScreens();el('mainApp').style.display='block';el('mainApp').classList.add('active');};
+window.goNextRadio=function(){selectedRadio=null;checklistState={};scannedRadioNum=null;_highlightWD=null;el('qrScannedInfo').style.display='none';el('proceedBtnWrap').style.display='none';el('dupInlineWarn').style.display='none';el('debugPanel').classList.remove('show');el('scanIdle').style.display='block';el('scanActive').style.display='none';el('step2').style.display='none';el('step1').style.display='block';el('dupBlockBanner').style.display='none';el('step2FormWrap').style.display='block';el('overallNote').value='';hideAllScreens();el('mainApp').style.display='block';el('mainApp').classList.add('active');};
 
 el('loginPw').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
 el('loginId').addEventListener('keydown',e=>{if(e.key==='Enter')el('loginPw').focus();});
